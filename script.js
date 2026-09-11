@@ -44,7 +44,7 @@ const CELL = 10, GAP = 100, STEP = 110;
 const GRID_W = COLS * STEP - GAP;   // 1000
 const GRID_H = ROWS * STEP - GAP;   // 340
 const PAD_X = 22, PAD_Y = 14;
-const FONT_SIZE = 13;
+const FONT_SIZE = 10;
 const PANEL_FONT_FAMILY = 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace';
 const PANEL_DOT_SIZE = 8, PANEL_CONTENT_GAP = 16;
 
@@ -251,7 +251,7 @@ async function runExpansion(slot, text, panel) {
     justify-content:${openLeft ? "flex-end" : "flex-start"};
     padding:0 ${PAD_X}px;
     left:${px}px; top:${py}px;
-    width:${pw}px; height:${ph}px;
+    width:auto; height:${ph}px;
     overflow:hidden;
     pointer-events:none; z-index:10;
     transform-origin:${transformOrigin};

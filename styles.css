@@ -491,10 +491,12 @@
 }
 
 .deployment-step-icon {
+  display: block;
   justify-self: end;
   width: 20px;
   height: 20px;
-  color: var(--green-deep);
+  margin-right: 4px;
+  filter: invert(27%) sepia(36%) saturate(1064%) hue-rotate(121deg) brightness(92%) contrast(97%);
 }
 
 /* =============================================
@@ -1861,7 +1863,7 @@ button { background: none; border: none; cursor: pointer; font: inherit; }
   position: relative;
   z-index: 1;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 16px;
+  font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
