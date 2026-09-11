@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expertise.ai — Deploy AI agents across sales and support</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar">
+    <div class="section-container navbar-container">
+      <div class="navbar-sidebar">
+        <a href="#" class="logo" aria-label="Expertise.ai">
+          <img src="assets/expertise-logo.svg" alt="Expertise.ai" class="nav-logo-img" />
+        </a>
+      </div>
+      <div class="navbar-content">
+      <!-- Logo visible only on mobile (desktop logo lives in navbar-sidebar) -->
+      <a href="#" class="logo nav-logo-mobile" aria-label="Expertise.ai">
+        <img src="assets/expertise-logo.svg" alt="Expertise.ai" class="nav-logo-img" />
+      </a>
+      <nav class="nav-links" id="nav-links">
+        <a href="#" class="nav-link">Product <svg viewBox="0 0 16 16" width="12" height="12" fill="none"><path d="M4 6l4 4 4-4" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#" class="nav-link">Pricing</a>
+        <a href="#" class="nav-link">Resources <svg viewBox="0 0 16 16" width="12" height="12" fill="none"><path d="M4 6l4 4 4-4" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#" class="nav-link">Partner Program</a>
+      </nav>
+      <div class="navbar-actions">
+        <button class="btn-flag" aria-label="Language">
+          <svg viewBox="0 0 24 16" width="24" height="16" fill="none">
+            <rect width="24" height="16" fill="#CA4638"/>
+            <rect y="1.2" width="24" height="1.2" fill="white"/>
+            <rect y="3.6" width="24" height="1.2" fill="white"/>
+            <rect y="6" width="24" height="1.2" fill="white"/>
+            <rect y="8.4" width="24" height="1.2" fill="white"/>
+            <rect y="10.8" width="24" height="1.2" fill="white"/>
+            <rect y="13.6" width="24" height="1.2" fill="white"/>
+            <rect width="12" height="8.53333" fill="#346DA6"/>
+          </svg>
+          <svg viewBox="0 0 16 16" width="12" height="12" fill="none"><path d="M4 6l4 4 4-4" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <a href="#" class="btn-signin">Sign in</a>
+        <a href="#" class="btn-start">Start for free</a>
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-mobile-drawer">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile nav drawer -->
+  <nav class="nav-mobile-drawer" id="nav-mobile-drawer" aria-label="Mobile navigation">
+    <a href="#" class="mobile-link">Product</a>
+    <a href="#" class="mobile-link">Pricing</a>
+    <a href="#" class="mobile-link">Resources</a>
+    <a href="#" class="mobile-link">Partner Program</a>
+    <div class="mobile-actions">
+      <a href="#" class="mobile-btn-start">Start for free</a>
+      <a href="#" class="mobile-btn-signin">Sign in</a>
+    </div>
+  </nav>
+
+  <!-- ===== SECTION 1: HERO ===== -->
+  <section class="hero">
+    <div class="section-container split-container hero-layout">
+      <div class="hero-sidebar"></div>
+      <div class="hero-content">
+        <div class="hero-container">
+          <div class="hero-intro">
+            <div class="hero-trust-strip" aria-label="Customer rating and compliance credentials">
+              <a class="hero-trust-rating" href="https://www.g2.com/products/expertise-ai/reviews" target="_blank" rel="noopener" aria-label="View Expertise AI's 4.9 rating on G2">
+                <img src="assets/trust-g2-rating.svg" alt="G2 rating: 4.9 out of 5" />
+              </a>
+              <span class="hero-trust-divider" aria-hidden="true"></span>
+              <a class="hero-compliance-link" href="https://trust.expertise.ai/" target="_blank" rel="noopener">
+                <img class="hero-compliance-logo" src="assets/trust-aicpa-soc.webp" alt="" aria-hidden="true" />
+                <span>SOC 2 Type II &amp; SOC 3</span>
+              </a>
+              <a class="hero-compliance-link" href="https://trust.expertise.ai/" target="_blank" rel="noopener">
+                <img class="hero-compliance-logo" src="assets/trust-gdpr.svg" alt="" aria-hidden="true" />
+                <span>GDPR</span>
+              </a>
+              <span class="hero-compliance-dot" aria-hidden="true">•</span>
+              <a class="hero-compliance-link" href="https://trust.expertise.ai/" target="_blank" rel="noopener">
+                <img class="hero-compliance-logo" src="assets/trust-ccpa.webp" alt="" aria-hidden="true" />
+                <span>CCPA</span>
+              </a>
+            </div>
+            <h1 class="hero-heading">
+              Deploy AI agents <br/>
+              <span class="hero-heading-green">across sales and support.</span>
+            </h1>
+            <a class="hero-demo-cta" href="https://meetings.hubspot.com/nick-raja/expertise-ai" target="_blank" rel="noopener"><span class="hero-demo-label">Book a demo</span><span class="hero-demo-arrow" aria-hidden="true"></span></a>
+          </div>
+        <div class="stats-grid hero-stats-grid" aria-hidden="true">
+          <a href="https://www.expertise.ai/live/case-studies/anchain-ai" target="_blank" rel="noopener" class="stat-card">
+            <div class="stat-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.0225724 3.86871C0.0225724 3.31485 0.693408 3.02661 1.09534 3.42788L6.88943 9.21518C7.27156 9.61928 7.00832 10.2918 6.44787 10.2918H0.65095C0.311286 10.2918 0.0197419 10.0064 0.0225724 9.65884V3.86871Z" fill="currentColor"/><path d="M6.86969 14.7169L1.08126 20.507C0.676496 20.9054 0 20.6228 0 20.0662V14.276C0 13.9313 0.291544 13.643 0.636869 13.6459H6.42813C7.00273 13.6459 7.27163 14.3156 6.86969 14.7169Z" fill="currentColor"/><path d="M24 14.3184V20.1086C24 20.6653 23.3292 20.9507 22.9216 20.5494L17.1275 14.7593C16.7284 14.358 17.0171 13.6826 17.5719 13.6883H23.3631C23.7113 13.6883 23.9774 13.9539 23.9972 14.3184H24Z" fill="currentColor"/><path d="M10.3258 17.5146V23.3019C10.3258 23.6495 10.0343 23.9377 9.68894 23.9349H3.89768C3.3429 23.9349 3.05701 23.2652 3.45612 22.8583L9.24738 17.0766C9.65214 16.6923 10.3286 16.9551 10.3286 17.5118L10.3258 17.5146Z" fill="currentColor"/><path d="M10.3258 0.613205V6.42029C10.3258 6.97415 9.65496 7.25956 9.25302 6.86112L3.4561 1.07664C3.05417 0.672548 3.34005 0 3.89483 0H9.68609C10.0541 0 10.3201 0.265628 10.323 0.613205H10.3258Z" fill="currentColor"/><path d="M13.677 6.42029V0.63016C13.677 0.285409 13.9686 0 14.3111 0H20.1052C20.66 0 20.9458 0.669722 20.5467 1.07664L14.7555 6.86394C14.3507 7.24543 13.6742 6.9798 13.6742 6.42311L13.677 6.42029Z" fill="currentColor"/><path d="M17.1105 9.22367L22.9018 3.43637C23.3065 3.03228 23.983 3.31769 23.9802 3.87155V9.65885C23.9802 10.0234 23.7141 10.2918 23.349 10.2918H17.5549C17.0001 10.2918 16.7142 9.62212 17.1133 9.22367H17.1105Z" fill="currentColor"/><path d="M20.5495 22.9234C20.9486 23.3275 20.6599 24.0028 20.108 23.9943L14.3139 24C13.9488 23.9943 13.6799 23.7061 13.6799 23.3642V17.5769C13.6799 17.023 14.3563 16.732 14.7611 17.1361L20.5524 22.9234H20.5495Z" fill="currentColor"/></svg>
+            </div>
+            <div class="stat-body">
+              <div class="stat-number">+84%</div>
+              <div class="stat-label">chat-to-lead conversion</div>
+              <div class="stat-divider"></div>
+              <div class="stat-company-row"><div class="stat-company">AnChain.AI</div><span class="stat-arrow" aria-hidden="true"></span></div>
+            </div>
+          </a>
+          <a href="https://www.expertise.ai/live/case-studies/gutterglove" target="_blank" rel="noopener" class="stat-card">
+            <div class="stat-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.0225724 3.86871C0.0225724 3.31485 0.693408 3.02661 1.09534 3.42788L6.88943 9.21518C7.27156 9.61928 7.00832 10.2918 6.44787 10.2918H0.65095C0.311286 10.2918 0.0197419 10.0064 0.0225724 9.65884V3.86871Z" fill="currentColor"/><path d="M6.86969 14.7169L1.08126 20.507C0.676496 20.9054 0 20.6228 0 20.0662V14.276C0 13.9313 0.291544 13.643 0.636869 13.6459H6.42813C7.00273 13.6459 7.27163 14.3156 6.86969 14.7169Z" fill="currentColor"/><path d="M24 14.3184V20.1086C24 20.6653 23.3292 20.9507 22.9216 20.5494L17.1275 14.7593C16.7284 14.358 17.0171 13.6826 17.5719 13.6883H23.3631C23.7113 13.6883 23.9774 13.9539 23.9972 14.3184H24Z" fill="currentColor"/><path d="M10.3258 17.5146V23.3019C10.3258 23.6495 10.0343 23.9377 9.68894 23.9349H3.89768C3.3429 23.9349 3.05701 23.2652 3.45612 22.8583L9.24738 17.0766C9.65214 16.6923 10.3286 16.9551 10.3286 17.5118L10.3258 17.5146Z" fill="currentColor"/><path d="M10.3258 0.613205V6.42029C10.3258 6.97415 9.65496 7.25956 9.25302 6.86112L3.4561 1.07664C3.05417 0.672548 3.34005 0 3.89483 0H9.68609C10.0541 0 10.3201 0.265628 10.323 0.613205H10.3258Z" fill="currentColor"/><path d="M13.677 6.42029V0.63016C13.677 0.285409 13.9686 0 14.3111 0H20.1052C20.66 0 20.9458 0.669722 20.5467 1.07664L14.7555 6.86394C14.3507 7.24543 13.6742 6.9798 13.6742 6.42311L13.677 6.42029Z" fill="currentColor"/><path d="M17.1105 9.22367L22.9018 3.43637C23.3065 3.03228 23.983 3.31769 23.9802 3.87155V9.65885C23.9802 10.0234 23.7141 10.2918 23.349 10.2918H17.5549C17.0001 10.2918 16.7142 9.62212 17.1133 9.22367H17.1105Z" fill="currentColor"/><path d="M20.5495 22.9234C20.9486 23.3275 20.6599 24.0028 20.108 23.9943L14.3139 24C13.9488 23.9943 13.6799 23.7061 13.6799 23.3642V17.5769C13.6799 17.023 14.3563 16.732 14.7611 17.1361L20.5524 22.9234H20.5495Z" fill="currentColor"/></svg>
+            </div>
+            <div class="stat-body">
+              <div class="stat-number">99%</div>
+              <div class="stat-label">chats resolved autonomously</div>
+              <div class="stat-divider"></div>
+              <div class="stat-company-row"><div class="stat-company">Gutterglove</div><span class="stat-arrow" aria-hidden="true"></span></div>
+            </div>
+          </a>
+          <a href="https://www.expertise.ai/live/case-studies/holistiplan" target="_blank" rel="noopener" class="stat-card">
+            <div class="stat-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.0225724 3.86871C0.0225724 3.31485 0.693408 3.02661 1.09534 3.42788L6.88943 9.21518C7.27156 9.61928 7.00832 10.2918 6.44787 10.2918H0.65095C0.311286 10.2918 0.0197419 10.0064 0.0225724 9.65884V3.86871Z" fill="currentColor"/><path d="M6.86969 14.7169L1.08126 20.507C0.676496 20.9054 0 20.6228 0 20.0662V14.276C0 13.9313 0.291544 13.643 0.636869 13.6459H6.42813C7.00273 13.6459 7.27163 14.3156 6.86969 14.7169Z" fill="currentColor"/><path d="M24 14.3184V20.1086C24 20.6653 23.3292 20.9507 22.9216 20.5494L17.1275 14.7593C16.7284 14.358 17.0171 13.6826 17.5719 13.6883H23.3631C23.7113 13.6883 23.9774 13.9539 23.9972 14.3184H24Z" fill="currentColor"/><path d="M10.3258 17.5146V23.3019C10.3258 23.6495 10.0343 23.9377 9.68894 23.9349H3.89768C3.3429 23.9349 3.05701 23.2652 3.45612 22.8583L9.24738 17.0766C9.65214 16.6923 10.3286 16.9551 10.3286 17.5118L10.3258 17.5146Z" fill="currentColor"/><path d="M10.3258 0.613205V6.42029C10.3258 6.97415 9.65496 7.25956 9.25302 6.86112L3.4561 1.07664C3.05417 0.672548 3.34005 0 3.89483 0H9.68609C10.0541 0 10.3201 0.265628 10.323 0.613205H10.3258Z" fill="currentColor"/><path d="M13.677 6.42029V0.63016C13.677 0.285409 13.9686 0 14.3111 0H20.1052C20.66 0 20.9458 0.669722 20.5467 1.07664L14.7555 6.86394C14.3507 7.24543 13.6742 6.9798 13.6742 6.42311L13.677 6.42029Z" fill="currentColor"/><path d="M17.1105 9.22367L22.9018 3.43637C23.3065 3.03228 23.983 3.31769 23.9802 3.87155V9.65885C23.9802 10.0234 23.7141 10.2918 23.349 10.2918H17.5549C17.0001 10.2918 16.7142 9.62212 17.1133 9.22367H17.1105Z" fill="currentColor"/><path d="M20.5495 22.9234C20.9486 23.3275 20.6599 24.0028 20.108 23.9943L14.3139 24C13.9488 23.9943 13.6799 23.7061 13.6799 23.3642V17.5769C13.6799 17.023 14.3563 16.732 14.7611 17.1361L20.5524 22.9234H20.5495Z" fill="currentColor"/></svg>
+            </div>
+            <div class="stat-body">
+              <div class="stat-number">2.7x</div>
+              <div class="stat-label">more leads at 90% lower cost</div>
+              <div class="stat-divider"></div>
+              <div class="stat-company-row"><div class="stat-company">Holistiplan</div><span class="stat-arrow" aria-hidden="true"></span></div>
+            </div>
+          </a>
+          <a href="https://www.expertise.ai/live/case-studies/david-sklar" target="_blank" rel="noopener" class="stat-card">
+            <div class="stat-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.0225724 3.86871C0.0225724 3.31485 0.693408 3.02661 1.09534 3.42788L6.88943 9.21518C7.27156 9.61928 7.00832 10.2918 6.44787 10.2918H0.65095C0.311286 10.2918 0.0197419 10.0064 0.0225724 9.65884V3.86871Z" fill="currentColor"/><path d="M6.86969 14.7169L1.08126 20.507C0.676496 20.9054 0 20.6228 0 20.0662V14.276C0 13.9313 0.291544 13.643 0.636869 13.6459H6.42813C7.00273 13.6459 7.27163 14.3156 6.86969 14.7169Z" fill="currentColor"/><path d="M24 14.3184V20.1086C24 20.6653 23.3292 20.9507 22.9216 20.5494L17.1275 14.7593C16.7284 14.358 17.0171 13.6826 17.5719 13.6883H23.3631C23.7113 13.6883 23.9774 13.9539 23.9972 14.3184H24Z" fill="currentColor"/><path d="M10.3258 17.5146V23.3019C10.3258 23.6495 10.0343 23.9377 9.68894 23.9349H3.89768C3.3429 23.9349 3.05701 23.2652 3.45612 22.8583L9.24738 17.0766C9.65214 16.6923 10.3286 16.9551 10.3286 17.5118L10.3258 17.5146Z" fill="currentColor"/><path d="M10.3258 0.613205V6.42029C10.3258 6.97415 9.65496 7.25956 9.25302 6.86112L3.4561 1.07664C3.05417 0.672548 3.34005 0 3.89483 0H9.68609C10.0541 0 10.3201 0.265628 10.323 0.613205H10.3258Z" fill="currentColor"/><path d="M13.677 6.42029V0.63016C13.677 0.285409 13.9686 0 14.3111 0H20.1052C20.66 0 20.9458 0.669722 20.5467 1.07664L14.7555 6.86394C14.3507 7.24543 13.6742 6.9798 13.6742 6.42311L13.677 6.42029Z" fill="currentColor"/><path d="M17.1105 9.22367L22.9018 3.43637C23.3065 3.03228 23.983 3.31769 23.9802 3.87155V9.65885C23.9802 10.0234 23.7141 10.2918 23.349 10.2918H17.5549C17.0001 10.2918 16.7142 9.62212 17.1133 9.22367H17.1105Z" fill="currentColor"/><path d="M20.5495 22.9234C20.9486 23.3275 20.6599 24.0028 20.108 23.9943L14.3139 24C13.9488 23.9943 13.6799 23.7061 13.6799 23.3642V17.5769C13.6799 17.023 14.3563 16.732 14.7611 17.1361L20.5524 22.9234H20.5495Z" fill="currentColor"/></svg>
+            </div>
+            <div class="stat-body">
+              <div class="stat-number">9x</div>
+              <div class="stat-label">pipeline ROI in 6 months</div>
+              <div class="stat-divider"></div>
+              <div class="stat-company-row"><div class="stat-company">David Sklar &amp; Associates</div><span class="stat-arrow" aria-hidden="true"></span></div>
+            </div>
+          </a>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRUSTED CLIENT MARQUEE ===== -->
+  <section class="client-marquee-section" aria-label="Trusted by top companies">
+    <div class="section-container split-container client-marquee-layout">
+      <div class="client-marquee-sidebar">
+        <p>Trusted by top companies</p>
+      </div>
+      <div class="client-marquee-content">
+        <div class="client-marquee-viewport">
+          <div class="client-marquee-track">
+            <div class="client-marquee-group">
+              <img src="assets/logo-circuit-electric.png" alt="Circuit Electric" />
+              <img src="assets/client-anchain.svg" alt="AnChain.AI" />
+              <img src="assets/client-gutterglove.png" alt="Gutterglove" />
+              <img src="assets/client-holistiplan.webp" alt="Holistiplan" />
+              <img src="assets/client-david-sklar.webp" alt="David Sklar &amp; Associates" />
+              <img src="assets/client-401go.png" alt="401GO" />
+              <img src="assets/client-solimar.webp" alt="Solimar" />
+              <img src="assets/client-safe-software.svg" alt="Safe Software" />
+              <img src="assets/client-infigo.webp" alt="Infigo" />
+              <img src="assets/client-austin-industries.svg" alt="Austin Industries" />
+              <img src="assets/client-nevvon.webp" alt="Nevvon" />
+              <img src="assets/client-processfusion.webp" alt="Process Fusion" />
+            </div>
+            <div class="client-marquee-group" aria-hidden="true">
+              <img src="assets/logo-circuit-electric.png" alt="" />
+              <img src="assets/client-anchain.svg" alt="" />
+              <img src="assets/client-gutterglove.png" alt="" />
+              <img src="assets/client-holistiplan.webp" alt="" />
+              <img src="assets/client-david-sklar.webp" alt="" />
+              <img src="assets/client-401go.png" alt="" />
+              <img src="assets/client-solimar.webp" alt="" />
+              <img src="assets/client-safe-software.svg" alt="" />
+              <img src="assets/client-infigo.webp" alt="" />
+              <img src="assets/client-austin-industries.svg" alt="" />
+              <img src="assets/client-nevvon.webp" alt="" />
+              <img src="assets/client-processfusion.webp" alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 2: ABSTRACT / TRIANGLES ===== -->
+  <section class="abstract-section" id="abstract-section">
+    <div class="abstract-bg" aria-hidden="true"></div>
+    <div class="section-container split-container abstract-layout">
+      <div class="abstract-sidebar"></div>
+      <div class="abstract-content">
+        <div class="abstract-container">
+        <p class="abstract-text">
+          Engage every visitor on your website, book meetings while intent is high, then let your team deploy the AI agents that move every deal to close.
+        </p>
+        <div class="triangle-grid-wrapper" id="triangle-grid-wrapper">
+          <div class="triangle-grid" id="triangle-grid" aria-hidden="true"></div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MEASURED IMPACT ===== -->
+  <section class="impact-section" aria-label="Measured customer impact">
+    <div class="section-container split-container impact-layout">
+      <div class="impact-sidebar">
+        <p>Measured impact</p>
+      </div>
+      <div class="impact-content">
+        <div class="stats-grid impact-stats-grid">
+          <a href="https://www.expertise.ai/live/case-studies/anchain-ai" target="_blank" rel="noopener" class="stat-card">
+            <div class="stat-icon" aria-hidden="true"><img src="assets/icon-expertise.svg" alt="" /></div>
+            <div class="stat-body">
+              <div class="stat-number">+84%</div>
+              <div class="stat-label">chat-to-lead conversion</div>
+              <div class="stat-divider"></div>
+              <div class="stat-company-row"><div class="stat-company">AnChain.AI</div><span class="stat-arrow" aria-hidden="true"></span></div>
+            </div>
+          </a>
+          <a href="https://www.expertise.ai/live/case-studies/gutterglove" target="_blank" rel="noopener" class="stat-card">
+            <div class="stat-icon" aria-hidden="true"><img src="assets/icon-expertise.svg" alt="" /></div>
+            <div class="stat-body">
+              <div class="stat-number">99%</div>
+              <div class="stat-label">chats resolved autonomously</div>
+              <div class="stat-divider"></div>
+              <div class="stat-company-row"><div class="stat-company">Gutterglove</div><span class="stat-arrow" aria-hidden="true"></span></div>
+            </div>
+          </a>
+          <a href="https://www.expertise.ai/live/case-studies/holistiplan" target="_blank" rel="noopener" class="stat-card">
+            <div class="stat-icon" aria-hidden="true"><img src="assets/icon-expertise.svg" alt="" /></div>
+            <div class="stat-body">
+              <div class="stat-number">2.7x</div>
+              <div class="stat-label">more leads at 90% lower cost</div>
+              <div class="stat-divider"></div>
+              <div class="stat-company-row"><div class="stat-company">Holistiplan</div><span class="stat-arrow" aria-hidden="true"></span></div>
+            </div>
+          </a>
+          <a href="https://www.expertise.ai/live/case-studies/david-sklar" target="_blank" rel="noopener" class="stat-card">
+            <div class="stat-icon" aria-hidden="true"><img src="assets/icon-expertise.svg" alt="" /></div>
+            <div class="stat-body">
+              <div class="stat-number">9x</div>
+              <div class="stat-label">pipeline ROI in 6 months</div>
+              <div class="stat-divider"></div>
+              <div class="stat-company-row"><div class="stat-company">David Sklar &amp; Associates</div><span class="stat-arrow" aria-hidden="true"></span></div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONNECTED PLATFORM ===== -->
+  <section class="platform-section" aria-labelledby="platform-title">
+    <div class="section-container split-container platform-layout">
+      <div class="platform-sidebar">
+        <p>One platform.<br />Every step connected.</p>
+      </div>
+      <div class="platform-content">
+        <header class="platform-intro">
+          <h2 id="platform-title">From customer <span>conversation to action</span></h2>
+          <p>Most enterprise AI stops at an answer. Expertise keeps working.</p>
+        </header>
+
+        <div class="platform-cards">
+          <article class="platform-card">
+            <div class="platform-card-copy">
+              <h3>Talk with customers</h3>
+              <p>Engage buyers and customers across web, chat, and voice. Add voice and avatar experiences for people who prefer to speak, while keeping the same sales and support workflows behind every interaction.</p>
+            </div>
+            <img src="assets/platform-talk-with-customers.png" alt="Abstract texture for customer conversations" />
+          </article>
+          <article class="platform-card">
+            <div class="platform-card-copy">
+              <h3>Work with your teams</h3>
+              <p>Give sales and support teams AI that can research customer context, follow established playbooks, prepare follow-up, and take on the repetitive work that happens around every customer interaction.</p>
+            </div>
+            <img src="assets/platform-work-with-teams.png" alt="Abstract texture for team workflows" />
+          </article>
+          <article class="platform-card">
+            <div class="platform-card-copy">
+              <h3>Act across your stack</h3>
+              <p>Connect the CRM, help desk, email, calendar, knowledge, and other systems your teams already use. Keep your existing tools in place while work and context move between them.</p>
+            </div>
+            <img src="assets/platform-act-across-stack.png" alt="Abstract texture for connected systems" />
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 3: TRUSTED BY ===== -->
+  <section class="trusted-section">
+    <div class="section-container split-container trusted-layout">
+      <div class="trusted-sidebar">
+        <p class="trusted-label">Trusted by top companies</p>
+      </div>
+      <div class="trusted-content">
+      <div class="logo-grid-container">
+        <div class="logo-grid">
+
+          <!-- CELLS 0–17: visible on all breakpoints (6 rows at 3-col mobile) -->
+          <!-- 9 case studies at positions 0,2,4,6,8,10,12,14,16 — zero conflicts at 3,5,7 cols -->
+          <!-- ROW 0 (desktop) — cells 0–6 -->
+          <a href="https://www.expertise.ai/live/case-studies/gutterglove" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">Gutterglove</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">Gutterglove Automates 99% of Customer Chats</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Nexora</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/anchain-ai" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">AnChain.AI</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">AnChain.AI Increases Conversion by 84%</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Aventis</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/401go" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">401GO</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">How 401GO Uncovered Hidden Customer Demand</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Cylara</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/holistiplan" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">Holistiplan</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">Holistiplan Gets 2.7× More Leads at 90% Lower Cost</span>
+            </div>
+          </a>
+          <!-- ROW 1 (desktop) — cells 7–13 -->
+          <div class="logo-cell"><span class="logo-name">Draxion</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/safecheck" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">SafeCheck</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">SafeCheck Increases Corporate Leads by 50%</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Elara</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/david-sklar" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">David Sklar</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">David Sklar Generates 5× ROI After Hours</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Galvora</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/swimmingly" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">Swimmingly</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">Swimmingly Raises AI Resolution Rate to 90%</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Fynex</span></div>
+          <!-- ROW 2 (desktop) — cells 14–20 -->
+          <a href="https://www.expertise.ai/live/case-studies/big-buy" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">BigBuy</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">BigBuy Scales AI Lead Capture and Support</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Veltrix</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/circuit-electric" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">Hydro-Québec</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">Hydro-Québec Cuts Support Requests by 22%</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Zentara</span></div>
+
+          <!-- CELLS 18+: tablet/desktop only — hidden on mobile (≤600px) -->
+          <!-- 4 remaining case studies at positions 20,24,28,32 — zero conflicts at 5,7 cols -->
+          <div class="logo-cell"><span class="logo-name">Lumora</span></div>
+          <div class="logo-cell"><span class="logo-name">Clypto</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/gic-green" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">GIC-GREEN</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">GIC-GREEN Generates 30–40% of Leads with AI</span>
+            </div>
+          </a>
+          <!-- ROW 3 (desktop) — cells 21–27 -->
+          <div class="logo-cell"><span class="logo-name">Orbisys</span></div>
+          <div class="logo-cell"><span class="logo-name">Virelia</span></div>
+          <div class="logo-cell"><span class="logo-name">Trivanta</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/imagine-ai-live" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">ImagineAI</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">ImagineAI LIVE Increases Registrations by 85%</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Solvexa</span></div>
+          <div class="logo-cell"><span class="logo-name">Kintara</span></div>
+          <div class="logo-cell"><span class="logo-name">Quantiflow</span></div>
+          <!-- ROW 4 (desktop) — cells 28–34 -->
+          <a href="https://www.expertise.ai/live/case-studies/rachel-bjerstedt" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">R. Bjerstedt</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">Rachel Bjerstedt Cuts Live Chat Demand by 94%</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Axionex</span></div>
+          <div class="logo-cell"><span class="logo-name">Polarisys</span></div>
+          <div class="logo-cell"><span class="logo-name">Dynexis</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/solimar-systems-inc" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">Solimar</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">Solimar Achieves 99.9% AI Answer Accuracy</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Nexora</span></div>
+          <div class="logo-cell"><span class="logo-name">Aventis</span></div>
+          <!-- ROW 5 (desktop) — faded -->
+          <div class="logo-cell logo-faded"><span class="logo-name">Infiniscope</span></div>
+          <div class="logo-cell logo-faded"><span class="logo-name">CelerityTech</span></div>
+          <div class="logo-cell logo-faded"><span class="logo-name">Veridion</span></div>
+          <div class="logo-cell logo-faded"><span class="logo-name">AetherLink</span></div>
+          <div class="logo-cell logo-faded"><span class="logo-name">QuantumDrive</span></div>
+          <div class="logo-cell logo-faded"><span class="logo-name">Solaris Dynamics</span></div>
+          <div class="logo-cell logo-faded"><span class="logo-name">Vertex Innovations</span></div>
+        </div>
+        <div class="logo-grid-fade" aria-hidden="true"></div>
+      </div>
+      <p class="trusted-more">and 300+ companies more</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 3B: TRUSTED BY — ALTERNATIVE EDITORIAL CONCEPT ===== -->
+  <section class="trusted-alt-section" aria-labelledby="stories-title">
+    <div class="section-container split-container trusted-alt-layout">
+      <div class="trusted-alt-sidebar">
+        <p>Case studies</p>
+      </div>
+      <div class="trusted-alt-content">
+      <div class="trusted-alt-intro">
+        <div>
+          <h2 id="stories-title">Solving real world problems</h2>
+        </div>
+        <a class="view-all-case-studies" href="https://www.expertise.ai/live/case-studies" target="_blank" rel="noopener">View all case studies <span aria-hidden="true"></span></a>
+      </div>
+
+      <div class="story-layout">
+        <div class="story-stage" aria-live="polite">
+          <div class="story-stage-image" aria-hidden="true"></div>
+          <div class="story-stage-pulse" aria-hidden="true"></div>
+          <p class="story-stage-logo"><img data-story-logo src="assets/logo-circuit-electric.png" alt="Circuit Electric" /></p>
+          <div class="story-stage-content">
+            <p class="story-stage-meta" data-story-category>Utilities / Support</p>
+            <h3 class="story-stage-title" data-story-title>Circuit Electric Cuts Support Requests by 22%</h3>
+            <dl class="story-metrics">
+              <div><dt data-story-metric-value="1">22.35%</dt><dd data-story-metric-caption="1">fewer contact-form submissions</dd></div>
+              <div><dt data-story-metric-value="2">557</dt><dd data-story-metric-caption="2">customer contacts avoided · Dec 2024</dd></div>
+              <div><dt data-story-metric-value="3">60 days</dt><dd data-story-metric-caption="3">to measurable impact</dd></div>
+            </dl>
+          </div>
+          <a class="story-stage-cta" data-story-link href="https://www.expertise.ai/live/case-studies/circuit-electric" target="_blank" rel="noopener">Read case study <span class="story-link-arrow" aria-hidden="true"></span></a>
+        </div>
+
+        <div class="story-index" aria-label="Customer case studies">
+          <a class="story-logo-link is-active" href="https://www.expertise.ai/live/case-studies/circuit-electric" target="_blank" rel="noopener" data-story-logo="Circuit Electric" data-story-title="Circuit Electric Cuts Support Requests by 22%" data-story-logo-image="assets/logo-circuit-electric.png" data-story-category="Utilities / Support" data-story-index="01" data-story-position="40% 30%" data-story-metric-1-value="22.35%" data-story-metric-1-caption="fewer contact-form submissions" data-story-metric-2-value="557" data-story-metric-2-caption="customer contacts avoided · Dec 2024" data-story-metric-3-value="60 days" data-story-metric-3-caption="to measurable impact"><span>Circuit Electric</span><i aria-hidden="true"></i></a>
+          <a class="story-logo-link" href="https://www.expertise.ai/live/case-studies/anchain-ai" target="_blank" rel="noopener" data-story-logo="AnChain.AI" data-story-title="AnChain.AI Increases Conversion by 84%" data-story-logo-image="assets/client-anchain.svg" data-story-category="Technology / Sales" data-story-index="02" data-story-position="65% 45%" data-story-metric-1-value="+84%" data-story-metric-1-caption="chat-to-lead conversion" data-story-metric-2-value="85%" data-story-metric-2-caption="faster first touch" data-story-metric-3-value="492" data-story-metric-3-caption="qualified signals · 6 months"><span>AnChain.AI</span><i aria-hidden="true"></i></a>
+          <a class="story-logo-link" href="https://www.expertise.ai/live/case-studies/gutterglove" target="_blank" rel="noopener" data-story-logo="Gutterglove" data-story-title="Gutterglove Automates 99% of Customer Chats" data-story-logo-image="assets/client-gutterglove.png" data-story-category="Manufacturing / Support" data-story-index="03" data-story-position="28% 62%" data-story-metric-1-value="&gt;99%" data-story-metric-1-caption="chats resolved autonomously" data-story-metric-2-value="21%" data-story-metric-2-caption="fewer support interactions · YoY" data-story-metric-3-value="~30 min" data-story-metric-3-caption="initial setup time"><span>Gutterglove</span><i aria-hidden="true"></i></a>
+          <a class="story-logo-link" href="https://www.expertise.ai/live/case-studies/holistiplan" target="_blank" rel="noopener" data-story-logo="Holistiplan" data-story-title="Holistiplan: 2.7× More Leads, 90% Lower Cost" data-story-logo-image="assets/client-holistiplan.webp" data-story-category="Financial Services SaaS / Sales" data-story-index="04" data-story-position="72% 28%" data-story-metric-1-value="2.7×" data-story-metric-1-caption="more leads" data-story-metric-2-value="90%" data-story-metric-2-caption="lower cost" data-story-metric-3-value="543" data-story-metric-3-caption="visitor leads captured"><span>Holistiplan</span><i aria-hidden="true"></i></a>
+          <a class="story-logo-link" href="https://www.expertise.ai/live/case-studies/safecheck" target="_blank" rel="noopener" data-story-logo="SafeCheck" data-story-title="SafeCheck Increases Corporate Leads by 50%" data-story-logo-image="assets/logo-safecheck.png" data-story-category="Training &amp; Compliance / Sales + Support" data-story-index="05" data-story-position="52% 72%" data-story-metric-1-value="50%" data-story-metric-1-caption="increase in corporate inbound leads" data-story-metric-2-value="80%+" data-story-metric-2-caption="customer queries resolved by AI" data-story-metric-3-value="60 days" data-story-metric-3-caption="to measurable impact"><span>SafeCheck</span><i aria-hidden="true"></i></a>
+          <a class="story-logo-link" href="https://www.expertise.ai/live/case-studies/david-sklar" target="_blank" rel="noopener" data-story-logo="David Sklar &amp; Associates" data-story-title="David Sklar Generates 5× ROI After Hours" data-story-logo-image="assets/client-david-sklar.webp" data-story-category="Financial Services / Sales" data-story-index="06" data-story-position="30% 36%" data-story-metric-1-value="5×" data-story-metric-1-caption="ROI from after-hours deployment" data-story-metric-2-value="20%" data-story-metric-2-caption="AI conversations → consultations" data-story-metric-3-value="24%" data-story-metric-3-caption="consultations → signed engagements"><span>David Sklar</span><i aria-hidden="true"></i></a>
+          <a class="story-logo-link" href="https://www.expertise.ai/live/case-studies/swimmingly" target="_blank" rel="noopener" data-story-logo="Swimmingly" data-story-title="Swimmingly Raises AI Resolution Rate to 90%" data-story-logo-image="assets/logo-swimmingly.png" data-story-category="Sports Software / Support" data-story-index="07" data-story-position="68% 68%" data-story-metric-1-value="90%" data-story-metric-1-caption="automated resolution rate" data-story-metric-2-value="30 days" data-story-metric-2-caption="to measurable impact" data-story-metric-3-value="15 pts" data-story-metric-3-caption="lift in automated resolution"><span>Swimmingly</span><i aria-hidden="true"></i></a>
+          <a class="story-logo-link" href="https://www.expertise.ai/live/case-studies/big-buy" target="_blank" rel="noopener" data-story-logo="BigBuy" data-story-title="BigBuy Scales AI Lead Capture and Support" data-story-logo-image="assets/logo-bigbuy.jpg" data-story-category="Ecommerce / Sales + Support" data-story-index="08" data-story-position="44% 50%" data-story-metric-1-value="10–20%" data-story-metric-1-caption="repetitive queries automated" data-story-metric-2-value="100–200" data-story-metric-2-caption="tickets offloaded monthly" data-story-metric-3-value="1–2%" data-story-metric-3-caption="projected lift in lead conversion"><span>BigBuy</span><i aria-hidden="true"></i></a>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECURITY ===== -->
+  <section class="security-section" aria-labelledby="security-title">
+    <div class="section-container split-container security-layout">
+      <aside class="security-sidebar"><p>Security</p></aside>
+      <div class="security-content">
+        <div class="security-copy">
+          <h2 id="security-title">Backed by enterprise grade <span>security &amp; privacy</span></h2>
+          <p>ExpertiseAI is SOC2 TypeII and GDPR compliant, giving you best-in-class support and privacy. This includes complete safeguards for your data with state-of-the-art encryption.</p>
+        </div>
+        <div class="security-details">
+          <ul class="security-list">
+            <li><svg class="security-check" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg><span>Expand your business globally — we’ll take care of your compliance with local regulations.</span></li>
+            <li><svg class="security-check" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg><span>AI engages with visitors through voice in 200+ languages.</span></li>
+            <li><svg class="security-check" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg><span>Support your customer base with opt-out and DNC support.</span></li>
+          </ul>
+          <img class="security-compliance-logo" src="assets/security-compliance-logo.png" alt="GDPR, AICPA SOC, and CCPA compliant" />
+        </div>
+        <div class="security-certifications" aria-label="Security certifications and enterprise capabilities">
+          <article class="security-certification">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V5l8-3 8 3z"></path><path d="m9 12 2 2 4-4"></path></svg>
+            <h3>SOC 2 (Type II) &amp; SOC 3</h3>
+            <p>Annually audited</p>
+          </article>
+          <article class="security-certification">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 0 20"></path><path d="M12 2a15.3 15.3 0 0 0 0 20"></path></svg>
+            <h3>GDPR &amp; CCPA</h3>
+            <p>Full compliance</p>
+          </article>
+          <article class="security-certification">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"></path><path d="M14 13.12c0 2.38 0 6.38-1 8.88"></path><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"></path><path d="M2 12a10 10 0 0 1 18-6"></path><path d="M2 16h.01"></path><path d="M21.8 16c.2-2 .131-5.354 0-6"></path><path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"></path><path d="M8.65 22c.21-.66.45-1.32.57-2"></path><path d="M9 6.8a6 6 0 0 1 9 5.2v2"></path></svg>
+            <h3>Enterprise SSO</h3>
+            <p>SAML 2.0 + SCIM</p>
+          </article>
+          <article class="security-certification">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.1 12.2a1.7 1.7 0 0 1 0-1.4C3.6 7.8 7.3 5 12 5s8.4 2.8 9.9 5.8a1.7 1.7 0 0 1 0 1.4C20.4 15.2 16.7 18 12 18s-8.4-2.8-9.9-5.8Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            <h3>Observability</h3>
+            <p>Logs, analytics, and alerts</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== INDUSTRIES ===== -->
+  <section class="industries-section" aria-labelledby="industries-title">
+    <div class="section-container split-container industries-layout">
+      <aside class="industries-sidebar"><p>For any industries</p></aside>
+      <div class="industries-content">
+        <h2 id="industries-title">One platform. <span>Different industries.</span></h2>
+        <div class="industries-grid">
+          <div class="industry-row industry-row--left-wide">
+            <article class="industry-card industry-card--wide"><img src="assets/industry-insurance.png" alt="Insurance professional at work" /><div><h3>Insurance</h3><p>Policy and account questions, service journeys, routing, and sensitive handoffs.</p></div></article>
+            <article class="industry-card"><img src="assets/industry-finance.png" alt="Banking and finance team" /><div><h3>Banking / Finance</h3><p>Customer acquisition and service workflows with governed workflows and human control.</p></div></article>
+          </div>
+          <div class="industry-row industry-row--right-wide">
+            <article class="industry-card"><img src="assets/industry-manufacturing.png" alt="Manufacturing floor" /><div><h3>Manufacturing</h3><p>Complex product questions, customer and partner support, order and service workflows.</p></div></article>
+            <article class="industry-card industry-card--wide"><img src="assets/industry-retail.png" alt="Retail fulfillment line" /><div><h3>Retail</h3><p>Product discovery, purchase questions, service requests, and complex issue routing.</p></div></article>
+          </div>
+          <div class="industry-row industry-row--left-wide">
+            <article class="industry-card industry-card--wide"><img src="assets/industry-logistics.png" alt="Logistics yard" /><div><h3>Logistics</h3><p>Customer questions, shipment updates, coordination, sales inquiries, and exception handling.</p></div></article>
+            <article class="industry-card"><img src="assets/industry-airlines.png" alt="Aircraft on runway" /><div><h3>Airlines</h3><p>Booking and service questions, disruption workflows, coordination, and complex handoffs.</p></div></article>
+          </div>
+          <div class="industry-row industry-row--right-wide">
+            <article class="industry-card"><img src="assets/industry-telecom.png" alt="Telecommunications tower" /><div><h3>Telecommunications</h3><p>Qualification, upgrades, billing, account servicing, and technical routing.</p></div></article>
+            <article class="industry-card industry-card--wide"><img src="assets/industry-utilities.png" alt="Wind turbines for utilities" /><div><h3>Utilities</h3><p>Products, programs, service requests, sales journeys, and customer support.</p></div></article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DEPLOYMENT ===== -->
+  <section class="deployment-section" aria-labelledby="deployment-title">
+    <div class="section-container split-container deployment-layout">
+      <aside class="deployment-sidebar"><p>Deployment</p></aside>
+      <div class="deployment-content">
+        <div class="deployment-inner">
+          <div class="deployment-intro">
+            <h2 id="deployment-title">Hands-on forward <span>deployment</span></h2>
+            <p>Our team works with yours to get the first workflow into production, tune it against real customer behavior, and prove whether it is worth expanding.</p>
+          </div>
+          <ol class="deployment-steps">
+            <li class="deployment-step"><span class="deployment-step-number">1</span><h3>Find</h3><p>Choose the customer workflow with the clearest pain, volume and baseline.</p><svg class="deployment-step-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path></svg></li>
+            <li class="deployment-step"><span class="deployment-step-number">2</span><h3>Deploy</h3><p>Configure language, knowledge, routing, integrations, guardrails and escalation around the real operation.</p><svg class="deployment-step-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m9 15-3-3 7-7a6 6 0 0 1 7-1 6 6 0 0 1-1 7z"></path><path d="M9 15H4v-5"></path><circle cx="15" cy="9" r="1"></circle></svg></li>
+            <li class="deployment-step"><span class="deployment-step-number">3</span><h3>Prove</h3><p>Measure the agreed business result in a short, bounded deployment.</p><svg class="deployment-step-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"></path><path d="m7 16 4-5 3 3 5-7"></path></svg></li>
+            <li class="deployment-step"><span class="deployment-step-number">4</span><h3>Expand</h3><p>Reuse what worked for the next funded sales, support or employee workflow.</p><svg class="deployment-step-icon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"></path><path d="m21 3-7 7"></path><path d="M9 21H3v-6"></path><path d="m3 21 7-7"></path></svg></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CUSTOMER VOICES ===== -->
+  <section class="testimonials-section" aria-labelledby="testimonials-title">
+    <div class="section-container split-container testimonials-layout">
+      <aside class="testimonials-sidebar"><p>Customer voices</p></aside>
+      <div class="testimonials-content">
+        <div class="testimonials-heading">
+          <h2 id="testimonials-title">What teams say after launch.</h2>
+          <div class="testimonials-controls" aria-label="Testimonial navigation">
+            <button type="button" class="testimonial-control testimonial-control--previous" data-testimonials-previous aria-label="Previous testimonials"><i aria-hidden="true"></i></button>
+            <button type="button" class="testimonial-control" data-testimonials-next aria-label="Next testimonials"><i aria-hidden="true"></i></button>
+          </div>
+        </div>
+        <div class="testimonials-viewport" aria-label="Customer testimonials">
+          <div class="testimonials-track">
+            <figure class="testimonial-card"><blockquote>“The results have exceeded our expectations, lowering costs and improving customer experience.”</blockquote><figcaption><strong>Félix Normandin</strong><span>Team Lead — Customer Experience, Circuit Electric</span></figcaption></figure>
+            <figure class="testimonial-card"><blockquote>“We saw an 84% lift in chat-to-lead conversion rate. Almost overnight, the agent connected us with real prospects.”</blockquote><figcaption><strong>Victor Fang</strong><span>CEO, AnChain.AI</span></figcaption></figure>
+            <figure class="testimonial-card"><blockquote>“We’re resolving more than 99% of customer chats without human involvement, something that wasn’t possible before Expertise AI.”</blockquote><figcaption><strong>Logan Ollinger</strong><span>Customer Experience Manager, Gutterglove</span></figcaption></figure>
+            <figure class="testimonial-card"><blockquote>“We captured so many leads that we otherwise wouldn’t have without the bot.”</blockquote><figcaption><strong>Renan Ronchi</strong><span>Lifecycle Marketing Manager, Holistiplan</span></figcaption></figure>
+            <figure class="testimonial-card"><blockquote>“Expertise AI was actually better than the HubSpot chatbot, at a lower cost. It uncovered demand we couldn’t see.”</blockquote><figcaption><strong>Jared Twitchell</strong><span>VP of Digital Enablement, 401GO</span></figcaption></figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="closing-cta-section" aria-labelledby="closing-cta-title">
+    <div class="section-container split-container closing-cta-layout">
+      <div class="closing-cta-sidebar" aria-hidden="true"></div>
+      <div class="closing-cta-content">
+        <h2 id="closing-cta-title">Find the first AI workflow worth <span>putting into production.</span></h2>
+        <p>Bring us the customer journey or service workflow you want to improve. We’ll help scope the outcome, systems, boundaries and deployment path.</p>
+        <a class="closing-cta-button" href="https://meetings.hubspot.com/nick-raja/expertise-ai" target="_blank" rel="noopener"><span>Book a demo</span><i aria-hidden="true"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="section-container footer-container">
+      <div class="footer-layout">
+        <aside class="footer-rail">
+          <div class="footer-brand">
+          <a href="#" class="footer-logo" aria-label="Expertise.ai">
+            <img src="assets/expertise-logo.svg" alt="Expertise.ai" class="footer-logo-img" />
+          </a>
+          <p class="footer-tagline">Automate conversations and drive revenue growth with AI that evolves with your business needs.</p>
+          <div class="footer-socials">
+            <a href="#" class="social-link" aria-label="LinkedIn">
+              <svg viewBox="0 0 20 20" width="20" height="20" fill="none">
+                <path d="M5.96 17.04H2.95V7.49h3.01v9.55zm-1.5-10.88c-.97 0-1.74-.79-1.74-1.74s.77-1.74 1.74-1.74 1.74.79 1.74 1.74-.78 1.74-1.74 1.74zm13.08 10.88h-3v-4.84c0-1.54-.67-2.01-1.52-2.01-.88 0-1.75.67-1.75 2.05v4.8H8.27V7.49h2.89v1.32h.04c.29-.59 1.31-1.59 2.86-1.59 1.68 0 3.49.99 3.49 3.9v5.92z" fill="white" fill-opacity="0.6"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link" aria-label="X (Twitter)">
+              <svg viewBox="0 0 20 20" width="20" height="20" fill="none">
+                <path d="M15.27 1.59h2.81L11.94 8.61l7.23 9.55h-5.66l-4.43-5.79-5.07 5.79H1.19l6.57-7.51L.83 1.59h5.8l4 5.29 4.64-5.29zm-.99 15.29h1.56L5.79 3.18H4.11L14.28 16.88z" fill="white" fill-opacity="0.6"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link" aria-label="YouTube">
+              <svg viewBox="0 0 20 20" width="20" height="20" fill="none">
+                <path d="M19.58 5.19a2.5 2.5 0 0 0-1.76-1.76C16.25 3 10 3 10 3s-6.25 0-7.82.43A2.5 2.5 0 0 0 .42 5.19C0 6.75 0 10 0 10s0 3.25.42 4.81a2.5 2.5 0 0 0 1.76 1.76C3.75 17 10 17 10 17s6.25 0 7.82-.43a2.5 2.5 0 0 0 1.76-1.76C20 13.25 20 10 20 10s0-3.25-.42-4.81zM8 13V7l5.2 3L8 13z" fill="white" fill-opacity="0.6"/>
+              </svg>
+            </a>
+          </div>
+          </div>
+        </aside>
+        <div class="footer-inner">
+          <div class="footer-grid">
+            <!-- Resources -->
+        <div class="footer-col">
+          <h3 class="footer-col-heading">Resources</h3>
+          <ul class="footer-col-list">
+            <li><a href="#">Skills</a></li>
+            <li><a href="#">GTM Glossary</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Roadmap</a></li>
+            <li><a href="#">Changelog</a></li>
+            <li><a href="#">Free Tools</a></li>
+            <li><a href="#">Pipeline Calculator</a></li>
+            <li><a href="#">Docs</a></li>
+          </ul>
+        </div>
+        <!-- Product -->
+        <div class="footer-col">
+          <h3 class="footer-col-heading">Product</h3>
+          <ul class="footer-col-list">
+            <li><a href="#">Visitor Identification</a></li>
+            <li><a href="#">Voice AI</a></li>
+            <li><a href="#">Knowledge Gap</a></li>
+            <li><a href="#">Expertise Booking</a></li>
+            <li><a href="#">Playbook</a></li>
+            <li><a href="#">Active Engagement</a></li>
+            <li><a href="#">Analytics Dashboard</a></li>
+            <li><a href="#">Personalized Microsites</a></li>
+          </ul>
+        </div>
+        <!-- Free Tools -->
+        <div class="footer-col">
+          <h3 class="footer-col-heading">Free Tools</h3>
+          <ul class="footer-col-list">
+            <li><a href="#">AI Letter Generator</a></li>
+            <li><a href="#">Open Graph Checker</a></li>
+            <li><a href="#">UTM Builder</a></li>
+            <li><a href="#">FAQ Generator</a></li>
+            <li><a href="#">HubSpot Pricing Calculator</a></li>
+          </ul>
+        </div>
+        <!-- Company -->
+        <div class="footer-col">
+          <h3 class="footer-col-heading">Company</h3>
+          <ul class="footer-col-list">
+            <li><a href="#">Book a Demo</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Affiliate</a></li>
+            <li><a href="#">Terms</a></li>
+            <li><a href="#">Expertise Live</a></li>
+          </ul>
+        </div>
+        <!-- Trust -->
+        <div class="footer-col">
+          <h3 class="footer-col-heading">Trust</h3>
+          <ul class="footer-col-list">
+            <li><a href="#">Security</a></li>
+            <li><a href="#">Trust Center</a></li>
+            <li><a href="#">System Status</a></li>
+            <li><a href="#">Privacy</a></li>
+          </ul>
+        </div>
+        <!-- Alternatives -->
+        <div class="footer-col">
+          <h3 class="footer-col-heading">Alternatives</h3>
+          <ul class="footer-col-list">
+            <li><a href="#">All comparisons</a></li>
+            <li><a href="#">RB2B Alternative</a></li>
+            <li><a href="#">Warmly Alternative</a></li>
+            <li><a href="#">Leadfeeder Alternative</a></li>
+            <li><a href="#">HubSpot Alternative</a></li>
+            <li><a href="#">Qualified Alternative</a></li>
+            <li><a href="#">Drift Alternative</a></li>
+          </ul>
+        </div>
+      </div>
+        </div>
+      </div>
+      <div class="footer-bottom-layout">
+        <div class="footer-bottom-rail">
+          <p class="footer-copy">© 2025 Chatsimple Inc. All rights reserved.</p>
+        </div>
+        <div class="footer-bottom">
+          <div class="footer-legal">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
