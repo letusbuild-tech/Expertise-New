@@ -537,43 +537,8 @@ function initStoryIndex() {
     pulse.classList.add("is-running");
   }
 
-  function moveActiveBackground(previousLink, nextLink) {
-    const previous = previousLink.getBoundingClientRect();
-    const next = nextLink.getBoundingClientRect();
-    const deltaX = (next.left + next.width / 2) - (previous.left + previous.width / 2);
-    const deltaY = (next.top + next.height / 2) - (previous.top + previous.height / 2);
-    let previousExit;
-    let nextEntry;
-
-    const isDiagonal = Math.abs(deltaX) > 1 && Math.abs(deltaY) > 1;
-
-    if (isDiagonal) {
-      const horizontal = deltaX > 0 ? 102 : -102;
-      const vertical = deltaY > 0 ? 102 : -102;
-      previousExit = `translate(${horizontal}%, ${vertical}%)`;
-      nextEntry = `translate(${-horizontal}%, ${-vertical}%)`;
-    } else if (Math.abs(deltaX) >= Math.abs(deltaY)) {
-      previousExit = deltaX > 0 ? "translateX(102%)" : "translateX(-102%)";
-      nextEntry = deltaX > 0 ? "translateX(-102%)" : "translateX(102%)";
-    } else {
-      previousExit = deltaY > 0 ? "translateY(102%)" : "translateY(-102%)";
-      nextEntry = deltaY > 0 ? "translateY(-102%)" : "translateY(102%)";
-    }
-
-    // Prime the target in its exact entry position without a transition.
-    // This cancels any unfinished reveal from a rapid hover/timer change.
-    nextLink.classList.remove("is-active");
-    nextLink.classList.add("is-reveal-primed");
-    nextLink.style.setProperty("--reveal-from", nextEntry);
-    void nextLink.offsetWidth;
-    nextLink.classList.remove("is-reveal-primed");
-
-    // The active green fill exits toward the next card, then the target
-    // enters from the opposite side. The same vector is used for diagonals.
-    previousLink.classList.remove("is-reveal-primed");
-    previousLink.style.setProperty("--reveal-from", previousExit);
+  function setActiveLink(previousLink, nextLink) {
     previousLink.classList.remove("is-active");
-    void nextLink.offsetWidth;
     nextLink.classList.add("is-active");
   }
 
@@ -582,7 +547,7 @@ function initStoryIndex() {
 
     const previousLink = activeLink;
     playPulse(previousLink);
-    moveActiveBackground(previousLink, link);
+    setActiveLink(previousLink, link);
     activeLink = link;
     window.clearTimeout(transitionTimer);
     window.clearTimeout(entranceTimer);
@@ -592,11 +557,7 @@ function initStoryIndex() {
     transitionTimer = window.setTimeout(() => {
       logo.src = link.dataset.storyLogoImage;
       logo.alt = link.dataset.storyLogo;
-      if (link.dataset.storyLogoKind) {
-        logo.dataset.logoKind = link.dataset.storyLogoKind;
-      } else {
-        delete logo.dataset.logoKind;
-      }
+      delete logo.dataset.logoKind;
       category.textContent = link.dataset.storyCategory;
       title.textContent = link.dataset.storyTitle;
       stageLink.href = link.href;
@@ -605,9 +566,12 @@ function initStoryIndex() {
         value.textContent = link.getAttribute(`data-story-metric-${metricNumber}-value`) || "";
         caption.textContent = link.getAttribute(`data-story-metric-${metricNumber}-caption`) || "";
       });
-      const [x, y] = link.dataset.storyPosition.split(" ");
+      const [x, y] = (link.dataset.storyPosition || "50% 50%").split(" ");
       stage.style.setProperty("--story-x", x);
       stage.style.setProperty("--story-y", y);
+      if (link.dataset.storyBg) {
+        stage.style.setProperty("--story-bg-image", `url('${link.dataset.storyBg}')`);
+      }
       stage.classList.remove("is-fading-out");
       playStageEntrance();
     }, 160);
@@ -717,13 +681,468 @@ function initTestimonialControls() {
   next.addEventListener("click", moveNext);
 }
 
+function initClientBentoMarquee() {
+  const track = document.querySelector(".client-bento-track");
+  const source = track?.querySelector(".client-bento");
+  if (!track || !source || track.children.length > 1) return;
+
+  const duplicate = source.cloneNode(true);
+  duplicate.setAttribute("aria-hidden", "true");
+  duplicate.querySelectorAll("a").forEach(link => { link.tabIndex = -1; });
+  duplicate.querySelectorAll("img").forEach(image => { image.alt = ""; });
+  track.append(duplicate);
+}
+
+function initIndustryCardReveals() {
+  const cards = [...document.querySelectorAll(".industry-card")];
+  if (!cards.length) return;
+
+  const updateHeights = () => {
+    cards.forEach((card) => {
+      const description = card.querySelector("p");
+      const relatedStories = card.querySelector(".industry-related-stories");
+
+      if (description) {
+        card.style.setProperty("--industry-description-height", `${description.scrollHeight + 12}px`);
+      }
+      if (relatedStories) {
+        card.style.setProperty("--industry-related-stories-height", `${relatedStories.scrollHeight + 12}px`);
+      }
+    });
+  };
+
+  updateHeights();
+  window.addEventListener("resize", updateHeights);
+}
+
+const HERO_GRID_PHOTOS = [
+  "assets/industry-insurance.png",
+  "assets/industry-finance.png",
+  "assets/industry-manufacturing.png",
+  "assets/industry-retail.png",
+  "assets/industry-logistics.png",
+  "assets/industry-airlines.png",
+  "assets/industry-telecom.png",
+  "assets/industry-utilities.png"
+];
+
+const HERO_GRID_BEAT = 1900;
+const HERO_GRID_TILES = 3;
+const HERO_GRID_LIT_PER_BEAT = 4;
+// Minimum empty cells between tile edges (no side/corner contact).
+const HERO_GRID_TILE_GAP = 1;
+// 3×3 appears once for every five 2×2 tiles (≈1/6 of placements).
+const HERO_GRID_LARGE_RATIO = 1 / 6;
+// Keep the left portion of the hero clear of photo tiles.
+const HERO_GRID_LEFT_EXCLUSION = 0.2;
+
+function initHeroGrid() {
+  const grid = document.getElementById("hero-grid");
+  if (!grid) return;
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let cells = [];
+  let tiles = [];
+  let cols = 0;
+  let rows = 0;
+  let fullRows = 0;
+  let cellSize = 42;
+  let beatTimer;
+  let beat = 0;
+  let tileCursor = 0;
+  let photoIndex = 0;
+  let inViewport = true;
+
+  function readCellSize() {
+    const declared = parseFloat(getComputedStyle(grid).getPropertyValue("--hero-cell"));
+    return Number.isFinite(declared) && declared > 0 ? declared : 42;
+  }
+
+  function build() {
+    const { width, height } = grid.getBoundingClientRect();
+    if (!width || !height) return;
+
+    cellSize = readCellSize();
+    cols = Math.ceil(width / cellSize) + 1;
+    rows = Math.ceil(height / cellSize) + 1;
+    fullRows = Math.floor(height / cellSize);
+
+    grid.textContent = "";
+    grid.style.setProperty("--hero-grid-cols", cols);
+
+    const cellsLayer = document.createElement("div");
+    cellsLayer.className = "hero-grid-cells";
+
+    const fragment = document.createDocumentFragment();
+    cells = [];
+    for (let index = 0; index < cols * rows; index += 1) {
+      const cell = document.createElement("span");
+      cell.className = "hero-grid-cell";
+      cells.push(cell);
+      fragment.append(cell);
+    }
+    cellsLayer.append(fragment);
+    grid.append(cellsLayer);
+
+    tiles = [];
+    for (let index = 0; index < HERO_GRID_TILES; index += 1) {
+      const tile = document.createElement("div");
+      tile.className = "hero-grid-tile";
+      const image = document.createElement("img");
+      image.alt = "";
+      image.loading = "lazy";
+      image.decoding = "async";
+      tile.append(image);
+      tiles.push(tile);
+      grid.append(tile);
+    }
+
+    tiles.forEach(tile => placeTile(tile));
+  }
+
+  // A tile's right edge sits on `col`; size 2 covers col-1..col / row..row+1,
+  // size 3 covers col-2..col / row..row+2.
+  function tileBox(col, row, size = 2) {
+    const span = size - 1;
+    return { left: col - span, right: col, top: row, bottom: row + span };
+  }
+
+  function tileSize(tile) {
+    return Number(tile.dataset.size) || 2;
+  }
+
+  // True when boxes are separated by ≥1 empty cell on at least one axis (no edge/corner touch).
+  function hasRoom(box, tile) {
+    return tiles.every(other => {
+      if (other === tile || other.dataset.col === undefined) return true;
+      const rival = tileBox(Number(other.dataset.col), Number(other.dataset.row), tileSize(other));
+      const colGap = Math.max(box.left - rival.right, rival.left - box.right) - 1;
+      const rowGap = Math.max(box.top - rival.bottom, rival.top - box.bottom) - 1;
+      return colGap >= HERO_GRID_TILE_GAP || rowGap >= HERO_GRID_TILE_GAP;
+    });
+  }
+
+  function pickSize() {
+    return Math.random() < HERO_GRID_LARGE_RATIO ? 3 : 2;
+  }
+
+  function findSpot(tile, size) {
+    const leftReserve = Math.ceil(cols * HERO_GRID_LEFT_EXCLUSION);
+    const minCol = leftReserve + size - 1;
+    const maxCol = Math.max(cols - 1, minCol);
+    const minRow = 0;
+    const maxRow = Math.max(fullRows - size, 0);
+
+    if (minCol > cols - 1) return null;
+
+    for (let attempt = 0; attempt < 48; attempt += 1) {
+      const col = minCol + Math.floor(Math.random() * (maxCol - minCol + 1));
+      const row = minRow + Math.floor(Math.random() * (maxRow - minRow + 1));
+      if (hasRoom(tileBox(col, row, size), tile)) return { col, row };
+    }
+
+    for (let row = minRow; row <= maxRow; row += 1) {
+      for (let col = minCol; col <= maxCol; col += 1) {
+        if (hasRoom(tileBox(col, row, size), tile)) return { col, row };
+      }
+    }
+
+    return null;
+  }
+
+  // Photos stay out of the left 20%; only spacing against placed tiles matters.
+  // Occasionally uses a 3×3 tile (1:5 vs 2×2); falls back to 2×2 if no room.
+  function placeTile(tile) {
+    let size = pickSize();
+    let spot = findSpot(tile, size);
+    if (!spot && size === 3) {
+      size = 2;
+      spot = findSpot(tile, size);
+    }
+
+    const leftReserve = Math.ceil(cols * HERO_GRID_LEFT_EXCLUSION);
+    const col = spot ? spot.col : leftReserve + size - 1;
+    const row = spot ? spot.row : 0;
+
+    tile.dataset.size = size;
+    tile.dataset.col = col;
+    tile.dataset.row = row;
+    tile.style.right = `${(cols - 1 - col) * cellSize}px`;
+    tile.style.top = `${row * cellSize}px`;
+  }
+
+  function nextPhoto(tile) {
+    const image = tile.querySelector("img");
+    image.src = HERO_GRID_PHOTOS[photoIndex % HERO_GRID_PHOTOS.length];
+    photoIndex += 1;
+  }
+
+  // One cell per horizontal band each beat, so the lit cells stay spread over the grid.
+  function lightCells() {
+    if (!cells.length) return;
+
+    const band = Math.max(Math.ceil(rows / HERO_GRID_LIT_PER_BEAT), 1);
+    for (let slot = 0; slot < HERO_GRID_LIT_PER_BEAT; slot += 1) {
+      const row = Math.min(slot * band + Math.floor(Math.random() * band), rows - 1);
+      const col = Math.floor(Math.random() * cols);
+      const cell = cells[row * cols + col];
+      if (!cell || cell.classList.contains("is-lit")) continue;
+      cell.classList.add("is-lit");
+      window.setTimeout(() => cell.classList.remove("is-lit"), HERO_GRID_BEAT * 2);
+    }
+  }
+
+  // Walks the tiles in lane order, so reveals travel top-right → bottom-left.
+  function swapTile() {
+    const tile = tiles[tileCursor % tiles.length];
+    tileCursor += 1;
+    if (!tile) return;
+
+    if (!tile.classList.contains("is-open")) {
+      nextPhoto(tile);
+      tile.classList.add("is-open");
+      return;
+    }
+
+    tile.classList.remove("is-open");
+    window.setTimeout(() => {
+      placeTile(tile);
+      nextPhoto(tile);
+      tile.classList.add("is-open");
+    }, 900);
+  }
+
+  function tick() {
+    lightCells();
+    if (beat % 2 === 0) swapTile();
+    beat += 1;
+  }
+
+  function start() {
+    if (beatTimer || reducedMotion.matches || !cells.length) return;
+    tick();
+    beatTimer = window.setInterval(tick, HERO_GRID_BEAT);
+  }
+
+  function stop() {
+    window.clearInterval(beatTimer);
+    beatTimer = undefined;
+  }
+
+  function showStatic() {
+    tiles.forEach(tile => {
+      nextPhoto(tile);
+      tile.classList.add("is-open");
+    });
+  }
+
+  // Below 900px the grid is hidden, so build() no-ops until a resize brings it back.
+  build();
+
+  if (reducedMotion.matches) showStatic();
+  else start();
+
+  // The observer only pauses the beat once the hero scrolls away.
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      inViewport = entry.isIntersecting;
+      if (inViewport) start();
+      else stop();
+    });
+  }, { threshold: 0 });
+  observer.observe(grid);
+
+  reducedMotion.addEventListener("change", event => {
+    if (event.matches) {
+      stop();
+      showStatic();
+      return;
+    }
+    if (inViewport) start();
+  });
+
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(() => {
+      stop();
+      beat = 0;
+      tileCursor = 0;
+      build();
+      if (reducedMotion.matches) showStatic();
+      else if (inViewport) start();
+    }, 220);
+  });
+}
+
+function initAgentsTabs() {
+  const section = document.querySelector(".agents-section");
+  if (!section) return;
+
+  const tabs = [...section.querySelectorAll("[data-agent-tab]")];
+  const panes = [...section.querySelectorAll("[data-agent-pane]")];
+  const visualFrame = section.querySelector(".agents-visual-frame");
+  if (!tabs.length || !panes.length) return;
+
+  let activeTab = tabs.find(tab => tab.getAttribute("aria-selected") === "true") || tabs[0];
+  let transitionTimer;
+  let entranceTimer;
+
+  function prefersReducedMotion() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function setActiveTab(tab) {
+    tabs.forEach(item => {
+      const selected = item === tab;
+      item.setAttribute("aria-selected", selected ? "true" : "false");
+      item.tabIndex = selected ? 0 : -1;
+    });
+    activeTab = tab;
+  }
+
+  function clearVisualFrameMotion() {
+    if (!visualFrame) return;
+    visualFrame.classList.remove("is-fading-out", "is-entering");
+  }
+
+  function playVisualFrameEntrance() {
+    if (!visualFrame || prefersReducedMotion()) {
+      clearVisualFrameMotion();
+      return;
+    }
+
+    visualFrame.classList.remove("is-fading-out", "is-entering");
+    void visualFrame.offsetWidth;
+    visualFrame.classList.add("is-entering");
+  }
+
+  function activatePane(pane, animate) {
+    panes.forEach(item => {
+      const on = item === pane;
+      item.classList.toggle("is-active", on);
+      item.classList.remove("is-fading-out");
+      item.toggleAttribute("inert", !on);
+      item.setAttribute("aria-hidden", on ? "false" : "true");
+    });
+
+    if (!animate || prefersReducedMotion()) {
+      pane.classList.remove("is-entering");
+      clearVisualFrameMotion();
+      return;
+    }
+
+    pane.classList.remove("is-entering");
+    void pane.offsetWidth;
+    pane.classList.add("is-entering");
+    playVisualFrameEntrance();
+    window.clearTimeout(entranceTimer);
+    entranceTimer = window.setTimeout(() => {
+      pane.classList.remove("is-entering");
+      clearVisualFrameMotion();
+    }, 620);
+  }
+
+  function showTab(tab) {
+    if (tab === activeTab) return;
+
+    const nextPane = panes.find(pane => pane.dataset.agentPane === tab.dataset.agentTab);
+    const currentPane = panes.find(pane => pane.classList.contains("is-active"));
+    if (!nextPane) return;
+
+    setActiveTab(tab);
+    window.clearTimeout(transitionTimer);
+    window.clearTimeout(entranceTimer);
+
+    if (!currentPane || prefersReducedMotion()) {
+      if (currentPane) currentPane.classList.remove("is-fading-out", "is-entering");
+      clearVisualFrameMotion();
+      activatePane(nextPane, false);
+      return;
+    }
+
+    currentPane.classList.remove("is-entering");
+    currentPane.classList.add("is-fading-out");
+    if (visualFrame) {
+      visualFrame.classList.remove("is-entering");
+      visualFrame.classList.add("is-fading-out");
+    }
+
+    transitionTimer = window.setTimeout(() => {
+      currentPane.classList.remove("is-fading-out");
+      if (visualFrame) visualFrame.classList.remove("is-fading-out");
+      activatePane(nextPane, true);
+    }, 160);
+  }
+
+  tabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => showTab(tab));
+    tab.addEventListener("keydown", event => {
+      const isNext = event.key === "ArrowRight" || event.key === "ArrowDown";
+      const isPrev = event.key === "ArrowLeft" || event.key === "ArrowUp";
+      if (!isNext && !isPrev && event.key !== "Home" && event.key !== "End") return;
+
+      event.preventDefault();
+      let nextIndex = index;
+      if (event.key === "Home") nextIndex = 0;
+      else if (event.key === "End") nextIndex = tabs.length - 1;
+      else if (isNext) nextIndex = (index + 1) % tabs.length;
+      else nextIndex = (index - 1 + tabs.length) % tabs.length;
+
+      tabs[nextIndex].focus();
+      showTab(tabs[nextIndex]);
+    });
+  });
+}
+
+function initPlatformAccordion() {
+  const root = document.querySelector("[data-platform-accordion]");
+  if (!root) return;
+
+  const items = [...root.querySelectorAll(".platform-item")];
+  const images = [...document.querySelectorAll(".platform-visual-img")];
+  if (!items.length) return;
+
+  const activate = (item) => {
+    if (!item || item.classList.contains("is-open")) return;
+    const key = item.getAttribute("data-platform-item");
+
+    items.forEach((entry) => {
+      const open = entry === item;
+      entry.classList.toggle("is-open", open);
+      const trigger = entry.querySelector(".platform-item-trigger");
+      if (trigger) trigger.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+
+    images.forEach((img) => {
+      img.classList.toggle("is-active", img.getAttribute("data-platform-image") === key);
+    });
+  };
+
+  items.forEach((item) => {
+    const trigger = item.querySelector(".platform-item-trigger");
+    if (trigger) {
+      trigger.addEventListener("click", () => activate(item));
+    }
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-  buildGrid();
-  updateGridScale();
-  window.addEventListener("resize", updateGridScale);
-  initScrollTrigger();
+  const triangleGrid = document.getElementById("triangle-grid");
+  const triangleGridVisible = triangleGrid && getComputedStyle(triangleGrid).display !== "none";
+  if (triangleGridVisible) {
+    buildGrid();
+    updateGridScale();
+    window.addEventListener("resize", updateGridScale);
+    initScrollTrigger();
+  }
   initMobileNav();
   initLogoReveal();
   initStoryIndex();
   initTestimonialControls();
+  initClientBentoMarquee();
+  initIndustryCardReveals();
+  initAgentsTabs();
+  initHeroGrid();
+  initPlatformAccordion();
 });
