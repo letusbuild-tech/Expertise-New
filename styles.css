@@ -1983,19 +1983,25 @@ button { background: none; border: none; cursor: pointer; font: inherit; }
 .hero-grid-cell.is-lit::after { opacity: 1; }
 
 .hero-grid-tile {
+  --hero-tile-units: 2;
+  --hero-tile-closed-scale: calc(1 / var(--hero-tile-units));
   position: absolute;
   width: calc(var(--hero-cell) * 2);
   height: calc(var(--hero-cell) * 2);
   overflow: hidden;
   border: var(--outline-width) solid var(--hero-grid-line);
   opacity: 0;
-  /* Half scale pinned to the top-right cell, so the tile grows down and to the left */
-  transform: scale(0.5);
+  /* Closed size is exactly 1×1; grows down and to the left from the pinned cell. */
+  transform: scale(var(--hero-tile-closed-scale));
   transform-origin: top right;
-  transition: opacity 0.85s ease, transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Appear: fade in at 1×1, then expand at full opacity. */
+  transition:
+    opacity 0.28s ease,
+    transform 0.78s cubic-bezier(0.16, 1, 0.3, 1) 0.28s;
 }
 
 .hero-grid-tile[data-size="3"] {
+  --hero-tile-units: 3;
   width: calc(var(--hero-cell) * 3);
   height: calc(var(--hero-cell) * 3);
 }
@@ -2003,6 +2009,15 @@ button { background: none; border: none; cursor: pointer; font: inherit; }
 .hero-grid-tile.is-open {
   opacity: 1;
   transform: scale(1);
+}
+
+/* Disappear: shrink to 1×1 at full opacity, then fade out. */
+.hero-grid-tile.is-closing {
+  opacity: 0;
+  transform: scale(var(--hero-tile-closed-scale));
+  transition:
+    transform 0.78s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.28s ease 0.78s;
 }
 
 .hero-grid-tile img {
@@ -2023,8 +2038,14 @@ button { background: none; border: none; cursor: pointer; font: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-grid-cell::after,
-  .hero-grid-tile {
+  .hero-grid-tile,
+  .hero-grid-tile.is-closing {
     transition: none;
+  }
+
+  .hero-grid-tile.is-open {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 

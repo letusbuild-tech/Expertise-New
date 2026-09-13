@@ -985,23 +985,29 @@ function initHeroGrid() {
   }
 
   // Walks the tiles in lane order, so reveals travel top-right → bottom-left.
+  // Exit waits for shrink-then-fade (~1.06s) before the next photo enters.
+  const HERO_TILE_EXIT_MS = 1100;
+
   function swapTile() {
     const tile = tiles[tileCursor % tiles.length];
     tileCursor += 1;
     if (!tile) return;
 
     if (!tile.classList.contains("is-open")) {
+      tile.classList.remove("is-closing");
       nextPhoto(tile);
       tile.classList.add("is-open");
       return;
     }
 
     tile.classList.remove("is-open");
+    tile.classList.add("is-closing");
     window.setTimeout(() => {
+      tile.classList.remove("is-closing");
       placeTile(tile);
       nextPhoto(tile);
       tile.classList.add("is-open");
-    }, 900);
+    }, HERO_TILE_EXIT_MS);
   }
 
   function tick() {
@@ -1023,6 +1029,7 @@ function initHeroGrid() {
 
   function showStatic() {
     tiles.forEach(tile => {
+      tile.classList.remove("is-closing");
       nextPhoto(tile);
       tile.classList.add("is-open");
     });
