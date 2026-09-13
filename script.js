@@ -621,6 +621,79 @@ function initStoryIndex() {
   storyObserver.observe(storyLayout);
 }
 
+/* Case study selector: one stable panel, with no automatic rotation. */
+function initCaseStudiesShowcase() {
+  const root = document.querySelector(".case-studies-alt-section");
+  if (!root) return;
+  const panel = root.querySelector(".case-studies-showcase");
+  const buttons = [...root.querySelectorAll(".case-studies-picker")];
+  if (!panel || !buttons.length) return;
+  let active = buttons.find(button => button.classList.contains("is-active"));
+  let entranceTimer;
+
+  function playEntrance() {
+    clearTimeout(entranceTimer);
+    panel.classList.remove("is-entering");
+    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      void panel.offsetWidth;
+      panel.classList.add("is-entering");
+      entranceTimer = setTimeout(() => panel.classList.remove("is-entering"), 900);
+    }
+  }
+
+  const entranceObserver = new IntersectionObserver(entries => {
+    if (entries.some(entry => entry.isIntersecting)) {
+      playEntrance();
+      entranceObserver.disconnect();
+    }
+  }, { threshold: 0.2 });
+  entranceObserver.observe(panel);
+
+  function select(button) {
+    if (active === button) return;
+    active = button;
+    const data = button.dataset;
+    buttons.forEach(item => {
+      item.classList.toggle("is-active", item === button);
+      item.setAttribute("aria-pressed", String(item === button));
+    });
+    panel.querySelector("[data-case-logo]").src = data.caseLogo;
+    panel.querySelector("[data-case-logo]").alt = data.caseLogoAlt;
+    panel.querySelector("[data-case-category]").textContent = data.caseCategory;
+    panel.querySelector("[data-case-title]").textContent = data.caseTitle;
+    panel.querySelector("[data-case-problem]").textContent = data.caseProblem;
+    panel.querySelector("[data-case-solution]").textContent = data.caseSolution;
+    panel.querySelector("[data-case-company]").textContent = data.caseLogoAlt;
+    panel.querySelector("[data-case-link]").href = data.caseHref;
+    for (let number = 1; number <= 3; number += 1) {
+      panel.querySelector('[data-case-metric-value="' + number + '"]').textContent =
+        button.getAttribute("data-case-metric-" + number + "-value");
+      panel.querySelector('[data-case-metric-caption="' + number + '"]').textContent =
+        button.getAttribute("data-case-metric-" + number + "-caption");
+    }
+    panel.style.setProperty("--case-image", 'url("' + data.caseBg + '")');
+    playEntrance();
+  }
+
+  buttons.forEach((button, index) => {
+    button.addEventListener("click", () => select(button));
+    button.addEventListener("keydown", event => {
+      const direction = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key];
+      if (!direction && event.key !== "Home" && event.key !== "End") return;
+      event.preventDefault();
+      const next = event.key === "Home" ? 0 : event.key === "End" ? buttons.length - 1 :
+        (index + direction + buttons.length) % buttons.length;
+      buttons[next].focus();
+      select(buttons[next]);
+    });
+    // Warm the local assets so switching has no empty-image frame.
+    [button.dataset.caseBg, button.dataset.caseLogo].forEach(src => {
+      const image = new Image();
+      image.src = src;
+    });
+  });
+}
+
 function initTestimonialControls() {
   const track = document.querySelector(".testimonials-track");
   const previous = document.querySelector("[data-testimonials-previous]");
@@ -758,14 +831,33 @@ function initHeroGrid() {
     return Number.isFinite(declared) && declared > 0 ? declared : 42;
   }
 
+  // Snap hero-content height to an exact multiple of the cell size so the
+  // bottom edge of the grid lands on a full row (no clipped cells).
+  function snapContentHeight() {
+    const content = grid.closest(".hero-content");
+    if (!content) return;
+
+    cellSize = readCellSize();
+    content.style.minHeight = "";
+    content.style.height = "";
+
+    const natural = content.getBoundingClientRect().height;
+    if (!natural) return;
+
+    const snapped = Math.max(cellSize, Math.ceil(natural / cellSize) * cellSize);
+    content.style.minHeight = `${snapped}px`;
+  }
+
   function build() {
+    snapContentHeight();
+
     const { width, height } = grid.getBoundingClientRect();
     if (!width || !height) return;
 
     cellSize = readCellSize();
     cols = Math.ceil(width / cellSize) + 1;
-    rows = Math.ceil(height / cellSize) + 1;
-    fullRows = Math.floor(height / cellSize);
+    rows = Math.max(1, Math.round(height / cellSize));
+    fullRows = rows;
 
     grid.textContent = "";
     grid.style.setProperty("--hero-grid-cols", cols);
@@ -1096,34 +1188,36 @@ function initAgentsTabs() {
 }
 
 function initPlatformAccordion() {
-  const root = document.querySelector("[data-platform-accordion]");
-  if (!root) return;
+  const roots = [...document.querySelectorAll("[data-platform-accordion]")];
 
-  const items = [...root.querySelectorAll(".platform-item")];
-  const images = [...document.querySelectorAll(".platform-visual-img")];
-  if (!items.length) return;
+  roots.forEach((root) => {
+    const section = root.closest(".platform-section") || root;
+    const items = [...root.querySelectorAll(".platform-item")];
+    const images = [...section.querySelectorAll(".platform-visual-img")];
+    if (!items.length) return;
 
-  const activate = (item) => {
-    if (!item || item.classList.contains("is-open")) return;
-    const key = item.getAttribute("data-platform-item");
+    const activate = (item) => {
+      if (!item || item.classList.contains("is-open")) return;
+      const key = item.getAttribute("data-platform-item");
 
-    items.forEach((entry) => {
-      const open = entry === item;
-      entry.classList.toggle("is-open", open);
-      const trigger = entry.querySelector(".platform-item-trigger");
-      if (trigger) trigger.setAttribute("aria-expanded", open ? "true" : "false");
+      items.forEach((entry) => {
+        const open = entry === item;
+        entry.classList.toggle("is-open", open);
+        const trigger = entry.querySelector(".platform-item-trigger");
+        if (trigger) trigger.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+
+      images.forEach((img) => {
+        img.classList.toggle("is-active", img.getAttribute("data-platform-image") === key);
+      });
+    };
+
+    items.forEach((item) => {
+      const trigger = item.querySelector(".platform-item-trigger");
+      if (trigger) {
+        trigger.addEventListener("click", () => activate(item));
+      }
     });
-
-    images.forEach((img) => {
-      img.classList.toggle("is-active", img.getAttribute("data-platform-image") === key);
-    });
-  };
-
-  items.forEach((item) => {
-    const trigger = item.querySelector(".platform-item-trigger");
-    if (trigger) {
-      trigger.addEventListener("click", () => activate(item));
-    }
   });
 }
 
@@ -1139,6 +1233,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initMobileNav();
   initLogoReveal();
   initStoryIndex();
+  initCaseStudiesShowcase();
   initTestimonialControls();
   initClientBentoMarquee();
   initIndustryCardReveals();
