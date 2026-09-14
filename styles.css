@@ -29,6 +29,9 @@
   --outline-width: 1px;
   --outline-light: rgba(31, 29, 27, 0.18);
   --outline-dark: rgba(255, 255, 255, 0.18);
+  /* Outer container edges — quieter than internal column dividers */
+  --outline-light-subtle: rgba(31, 29, 27, 0.08);
+  --outline-dark-subtle: rgba(255, 255, 255, 0.08);
 
   /* Font weights */
   --weight-regular: 400;
@@ -237,14 +240,14 @@ h3 {
   width: 100%;
   max-width: var(--container-max);
   margin-inline: auto;
-  border-inline: var(--outline-width) solid var(--container-outline, var(--outline-light));
+  border-inline: var(--outline-width) dashed var(--container-outline, var(--outline-light-subtle));
 }
 
 /* Match the sidebar divider on dark sections as well as light sections. */
 :is(.agents-section, .abstract-section, .impact-section, .platform-section,
     .trusted-section, .security-section, .testimonials-section,
     .closing-cta-section, .footer) > .section-container {
-  --container-outline: var(--outline-dark);
+  --container-outline: var(--outline-dark-subtle);
 }
 
 .split-container {
@@ -928,7 +931,7 @@ h3 {
 }
 
 .platform-section--light > .section-container {
-  --container-outline: var(--outline-light);
+  --container-outline: var(--outline-light-subtle);
 }
 
 .platform-section--light .platform-sidebar {
