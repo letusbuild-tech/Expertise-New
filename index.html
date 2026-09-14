@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Expertise.ai — Deploy AI agents across sales and support</title>
+  <title>Expertise.ai — Deploy AI agents for sales and customer support</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -94,11 +94,11 @@
               </a>
             </div>
             <h1 class="hero-heading">
-              Deploy AI agents <br/>
-              <span class="hero-heading-green">across sales and support.</span>
+              <span class="hero-heading-line">Deploy AI agents for</span>
+              <span class="hero-heading-line hero-heading-green">sales and customer support.</span>
             </h1>
             <p class="hero-copy">
-              Engage every visitor on your website, book meetings while intent is high, then let your team deploy the AI agents that move every deal to close.
+              Turn customer questions into resolved requests and qualified opportunities. We work with your team to connect your knowledge, systems, and workflows, with the controls your business needs.
             </p>
             <div class="hero-actions">
               <a class="hero-demo-cta" href="https://meetings.hubspot.com/nick-raja/expertise-ai" target="_blank" rel="noopener"><span class="hero-demo-label">Book a demo</span><span class="hero-demo-arrow" aria-hidden="true"></span></a>
@@ -298,13 +298,6 @@
     <div class="section-container split-container agents-layout">
       <aside class="agents-sidebar">
         <p>One platform.<br />Every step connected.</p>
-      </aside>
-      <div class="agents-content">
-        <div class="agents-intro">
-          <h2 id="agents-title">Pick the right agent for the job.</h2>
-          <p>Start with the workflow you need today. Each agent can be deployed independently, while sharing the same integrations, controls, and enterprise infrastructure.</p>
-        </div>
-
         <div class="agents-tabs" role="tablist" aria-label="Agent types">
           <button class="agents-tab" type="button" role="tab" id="agent-tab-sales" data-agent-tab="sales" aria-controls="agent-pane-sales" aria-selected="true" tabindex="0">
             <img class="agents-tab-icon" src="assets/agent-tab-sales.svg" alt="" width="16" height="16" />
@@ -316,8 +309,14 @@
           </button>
           <button class="agents-tab" type="button" role="tab" id="agent-tab-workspace" data-agent-tab="workspace" aria-controls="agent-pane-workspace" aria-selected="false" tabindex="-1">
             <img class="agents-tab-icon" src="assets/agent-tab-workspace.svg" alt="" width="16" height="16" />
-            Workspace &amp; Governance
+            AI Workspace
           </button>
+        </div>
+      </aside>
+      <div class="agents-content">
+        <div class="agents-intro">
+          <h2 id="agents-title">Pick the right agent for the job.</h2>
+          <p>Start with the workflow you need today. Each agent can be deployed independently, while sharing the same integrations, controls, and enterprise infrastructure.</p>
         </div>
 
         <div class="agents-panel">
@@ -325,7 +324,7 @@
             <article class="agents-pane is-active" data-agent-pane="sales" role="tabpanel" id="agent-pane-sales" aria-labelledby="agent-tab-sales">
               <div class="agents-pane-copy">
                 <div class="agents-pane-badge" aria-hidden="true">
-                  <img src="assets/agent-pane-icon.svg" alt="" width="32" height="32" />
+                  <img class="agents-pane-icon" src="assets/agent-pane-icon.svg" alt="" width="32" height="32" />
                 </div>
                 <div class="agents-pane-text">
                   <h3 class="agents-pane-title">Turn high-intent traffic into pipeline.</h3>
@@ -338,18 +337,55 @@
                   <li><img class="agents-check" src="assets/agent-check.svg" alt="" width="24" height="24" /><span>Meeting booking and CRM handoff</span></li>
                 </ul>
               </div>
-              <nav class="agents-stories" aria-label="Related stories">
-                <span>Related stories:</span>
-                <a href="https://www.expertise.ai/live/case-studies/anchain-ai" target="_blank" rel="noopener">Anchain.ai<span class="agents-story-arrow" aria-hidden="true"></span></a>
-                <a href="https://www.expertise.ai/live/case-studies/holistiplan" target="_blank" rel="noopener">Holistiplan<span class="agents-story-arrow" aria-hidden="true"></span></a>
-                <a href="https://www.expertise.ai/live/case-studies/david-sklar" target="_blank" rel="noopener">David Sklar &amp; Associates<span class="agents-story-arrow" aria-hidden="true"></span></a>
-              </nav>
+              <div class="agents-case-block">
+                <div class="agents-case-nav">
+                  <p>Related Stories</p>
+                  <div class="testimonials-controls" aria-label="Related stories">
+                    <button type="button" class="testimonial-control testimonial-control--previous" data-agents-case-prev aria-controls="agents-case-sales" aria-label="Previous story"><i aria-hidden="true"></i></button>
+                    <button type="button" class="testimonial-control" data-agents-case-next aria-controls="agents-case-sales" aria-label="Next story"><i aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <div class="agents-case-stories" hidden>
+                  <span data-case-href="https://www.expertise.ai/live/case-studies/anchain-ai" data-case-bg="assets/story-bg-anchain.jpg" data-case-logo="assets/client-anchain.svg" data-case-logo-alt="AnChain.AI" data-case-category="Technology / Sales" data-case-title="AnChain.AI Increases Conversion by 84%" data-case-metric-1-value="+84%" data-case-metric-1-caption="chat-to-lead conversion" data-case-metric-2-value="85%" data-case-metric-2-caption="faster first touch" data-case-metric-3-value="492" data-case-metric-3-caption="qualified signals · 6 months" data-case-quote="“We saw an 84% lift in chat-to-lead conversion rate.”" data-case-cite="Victor Fang, CEO — AnChain.AI"></span>
+                  <span data-case-href="https://www.expertise.ai/live/case-studies/holistiplan" data-case-bg="assets/story-bg-holistiplan.jpg" data-case-logo="assets/client-holistiplan.webp" data-case-logo-alt="Holistiplan" data-case-category="Financial Services SaaS / Sales" data-case-title="Holistiplan: 2.7× More Leads, 90% Lower Cost" data-case-metric-1-value="2.7×" data-case-metric-1-caption="more leads" data-case-metric-2-value="90%" data-case-metric-2-caption="lower cost" data-case-metric-3-value="543" data-case-metric-3-caption="visitor leads captured" data-case-quote="“We captured so many leads that we otherwise wouldn’t have without the bot.”" data-case-cite="Renan Ronchi, Lifecycle Marketing Manager — Holistiplan"></span>
+                  <span data-case-href="https://www.expertise.ai/live/case-studies/david-sklar" data-case-bg="assets/story-bg-david-sklar.jpg" data-case-logo="assets/client-david-sklar.webp" data-case-logo-alt="David Sklar &amp; Associates" data-case-category="Financial Services / Sales" data-case-title="David Sklar Generates 5× ROI After Hours" data-case-metric-1-value="5×" data-case-metric-1-caption="ROI from after-hours deployment" data-case-metric-2-value="20%" data-case-metric-2-caption="AI conversations → consultations" data-case-metric-3-value="24%" data-case-metric-3-caption="consultations → signed engagements" data-case-quote="“What this tool did for us is give us an opportunity to not only catch visitors' chats, but also to let them book appointments directly inside.”" data-case-cite="Archit Gupta, Operations Coordinator — David Sklar &amp; Associates"></span>
+                </div>
+                <a class="agents-case" id="agents-case-sales" href="https://www.expertise.ai/live/case-studies/anchain-ai" target="_blank" rel="noopener" style="--case-image: url('assets/story-bg-anchain.jpg')">
+                  <article class="case-studies-primary agents-case-card">
+                    <span class="agents-case-read">Read case study <i aria-hidden="true"></i></span>
+                    <div class="case-studies-media" aria-hidden="true"></div>
+                    <div class="case-studies-copy-wrap">
+                      <div class="case-studies-copy-head">
+                        <img data-agents-case-logo src="assets/client-anchain.svg" alt="AnChain.AI" />
+                        <p data-agents-case-category>Technology / Sales</p>
+                      </div>
+                      <h3 data-agents-case-title>AnChain.AI Increases Conversion by 84%</h3>
+                      <div class="agents-case-reveal">
+                        <div class="agents-case-reveal-inner">
+                          <dl class="case-studies-metrics">
+                            <div><dt data-agents-metric-value="1">+84%</dt><dd data-agents-metric-caption="1">chat-to-lead conversion</dd></div>
+                            <div><dt data-agents-metric-value="2">85%</dt><dd data-agents-metric-caption="2">faster first touch</dd></div>
+                            <div><dt data-agents-metric-value="3">492</dt><dd data-agents-metric-caption="3">qualified signals · 6 months</dd></div>
+                          </dl>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                  <div class="agents-case-quote">
+                    <img class="agents-case-quote-mark" src="assets/agent-quote.svg" alt="" width="25" height="12" />
+                    <div class="agents-case-quote-copy">
+                      <p data-agents-case-quote>“We saw an 84% lift in chat-to-lead conversion rate.”</p>
+                      <p data-agents-case-cite>Victor Fang, CEO — AnChain.AI</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
             </article>
 
             <article class="agents-pane" data-agent-pane="support" role="tabpanel" id="agent-pane-support" aria-labelledby="agent-tab-support" aria-hidden="true" inert>
               <div class="agents-pane-copy">
                 <div class="agents-pane-badge" aria-hidden="true">
-                  <img src="assets/agent-pane-support.svg" alt="" width="32" height="32" />
+                  <img class="agents-pane-icon" src="assets/agent-pane-support.svg" alt="" width="32" height="32" />
                 </div>
                 <div class="agents-pane-text">
                   <h3 class="agents-pane-title">Resolve more customer requests across web and voice.</h3>
@@ -363,22 +399,59 @@
                   <li><img class="agents-check" src="assets/agent-check.svg" alt="" width="24" height="24" /><span>AI avatar experiences</span></li>
                 </ul>
               </div>
-              <nav class="agents-stories" aria-label="Related stories">
-                <span>Related stories:</span>
-                <a href="https://www.expertise.ai/live/case-studies/circuit-electric" target="_blank" rel="noopener">Circuit Electric<span class="agents-story-arrow" aria-hidden="true"></span></a>
-                <a href="https://www.expertise.ai/live/case-studies/gutterglove" target="_blank" rel="noopener">Gutterglove<span class="agents-story-arrow" aria-hidden="true"></span></a>
-                <a href="https://www.expertise.ai/live/case-studies/safecheck" target="_blank" rel="noopener">SafeCheck<span class="agents-story-arrow" aria-hidden="true"></span></a>
-              </nav>
+              <div class="agents-case-block">
+                <div class="agents-case-nav">
+                  <p>Related Stories</p>
+                  <div class="testimonials-controls" aria-label="Related stories">
+                    <button type="button" class="testimonial-control testimonial-control--previous" data-agents-case-prev aria-controls="agents-case-support" aria-label="Previous story"><i aria-hidden="true"></i></button>
+                    <button type="button" class="testimonial-control" data-agents-case-next aria-controls="agents-case-support" aria-label="Next story"><i aria-hidden="true"></i></button>
+                  </div>
+                </div>
+                <div class="agents-case-stories" hidden>
+                  <span data-case-href="https://www.expertise.ai/live/case-studies/circuit-electric" data-case-bg="assets/story-bg-circuit-electric.png" data-case-logo="assets/logo-circuit-electric.png" data-case-logo-alt="Circuit Electric" data-case-category="Utilities / Support" data-case-title="Circuit Electric Cuts Support Requests by 22%" data-case-metric-1-value="22.35%" data-case-metric-1-caption="fewer contact-form submissions" data-case-metric-2-value="557" data-case-metric-2-caption="customer contacts avoided · Dec 2024" data-case-metric-3-value="60 days" data-case-metric-3-caption="to measurable impact" data-case-quote="“The results have exceeded our expectations, lowering costs and improving customer experience.”" data-case-cite="Félix Normandin, Team Lead — Customer Experience"></span>
+                  <span data-case-href="https://www.expertise.ai/live/case-studies/gutterglove" data-case-bg="assets/story-bg-gutterglove.jpg" data-case-logo="assets/client-gutterglove.png" data-case-logo-alt="Gutterglove" data-case-category="Manufacturing / Support" data-case-title="Gutterglove Automates 99% of Customer Chats" data-case-metric-1-value="&gt;99%" data-case-metric-1-caption="chats resolved autonomously" data-case-metric-2-value="21%" data-case-metric-2-caption="fewer support interactions · YoY" data-case-metric-3-value="~30 min" data-case-metric-3-caption="initial setup time" data-case-quote="“We’re resolving more than 99% of customer chats without human involvement, something that wasn’t possible before Expertise AI.”" data-case-cite="Logan Ollinger, Customer Experience Manager — Gutterglove"></span>
+                  <span data-case-href="https://www.expertise.ai/live/case-studies/safecheck" data-case-bg="assets/story-bg-safecheck.jpg" data-case-logo="assets/logo-safecheck.png" data-case-logo-alt="SafeCheck" data-case-category="Training &amp; Compliance / Sales + Support" data-case-title="SafeCheck Increases Corporate Leads by 50%" data-case-metric-1-value="50%" data-case-metric-1-caption="increase in corporate inbound leads" data-case-metric-2-value="80%+" data-case-metric-2-caption="customer queries resolved by AI" data-case-metric-3-value="60 days" data-case-metric-3-caption="to measurable impact" data-case-quote="“Within the first week, our support person said: this is too good.”" data-case-cite="Domenic Pedulla, President — SafeCheck"></span>
+                </div>
+                <a class="agents-case" id="agents-case-support" href="https://www.expertise.ai/live/case-studies/circuit-electric" target="_blank" rel="noopener" style="--case-image: url('assets/story-bg-circuit-electric.png')">
+                  <article class="case-studies-primary agents-case-card">
+                    <span class="agents-case-read">Read case study <i aria-hidden="true"></i></span>
+                    <div class="case-studies-media" aria-hidden="true"></div>
+                    <div class="case-studies-copy-wrap">
+                      <div class="case-studies-copy-head">
+                        <img data-agents-case-logo src="assets/logo-circuit-electric.png" alt="Circuit Electric" />
+                        <p data-agents-case-category>Utilities / Support</p>
+                      </div>
+                      <h3 data-agents-case-title>Circuit Electric Cuts Support Requests by 22%</h3>
+                      <div class="agents-case-reveal">
+                        <div class="agents-case-reveal-inner">
+                          <dl class="case-studies-metrics">
+                            <div><dt data-agents-metric-value="1">22.35%</dt><dd data-agents-metric-caption="1">fewer contact-form submissions</dd></div>
+                            <div><dt data-agents-metric-value="2">557</dt><dd data-agents-metric-caption="2">customer contacts avoided · Dec 2024</dd></div>
+                            <div><dt data-agents-metric-value="3">60 days</dt><dd data-agents-metric-caption="3">to measurable impact</dd></div>
+                          </dl>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                  <div class="agents-case-quote">
+                    <img class="agents-case-quote-mark" src="assets/agent-quote.svg" alt="" width="25" height="12" />
+                    <div class="agents-case-quote-copy">
+                      <p data-agents-case-quote>“The results have exceeded our expectations, lowering costs and improving customer experience.”</p>
+                      <p data-agents-case-cite>Félix Normandin, Team Lead — Customer Experience</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
             </article>
 
             <article class="agents-pane" data-agent-pane="workspace" role="tabpanel" id="agent-pane-workspace" aria-labelledby="agent-tab-workspace" aria-hidden="true" inert>
               <div class="agents-pane-copy">
                 <div class="agents-pane-badge" aria-hidden="true">
-                  <img src="assets/agent-pane-workspace.svg" alt="" width="32" height="32" />
+                  <img class="agents-pane-icon" src="assets/agent-pane-workspace.svg" alt="" width="32" height="32" />
                 </div>
                 <div class="agents-pane-text">
                   <h3 class="agents-pane-title">Build agents around the way your teams work.</h3>
-                  <p class="agents-pane-body">Create internal agents that use company knowledge, follow established workflows, and work across connected systems with the right controls in place.</p>
+                  <p class="agents-pane-body">Everyone in your company has AI. Few are fluent enough to change how work gets done. Expertise turns those 5 people’s workflows into agents everyone can run.</p>
                 </div>
                 <ul class="agents-features">
                   <li><img class="agents-check" src="assets/agent-check.svg" alt="" width="24" height="24" /><span>Build task-specific agents</span></li>
@@ -388,34 +461,448 @@
                   <li><img class="agents-check" src="assets/agent-check.svg" alt="" width="24" height="24" /><span>Govern how agents act across the organization</span></li>
                 </ul>
               </div>
+              <div class="agents-case-block">
+                <div class="agents-case-nav">
+                  <p>Related report</p>
+                </div>
+                <a class="agents-case" id="agents-case-workspace" href="https://www.ipsos.com/sites/default/files/ct/news/documents/2026-02/The%20Path%20to%20AI%20Fluency.%20AI%20Works%20for%20America%20-%20Google-Ipsos.pdf" target="_blank" rel="noopener" style="--case-image: url('assets/story-bg-ai-fluency.jpg')">
+                  <article class="case-studies-primary agents-case-card">
+                    <span class="agents-case-read">Read the report <i aria-hidden="true"></i></span>
+                    <div class="case-studies-media" aria-hidden="true"></div>
+                    <div class="case-studies-copy-wrap">
+                      <div class="case-studies-copy-head">
+                        <img data-agents-case-logo src="assets/logo-google-ipsos.svg" alt="Google and Ipsos" />
+                        <p data-agents-case-category>Workplace / AI Fluency</p>
+                      </div>
+                      <h3 data-agents-case-title>Everyone Has AI. Only 5% Are Fluent.</h3>
+                      <div class="agents-case-reveal">
+                        <div class="agents-case-reveal-inner">
+                          <dl class="case-studies-metrics">
+                            <div><dt data-agents-metric-value="1">40%</dt><dd data-agents-metric-caption="1">use AI at work</dd></div>
+                            <div><dt data-agents-metric-value="2">5%</dt><dd data-agents-metric-caption="2">are AI fluent</dd></div>
+                            <div><dt data-agents-metric-value="3">18%</dt><dd data-agents-metric-caption="3">get the most from AI</dd></div>
+                          </dl>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                  <div class="agents-case-quote">
+                    <img class="agents-case-quote-mark" src="assets/agent-quote.svg" alt="" width="25" height="12" />
+                    <div class="agents-case-quote-copy">
+                      <p data-agents-case-quote>“Using AI is like using a computer used to be. It’s inevitable. It’s unavoidable, so you have to figure it out.”</p>
+                      <p data-agents-case-cite>Small Business Owner — Google / Ipsos, The Path to AI Fluency</p>
+                    </div>
+                  </div>
+                </a>
+              </div>
             </article>
           </div>
 
           <div class="agents-visual">
-            <div class="agents-visual-frame">
-              <div class="agents-card">
-                <div class="agents-card-person">
-                  <div class="agents-card-avatar">
-                    <img src="assets/agent-eric.png" alt="" width="56" height="56" />
-                  </div>
-                  <div class="agents-card-title">
-                    <span class="agents-card-name">Eric</span>
-                    <span class="agents-card-role">Personal AI Agent</span>
+            <div class="agents-visual-photo" aria-hidden="true">
+              <img src="assets/agent-visual-bg.png" alt="" width="400" height="548" />
+            </div>
+            <div class="agents-visual-frame is-active" data-agent-visual="chat">
+              <div class="agents-chat" data-chat-demo>
+                <p class="agents-skills-caption" data-chat-caption>Meet buyers the moment they show intent</p>
+
+                <div class="agents-chat-stage is-active" data-chat-stage="welcome">
+                  <div class="agents-chat-welcome">
+                    <div class="agents-chat-welcome-shell" data-chat-welcome hidden>
+                      <div class="agents-chat-welcome-card">
+                        <img class="agents-chat-kate" src="assets/agent-kate.png" alt="" width="21" height="21" />
+                        <p><strong>Kate :</strong> Looking at equipment financing? I can pre-qualify you in under 2 minutes, no credit pull.</p>
+                      </div>
+                    </div>
+                    <div class="agents-chat-input" data-chat-composer hidden>
+                      <img class="agents-chat-input-search" src="assets/agent-chat-search.svg" alt="" width="18" height="18" />
+                      <span class="agents-chat-input-value" data-chat-typed>Ask our AI Assistant ...</span>
+                      <img class="agents-chat-input-mic" src="assets/agent-chat-mic.svg" alt="" width="19" height="19" />
+                      <button class="agents-chat-input-send" type="button" data-chat-send aria-label="Send">
+                        <svg viewBox="0 0 10 10" width="10" height="10" fill="none" aria-hidden="true"><path d="M5 1.5v6.2M7.1 3.5 5 1.5 2.9 3.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <p class="agents-card-message">Hi there! I can help you find any information on this site 10x faster than browsing manually</p>
-                <a class="agents-card-cta" href="https://meetings.hubspot.com/nick-raja/expertise-ai" target="_blank" rel="noopener">
-                  <span class="agents-card-cta-glow agents-card-cta-glow--left" aria-hidden="true">
-                    <img src="assets/agent-glow-a.svg" alt="" width="68" height="68" />
-                    <img src="assets/agent-glow-b.svg" alt="" width="44" height="43" />
-                  </span>
-                  <span class="agents-card-cta-glow agents-card-cta-glow--right" aria-hidden="true">
-                    <img src="assets/agent-glow-a.svg" alt="" width="68" height="68" />
-                    <img src="assets/agent-glow-b.svg" alt="" width="44" height="43" />
-                  </span>
-                  <img class="agents-card-cta-icon" src="assets/agent-talk-icon.svg" alt="" width="16" height="16" />
-                  <span>Talk with Eric</span>
-                </a>
+
+                <div class="agents-chat-stage" data-chat-stage="dialog" hidden>
+                  <div class="agents-chat-glass">
+                    <div class="agents-chat-window">
+                      <div class="agents-chat-header">
+                        <div class="agents-chat-header-id">
+                          <img class="agents-chat-kate" src="assets/agent-kate.png" alt="" width="21" height="21" />
+                          <strong>Kate</strong>
+                          <span class="agents-chat-by">By <img src="assets/expertise-logo.svg" alt="expertise.ai" /></span>
+                        </div>
+                        <div class="agents-chat-header-actions">
+                          <img src="assets/agent-chat-icon.svg" alt="" width="16" height="16" />
+                          <img src="assets/agent-chat-close.svg" alt="" width="16" height="16" />
+                        </div>
+                      </div>
+                      <div class="agents-chat-body" data-chat-thread>
+                        <p class="agents-chat-bubble agents-chat-bubble--user" data-chat-line="u1" hidden>We need to finance six refrigerated trailers, roughly $250K. What rates could we expect?</p>
+                        <div class="agents-chat-bubble agents-chat-bubble--bot" data-chat-line="k1" hidden>
+                          <div class="agents-chat-bot-head">
+                            <img class="agents-chat-kate" src="assets/agent-kate.png" alt="" width="21" height="21" />
+                            <strong>Kate</strong>
+                          </div>
+                          <p>Happy to help. For a fleet purchase that size, terms usually run 36–72 months. Two quick questions so I can pre-qualify you: how long has Northwind Freight been operating, and is the equipment new or used?</p>
+                        </div>
+                        <p class="agents-chat-bubble agents-chat-bubble--user" data-chat-line="u2" hidden>Eleven years. New units from a dealer in Ohio.</p>
+                        <div class="agents-chat-bubble agents-chat-bubble--bot" data-chat-line="k2" hidden>
+                          <div class="agents-chat-bot-head">
+                            <img class="agents-chat-kate" src="assets/agent-kate.png" alt="" width="21" height="21" />
+                            <strong>Kate</strong>
+                          </div>
+                          <p>You pre-qualify for up to $250K over 60 months, no credit pull yet. A specialist can lock the rate. Want to book a time, or should I have someone call you now?</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="agents-chat-actions" data-chat-suggestions hidden>
+                    <a href="https://meetings.hubspot.com/nick-raja/expertise-ai" target="_blank" rel="noopener">Book a demo</a>
+                    <a href="https://www.expertise.ai" target="_blank" rel="noopener">Give me more info</a>
+                  </div>
+                  <div class="agents-chat-input" aria-hidden="true">
+                    <img class="agents-chat-input-search" src="assets/agent-chat-search.svg" alt="" width="18" height="18" />
+                    <span>Ask our AI Assistant ...</span>
+                    <img class="agents-chat-input-mic" src="assets/agent-chat-mic.svg" alt="" width="19" height="19" />
+                    <span class="agents-chat-input-send">
+                      <svg viewBox="0 0 10 10" width="10" height="10" fill="none" aria-hidden="true"><path d="M5 1.5v6.2M7.1 3.5 5 1.5 2.9 3.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="agents-skills-progress" role="tablist" aria-label="Sales visual scenes">
+                  <button class="is-active" type="button" role="tab" data-chat-scene="welcome" aria-label="Welcome prompt" aria-current="true">
+                    <span class="agents-skills-progress-track">
+                      <i data-chat-progress="welcome"></i>
+                    </span>
+                  </button>
+                  <button type="button" role="tab" data-chat-scene="dialog" aria-label="Qualified conversation" aria-current="false">
+                    <span class="agents-skills-progress-track">
+                      <i data-chat-progress="dialog"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="agents-visual-frame" data-agent-visual="skills" hidden>
+              <div class="agents-skills" data-skills-demo>
+                <p class="agents-skills-caption" data-skills-caption>Convert your best employee’s workflow into skills</p>
+
+                <div class="agents-skills-stage is-active" data-skills-stage="stack">
+                  <div class="agents-skills-stack" aria-hidden="true">
+                    <article class="agents-skill-card agents-skill-card--back">
+                      <div class="agents-skill-card-inner">
+                        <div class="agents-skill-card-top">
+                          <div class="agents-skill-card-copy">
+                            <div class="agents-skill-card-meta">
+                              <span>Company skill</span>
+                              <span class="agents-skill-verified" title="Verified">
+                                <svg class="lucide lucide-badge-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.78 4.78 4 4 0 0 1-6.74 0 4 4 0 0 1-4.78-4.78 4 4 0 0 1 0-6.74Z"/><path d="m9 12 2 2 4-4"/></svg>
+                              </span>
+                            </div>
+                            <h3>Nightly Pipeline Sweeper</h3>
+                          </div>
+                          <span class="agents-skill-demo">Install</span>
+                        </div>
+                        <p>Clear stale owners, duplicate records, and broken routing before the morning forecast.</p>
+                        <div class="agents-skill-connections">
+                          <p>Connections</p>
+                          <ul>
+                            <li><img src="assets/skills/logo-salesforce.png" alt="" width="16" height="16" />CRM: Salesforce</li>
+                            <li><img src="assets/skills/logo-hubspot.png" alt="" width="16" height="16" />CRM: HubSpot</li>
+                            <li><img src="assets/skills/logo-sheets.png" alt="" width="16" height="16" />Google Sheets</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </article>
+                    <article class="agents-skill-card agents-skill-card--back">
+                      <div class="agents-skill-card-inner">
+                        <div class="agents-skill-card-top">
+                          <div class="agents-skill-card-copy">
+                            <div class="agents-skill-card-meta">
+                              <span>Company skill</span>
+                              <span class="agents-skill-verified" title="Verified">
+                                <svg class="lucide lucide-badge-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.78 4.78 4 4 0 0 1-6.74 0 4 4 0 0 1-4.78-4.78 4 4 0 0 1 0-6.74Z"/><path d="m9 12 2 2 4-4"/></svg>
+                              </span>
+                            </div>
+                            <h3>Quiet Thread Rescuer</h3>
+                          </div>
+                          <span class="agents-skill-demo">Install</span>
+                        </div>
+                        <p>Find stalled conversations and draft the next nudge before the thread goes cold.</p>
+                        <div class="agents-skill-connections">
+                          <p>Connections</p>
+                          <ul>
+                            <li><img src="assets/skills/logo-gmail.png" alt="" width="16" height="16" />Email: Gmail</li>
+                            <li><img src="assets/skills/logo-outlook.png" alt="" width="16" height="16" />Email: Outlook</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </article>
+                    <article class="agents-skill-card agents-skill-card--back">
+                      <div class="agents-skill-card-inner">
+                        <div class="agents-skill-card-top">
+                          <div class="agents-skill-card-copy">
+                            <div class="agents-skill-card-meta">
+                              <span>Company skill</span>
+                              <span class="agents-skill-verified" title="Verified">
+                                <svg class="lucide lucide-badge-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.78 4.78 4 4 0 0 1-6.74 0 4 4 0 0 1-4.78-4.78 4 4 0 0 1 0-6.74Z"/><path d="m9 12 2 2 4-4"/></svg>
+                              </span>
+                            </div>
+                            <h3>Forecast Guardrail</h3>
+                          </div>
+                          <span class="agents-skill-demo">Install</span>
+                        </div>
+                        <p>Flag deals that are forecasted without buyer proof, next steps, or a real close plan.</p>
+                        <div class="agents-skill-connections">
+                          <p>Connections</p>
+                          <ul>
+                            <li><img src="assets/skills/logo-salesforce.png" alt="" width="16" height="16" />CRM: Salesforce</li>
+                            <li><img src="assets/skills/logo-gmail.png" alt="" width="16" height="16" />Email: Gmail</li>
+                            <li><img src="assets/skills/logo-hubspot.png" alt="" width="16" height="16" />CRM: HubSpot</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </article>
+                  </div>
+                  <article class="agents-skill-card agents-skill-card--front" data-skills-card>
+                    <div class="agents-skill-card-inner">
+                      <div class="agents-skill-card-top">
+                        <div class="agents-skill-card-copy">
+                          <div class="agents-skill-card-meta">
+                            <span>Company skill</span>
+                            <span class="agents-skill-verified" title="Verified">
+                              <svg class="lucide lucide-badge-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.78 4.78 4 4 0 0 1-6.74 0 4 4 0 0 1-4.78-4.78 4 4 0 0 1 0-6.74Z"/><path d="m9 12 2 2 4-4"/></svg>
+                            </span>
+                          </div>
+                          <h3>Customer Win-Back Strategist</h3>
+                        </div>
+                        <button class="agents-skill-demo" type="button" data-skills-demo-btn aria-label="Install Customer Win-Back Strategist">
+                          Install
+                        </button>
+                      </div>
+                      <p>Analyze churned, inactive, or lapsed customers using prior transactions and recent engagement. Use when asked to build a win-back plan, identify reactivation opportunities, or recover lost revenue.</p>
+                      <div class="agents-skill-connections">
+                        <p>Connections</p>
+                        <ul>
+                          <li><img src="assets/skills/logo-gmail.png" alt="" width="16" height="16" />Email: Gmail</li>
+                          <li><img src="assets/skills/logo-outlook.png" alt="" width="16" height="16" />Email: Outlook</li>
+                          <li><img src="assets/skills/logo-salesforce.png" alt="" width="16" height="16" />CRM: Salesforce</li>
+                          <li><img src="assets/skills/logo-hubspot.png" alt="" width="16" height="16" />CRM: HubSpot</li>
+                          <li><img src="assets/skills/logo-sheets.png" alt="" width="16" height="16" />Google Sheets</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+
+                <div class="agents-skills-stage" data-skills-stage="run" hidden>
+                  <div class="agents-skills-run-glass">
+                    <div class="agents-skills-run">
+                      <header class="agents-skills-run-head">
+                        <span class="agents-skills-run-mark" aria-hidden="true">
+                          <img src="assets/skills/logo-expertise.svg" alt="" width="18" height="18" />
+                        </span>
+                        <strong>Customer Win-Back Strategist</strong>
+                        <span class="agents-skills-run-tools" aria-hidden="true">
+                          <span class="is-salesforce" data-skills-tool="salesforce"><img src="assets/skills/logo-salesforce.png" alt="" width="16" height="16" /></span>
+                          <span class="is-hubspot" data-skills-tool="hubspot"><img src="assets/skills/logo-hubspot.png" alt="" width="16" height="16" /></span>
+                          <span class="is-gmail" data-skills-tool="gmail"><img src="assets/skills/logo-gmail.png" alt="" width="16" height="16" /></span>
+                          <span class="is-outlook" data-skills-tool="outlook"><img src="assets/skills/logo-outlook.png" alt="" width="16" height="16" /></span>
+                          <span class="is-sheets" data-skills-tool="sheets"><img src="assets/skills/logo-sheets.png" alt="" width="16" height="16" /></span>
+                        </span>
+                      </header>
+                      <div class="agents-skills-run-body">
+                        <p class="agents-skills-prompt">
+                          <span class="agents-skills-prompt-row">
+                            Setup
+                            <span class="agents-skills-prompt-skill">
+                              <img src="assets/skills/logo-expertise.svg" alt="" width="12" height="12" />
+                              Customer Win-Back Strategist
+                            </span>
+                          </span>
+                          <span>and connect with our company data</span>
+                        </p>
+                        <div class="agents-skills-trace">
+                          <p class="agents-skills-worked">
+                            <span data-skills-timer>Worked for 0s</span>
+                            <img src="assets/skills/icon-chevron.svg" alt="" width="11" height="11" />
+                          </p>
+                          <ol class="agents-skills-steps">
+                            <li data-skills-step data-skills-pending="Checking your saved profile" data-skills-done="Checked your saved profile">
+                              <span class="agents-skills-step-icon" aria-hidden="true">
+                                <span class="agents-skills-spinner"></span>
+                                <svg class="agents-skills-tick" viewBox="0 0 16 16" width="16" height="16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M5 8.2 7 10.2 11.2 5.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                <img class="agents-skills-final" src="assets/skills/icon-user.svg" alt="" width="16" height="16" />
+                              </span>
+                              <span data-skills-label>Checked your saved profile</span>
+                            </li>
+                            <li data-skills-step data-skills-tool="hubspot" data-skills-pending="Connecting to HubSpot" data-skills-done="Successfully connected to HubSpot">
+                              <span class="agents-skills-step-icon" aria-hidden="true">
+                                <span class="agents-skills-spinner"></span>
+                                <svg class="agents-skills-tick" viewBox="0 0 16 16" width="16" height="16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M5 8.2 7 10.2 11.2 5.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                <img class="agents-skills-final" src="assets/skills/logo-hubspot.png" alt="" width="16" height="16" />
+                              </span>
+                              <span data-skills-label>Successfully connected to HubSpot</span>
+                            </li>
+                            <li data-skills-step data-skills-tool="salesforce" data-skills-pending="Connecting to Salesforce" data-skills-done="Successfully connected to Salesforce">
+                              <span class="agents-skills-step-icon" aria-hidden="true">
+                                <span class="agents-skills-spinner"></span>
+                                <svg class="agents-skills-tick" viewBox="0 0 16 16" width="16" height="16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M5 8.2 7 10.2 11.2 5.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                <img class="agents-skills-final" src="assets/skills/logo-salesforce.png" alt="" width="16" height="16" />
+                              </span>
+                              <span data-skills-label>Successfully connected to Salesforce</span>
+                            </li>
+                            <li data-skills-step data-skills-tool="gmail" data-skills-pending="Connecting to Gmail" data-skills-done="Successfully connected to Gmail">
+                              <span class="agents-skills-step-icon" aria-hidden="true">
+                                <span class="agents-skills-spinner"></span>
+                                <svg class="agents-skills-tick" viewBox="0 0 16 16" width="16" height="16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M5 8.2 7 10.2 11.2 5.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                <img class="agents-skills-final" src="assets/skills/logo-gmail.png" alt="" width="16" height="16" />
+                              </span>
+                              <span data-skills-label>Successfully connected to Gmail</span>
+                            </li>
+                            <li data-skills-step data-skills-tool="outlook" data-skills-pending="Connecting to Outlook" data-skills-done="Successfully connected to Outlook">
+                              <span class="agents-skills-step-icon" aria-hidden="true">
+                                <span class="agents-skills-spinner"></span>
+                                <svg class="agents-skills-tick" viewBox="0 0 16 16" width="16" height="16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M5 8.2 7 10.2 11.2 5.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                <img class="agents-skills-final" src="assets/skills/logo-outlook.png" alt="" width="16" height="16" />
+                              </span>
+                              <span data-skills-label>Successfully connected to Outlook</span>
+                            </li>
+                            <li data-skills-step data-skills-tool="sheets" data-skills-pending="Connecting to Google Sheets" data-skills-done="Successfully connected to Google Sheets">
+                              <span class="agents-skills-step-icon" aria-hidden="true">
+                                <span class="agents-skills-spinner"></span>
+                                <svg class="agents-skills-tick" viewBox="0 0 16 16" width="16" height="16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/><path d="M5 8.2 7 10.2 11.2 5.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                <img class="agents-skills-final" src="assets/skills/logo-sheets.png" alt="" width="16" height="16" />
+                              </span>
+                              <span data-skills-label>Successfully connected to Google Sheets</span>
+                            </li>
+                          </ol>
+                          <p class="agents-skills-output" data-skills-output>
+                            <span class="agents-skills-output-mark" aria-hidden="true">
+                              <img src="assets/skills/logo-expertise.svg" alt="" width="16" height="16" />
+                            </span>
+                            <span class="agents-skills-output-text">Skill saved and customized with your company settings. You can now use it.</span>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="agents-skills-progress" role="tablist" aria-label="Workspace visual scenes">
+                  <button class="is-active" type="button" role="tab" data-skills-scene="stack" aria-label="Skill cards" aria-current="true">
+                    <span class="agents-skills-progress-track">
+                      <i data-skills-progress="stack"></i>
+                    </span>
+                  </button>
+                  <button type="button" role="tab" data-skills-scene="run" aria-label="Skill install demo" aria-current="false">
+                    <span class="agents-skills-progress-track">
+                      <i data-skills-progress="run"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="agents-visual-frame" data-agent-visual="voice" hidden>
+              <div class="agents-voice">
+                <p class="agents-skills-caption">Hear Navi for yourself. Start a live call below.</p>
+                <div class="agents-voice-glass">
+                  <div class="agents-voice-card" data-voice-card>
+                    <header class="agents-voice-head">
+                      <div>
+                        <p class="agents-voice-name">Navi</p>
+                        <p class="agents-voice-role">Personal AI Agent</p>
+                      </div>
+                      <span class="agents-voice-badge">
+                        <svg class="agents-voice-badge-wave" viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true">
+                          <path d="M6 2V14" stroke="currentColor" stroke-linecap="square"/>
+                          <path d="M4 4.667V11.334" stroke="currentColor" stroke-linecap="square"/>
+                          <path d="M8 4V12" stroke="currentColor" stroke-linecap="square"/>
+                          <path d="M10 6V10" stroke="currentColor" stroke-linecap="square"/>
+                          <path d="M12 4.667V11.334" stroke="currentColor" stroke-linecap="square"/>
+                          <path d="M14 7.333V8.666" stroke="currentColor" stroke-linecap="square"/>
+                          <path d="M2 7.333V8.666" stroke="currentColor" stroke-linecap="square"/>
+                        </svg>
+                        AI Voice
+                      </span>
+                    </header>
+
+                    <div class="agents-voice-panel is-active" data-voice-panel="intro">
+                      <div class="agents-voice-orb" aria-hidden="true">
+                        <span class="agents-voice-orb-ring"></span>
+                        <span class="agents-voice-orb-ring agents-voice-orb-ring--delay"></span>
+                        <span class="agents-voice-orb-core">
+                          <span class="agents-voice-orb-blob"></span>
+                          <span class="agents-voice-orb-blob agents-voice-orb-blob--alt"></span>
+                        </span>
+                      </div>
+                      <p
+                        class="agents-voice-caption"
+                        data-voice-caption
+                        data-voice-lead="Hi, I’m Navi. Want to hear how AI voice support sounds?"
+                        data-voice-invite="Try a live call demo. I’ll ring you soon."
+                      >
+                        <span class="agents-voice-caption-lead" data-voice-lead-el></span>
+                        <span class="agents-voice-caption-invite" data-voice-invite-el></span>
+                      </p>
+                      <button class="agents-voice-cta" type="button" data-voice-start>
+                        <svg class="lucide lucide-phone" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        <span>Start a live call</span>
+                      </button>
+                    </div>
+
+                    <form class="agents-voice-panel agents-voice-form" data-voice-panel="form" hidden>
+                      <h3 class="agents-voice-form-title">Enter your number and Navi will call you live, in real time.</h3>
+                      <label class="agents-voice-field">
+                        <span>Name</span>
+                        <input type="text" name="name" autocomplete="name" required placeholder="Your name" />
+                      </label>
+                      <label class="agents-voice-field">
+                        <span>Phone number</span>
+                        <input type="tel" name="phone" autocomplete="tel" required placeholder="+1 555 123 4567" />
+                      </label>
+                      <div class="agents-voice-field">
+                        <span>Language</span>
+                        <div class="agents-voice-select" data-voice-select>
+                          <button class="agents-voice-select-trigger" type="button" aria-label="Language" aria-haspopup="listbox" aria-expanded="false" data-voice-select-trigger>
+                            <span class="agents-voice-flag" data-voice-select-flag aria-hidden="true">🇺🇸</span>
+                            <span data-voice-select-label>English</span>
+                            <svg viewBox="0 0 16 16" width="12" height="12" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                          </button>
+                          <ul class="agents-voice-select-menu" role="listbox" hidden data-voice-select-menu>
+                            <li role="option" aria-selected="true" data-value="en" data-flag="🇺🇸" data-label="English"><span class="agents-voice-flag" aria-hidden="true">🇺🇸</span> English</li>
+                            <li role="option" aria-selected="false" data-value="fr" data-flag="🇫🇷" data-label="Français"><span class="agents-voice-flag" aria-hidden="true">🇫🇷</span> Français</li>
+                            <li role="option" aria-selected="false" data-value="es" data-flag="🇪🇸" data-label="Español"><span class="agents-voice-flag" aria-hidden="true">🇪🇸</span> Español</li>
+                            <li role="option" aria-selected="false" data-value="de" data-flag="🇩🇪" data-label="Deutsch"><span class="agents-voice-flag" aria-hidden="true">🇩🇪</span> Deutsch</li>
+                            <li role="option" aria-selected="false" data-value="pt" data-flag="🇵🇹" data-label="Português"><span class="agents-voice-flag" aria-hidden="true">🇵🇹</span> Português</li>
+                            <li role="option" aria-selected="false" data-value="tr" data-flag="🇹🇷" data-label="Türkçe"><span class="agents-voice-flag" aria-hidden="true">🇹🇷</span> Türkçe</li>
+                            <li role="option" aria-selected="false" data-value="ja" data-flag="🇯🇵" data-label="日本語"><span class="agents-voice-flag" aria-hidden="true">🇯🇵</span> 日本語</li>
+                            <li role="option" aria-selected="false" data-value="zh" data-flag="🇨🇳" data-label="中文"><span class="agents-voice-flag" aria-hidden="true">🇨🇳</span> 中文</li>
+                          </ul>
+                          <input type="hidden" name="language" value="en" />
+                        </div>
+                      </div>
+                      <button class="agents-voice-cta" type="submit">
+                        <svg class="lucide lucide-phone" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        <span>Call me now</span>
+                      </button>
+                    </form>
+
+                    <div class="agents-voice-panel agents-voice-success" data-voice-panel="success" hidden>
+                      <div class="agents-voice-success-orb" aria-hidden="true">
+                        <svg class="lucide lucide-phone" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                      </div>
+                      <h3>Stay close to your phone.</h3>
+                      <p>Navi will call you soon. Pick up when it rings. This is a live, real-time demo.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -520,12 +1007,12 @@
                 <div class="platform-item-body">
                   <div class="platform-item-copy">
                     <h3>Scale without watching every conversation.</h3>
-                    <p>Enterprise deployments can support unlimited conversations, giving high-volume teams more predictable economics as usage grows.</p>
+                    <p>Run high-volume sales and support workflows without metering every interaction.</p>
                   </div>
                   <ul class="platform-item-features">
                     <li><img src="assets/agent-check.svg" alt="" width="24" height="24" /><span>Unlimited conversations</span></li>
                     <li><img src="assets/agent-check.svg" alt="" width="24" height="24" /><span>Predictable deployment economics</span></li>
-                    <li><img src="assets/agent-check.svg" alt="" width="24" height="24" /><span>Built for high-volume workflows</span></li>
+                    <li><img src="assets/agent-check.svg" alt="" width="24" height="24" /><span>Built for high production volume</span></li>
                   </ul>
                 </div>
               </div>
@@ -544,13 +1031,13 @@
               <div class="platform-item-panel">
                 <div class="platform-item-body">
                   <div class="platform-item-copy">
-                    <h3>Work directly with the team deploying your agents.</h3>
-                    <p>Our team works alongside yours to map the workflow, connect systems, test real scenarios, and tune the deployment after launch.</p>
+                    <h3>Work directly with the Expertise AI team.</h3>
+                    <p>Our deployment team works directly with yours to design the workflow, connect your systems, test real scenarios, and improve it after launch.</p>
                   </div>
                   <ul class="platform-item-features">
                     <li><img src="assets/agent-check.svg" alt="" width="24" height="24" /><span>Workflow design and integrations</span></li>
-                    <li><img src="assets/agent-check.svg" alt="" width="24" height="24" /><span>Evaluation and guardrails</span></li>
-                    <li><img src="assets/agent-check.svg" alt="" width="24" height="24" /><span>Production launch and ongoing tuning</span></li>
+<li><img src="assets/agent-check.svg" alt="" width="24" height="24" /><span>Testing and guardrails</span></li>
+                    <li><img src="assets/agent-check.svg" alt="" width="24" height="24" /><span>Ongoing production tuning</span></li>
                   </ul>
                 </div>
               </div>
@@ -569,13 +1056,13 @@
               <div class="platform-item-panel">
                 <div class="platform-item-body">
                   <div class="platform-item-copy">
-                    <h3>Choose where your AI and your data runs.</h3>
-                    <p>Choose where your data is hosted based on your requirements, with options across regions including Canada, the US, and Europe. Use private infrastructure and open-weight models where needed.</p>
+                    <h3>Choose where your AI and data run.</h3>
+                    <p>Meet your data-residency and architecture requirements with flexible hosting, private infrastructure, and open-weight models.</p>
                   </div>
                   <ul class="platform-item-features">
-                    <li><img src="assets/agent-check.svg" alt="" width="24" height="24" /><span>Flexible data residency across supported regions</span></li>
+                    <li><img src="assets/agent-check.svg" alt="" width="24" height="24" /><span>Data residency across supported regions including Canada, the US, and Europe</span></li>
                     <li><img src="assets/agent-check.svg" alt="" width="24" height="24" /><span>Open-weight model support</span></li>
-                    <li><img src="assets/agent-check.svg" alt="" width="24" height="24" /><span>Dedicated infrastructure, including VPS options</span></li>
+                    <li><img src="assets/agent-check.svg" alt="" width="24" height="24" /><span>Dedicated infrastructure and VPS options</span></li>
                   </ul>
                 </div>
               </div>
@@ -593,7 +1080,7 @@
   <section class="platform-section platform-section--light" aria-labelledby="platform-title-light">
     <div class="section-container split-container platform-layout">
       <aside class="platform-sidebar">
-        <p>One platform.<br />Every step connected.</p>
+        <p>Hands-on deployment</p>
       </aside>
       <div class="platform-content">
         <header class="platform-intro">
@@ -602,10 +1089,92 @@
         </header>
 
         <div class="platform-stage">
-          <div class="platform-visual" aria-hidden="true">
-            <img class="platform-visual-img is-active" data-platform-image="usage" src="assets/platform-talk-with-customers.png" alt="" />
-            <img class="platform-visual-img" data-platform-image="forward" src="assets/platform-work-with-teams.png" alt="" />
-            <img class="platform-visual-img" data-platform-image="private" src="assets/platform-act-across-stack.png" alt="" />
+          <div class="platform-visual">
+            <div class="platform-rotation">
+              <div class="platform-rotation-tracks" role="tablist" aria-label="Deployment options">
+                <button type="button" role="tab" data-rotation-step="usage" aria-label="Unlimited usage for production" aria-selected="true"><i aria-hidden="true"></i></button>
+                <button type="button" role="tab" data-rotation-step="forward" aria-label="Forward deployment" aria-selected="false"><i aria-hidden="true"></i></button>
+                <button type="button" role="tab" data-rotation-step="private" aria-label="Private infrastructure and model choice" aria-selected="false"><i aria-hidden="true"></i></button>
+              </div>
+            </div>
+            <div class="usage-process is-active" data-platform-image="usage" aria-hidden="true">
+              <div class="deployment-production usage-meter">
+                <div class="usage-meter-head"><span class="deployment-eyebrow">Token usage this month</span><span class="usage-live"><i class="usage-live-dot"></i>Live</span></div>
+                <div class="usage-count-row"><strong data-usage-count>284,650</strong><span class="usage-infinity">∞</span></div>
+                <div class="usage-flow"><i class="usage-flow-indicator"></i><div class="usage-track"><span data-usage-fill></span></div></div>
+              </div>
+              <div class="deployment-production usage-history">
+                <div class="usage-history-head"><strong>Conversation history</strong><span class="usage-history-count" data-usage-history-count>1,284</span></div>
+                <div class="usage-history-window">
+                  <div class="usage-history-list" data-usage-history>
+                    <div class="usage-history-row"><span class="usage-chat-icon"><svg class="lucide lucide-message-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span><div><strong>Product questions</strong><span class="usage-history-detail">Sales · Answered</span></div><time>Just now</time></div>
+                    <div class="usage-history-row"><span class="usage-chat-icon"><svg class="lucide lucide-message-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span><div><strong>Order status</strong><span class="usage-history-detail">Support · Resolved</span></div><time>5 mins ago</time></div>
+                    <div class="usage-history-row"><span class="usage-chat-icon"><svg class="lucide lucide-message-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span><div><strong>Demo request</strong><span class="usage-history-detail">Sales · Meeting booked</span></div><time>12 mins ago</time></div>
+                    <div class="usage-history-row"><span class="usage-chat-icon"><svg class="lucide lucide-message-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span><div><strong>Account access</strong><span class="usage-history-detail">Support · Resolved</span></div><time>18 mins ago</time></div>
+                    <div class="usage-history-row"><span class="usage-chat-icon"><svg class="lucide lucide-message-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span><div><strong>Plan comparison</strong><span class="usage-history-detail">Sales · Answered</span></div><time>24 mins ago</time></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="deployment-process" data-platform-image="forward" aria-hidden="true">
+              <div class="deployment-production">
+                <div><span class="deployment-eyebrow">Together, from workflow to live</span><strong data-deployment-status>Deployment in progress</strong></div>
+                <span class="deployment-ring" data-deployment-total style="--progress: 0%"><span>0%</span></span>
+              </div>
+              <div class="deployment-converge"><span></span><span></span></div>
+              <div class="deployment-stack">
+                <div class="deployment-team" data-deployment-team="yours">
+                  <div class="deployment-team-head"><strong>Your team</strong><span class="deployment-ring deployment-ring--small" style="--progress: 0%"><span>0%</span></span></div>
+                  <ul class="deployment-tasks">
+                    <li data-deployment-step="rules"><span class="deployment-check"></span>Define business rules</li>
+                    <li data-deployment-step="systems"><span class="deployment-check"></span>Share system access</li>
+                    <li data-deployment-step="scenarios"><span class="deployment-check"></span>Validate real scenarios</li>
+                  </ul>
+                </div>
+                <div class="deployment-team is-front" data-deployment-team="expertise">
+                  <div class="deployment-team-head"><strong>Expertise team</strong><span class="deployment-ring deployment-ring--small" style="--progress: 0%"><span>0%</span></span></div>
+                  <ul class="deployment-tasks">
+                    <li data-deployment-step="map"><span class="deployment-check"></span>Map your workflow</li>
+                    <li data-deployment-step="connect"><span class="deployment-check"></span>Connect your systems</li>
+                    <li data-deployment-step="test"><span class="deployment-check"></span>Test agent guardrails</li>
+                    <li data-deployment-step="launch"><span class="deployment-check"></span>Launch to production</li>
+                    <li data-deployment-step="tune"><span class="deployment-check"></span>Tune live performance</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="private-process" data-platform-image="private" aria-label="Example deployment configurator" aria-hidden="true" inert>
+              <div class="deployment-production private-config">
+                <div class="private-config-head">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="7" rx="2"/><path d="M7 6.5h.01M7 17.5h.01M11 6.5h6M11 17.5h6"/></svg>
+                  <strong>Deployment configuration</strong>
+                </div>
+                <fieldset class="private-config-group">
+                  <legend>Data residency</legend>
+                  <div class="private-options private-options--regions">
+                    <label><input type="radio" name="private-region" value="Canada" checked /><span>Canada</span></label>
+                    <label><input type="radio" name="private-region" value="US" /><span>US</span></label>
+                    <label><input type="radio" name="private-region" value="Europe" /><span>Europe</span></label>
+                    <label><input type="radio" name="private-region" value="Other supported regions" /><span>Other supported regions</span></label>
+                  </div>
+                </fieldset>
+                <fieldset class="private-config-group">
+                  <legend>Infrastructure</legend>
+                  <div class="private-options private-options--infra">
+                    <label><input type="radio" name="private-infrastructure" value="Managed" /><span>Managed</span></label>
+                    <label><input type="radio" name="private-infrastructure" value="Dedicated" checked /><span>Dedicated</span></label>
+                    <label><input type="radio" name="private-infrastructure" value="Private VPS" /><span>Private VPS</span></label>
+                  </div>
+                </fieldset>
+                <fieldset class="private-config-group">
+                  <legend>Model</legend>
+                  <div class="private-options">
+                    <label><input type="radio" name="private-model" value="Hosted models" /><span>Hosted models</span></label>
+                    <label><input type="radio" name="private-model" value="Open-weight models" checked /><span>Open-weight models</span></label>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
             <span class="platform-visual-shade"></span>
           </div>
 
@@ -621,12 +1190,12 @@
                 <div class="platform-item-body">
                   <div class="platform-item-copy">
                     <h3>Scale without watching every conversation.</h3>
-                    <p>Enterprise deployments can support unlimited conversations, giving high-volume teams more predictable economics as usage grows.</p>
+                    <p>Run high-volume sales and support workflows without metering every interaction.</p>
                   </div>
                   <ul class="platform-item-features">
                     <li><svg class="platform-item-check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12Z" fill="currentColor"/><path d="M15 9.5L10.5 15L8.5 13" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Unlimited conversations</span></li>
                     <li><svg class="platform-item-check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12Z" fill="currentColor"/><path d="M15 9.5L10.5 15L8.5 13" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Predictable deployment economics</span></li>
-                    <li><svg class="platform-item-check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12Z" fill="currentColor"/><path d="M15 9.5L10.5 15L8.5 13" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Built for high-volume workflows</span></li>
+                    <li><svg class="platform-item-check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12Z" fill="currentColor"/><path d="M15 9.5L10.5 15L8.5 13" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Built for high production volume</span></li>
                   </ul>
                 </div>
               </div>
@@ -645,13 +1214,13 @@
               <div class="platform-item-panel">
                 <div class="platform-item-body">
                   <div class="platform-item-copy">
-                    <h3>Work directly with the team deploying your agents.</h3>
-                    <p>Our team works alongside yours to map the workflow, connect systems, test real scenarios, and tune the deployment after launch.</p>
+                    <h3>Work directly with the Expertise AI team.</h3>
+                    <p>Our deployment team works directly with yours to design the workflow, connect your systems, test real scenarios, and improve it after launch.</p>
                   </div>
                   <ul class="platform-item-features">
                     <li><svg class="platform-item-check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12Z" fill="currentColor"/><path d="M15 9.5L10.5 15L8.5 13" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Workflow design and integrations</span></li>
-                    <li><svg class="platform-item-check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12Z" fill="currentColor"/><path d="M15 9.5L10.5 15L8.5 13" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Evaluation and guardrails</span></li>
-                    <li><svg class="platform-item-check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12Z" fill="currentColor"/><path d="M15 9.5L10.5 15L8.5 13" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Production launch and ongoing tuning</span></li>
+                    <li><svg class="platform-item-check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12Z" fill="currentColor"/><path d="M15 9.5L10.5 15L8.5 13" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Testing and guardrails</span></li>
+                    <li><svg class="platform-item-check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12Z" fill="currentColor"/><path d="M15 9.5L10.5 15L8.5 13" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Ongoing production tuning</span></li>
                   </ul>
                 </div>
               </div>
@@ -670,13 +1239,13 @@
               <div class="platform-item-panel">
                 <div class="platform-item-body">
                   <div class="platform-item-copy">
-                    <h3>Choose where your AI and your data runs.</h3>
-                    <p>Choose where your data is hosted based on your requirements, with options across regions including Canada, the US, and Europe. Use private infrastructure and open-weight models where needed.</p>
+                    <h3>Choose where your AI and data run.</h3>
+                    <p>Meet your data-residency and architecture requirements with flexible hosting, private infrastructure, and open-weight models.</p>
                   </div>
                   <ul class="platform-item-features">
-                    <li><svg class="platform-item-check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12Z" fill="currentColor"/><path d="M15 9.5L10.5 15L8.5 13" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Flexible data residency across supported regions</span></li>
+                    <li><svg class="platform-item-check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12Z" fill="currentColor"/><path d="M15 9.5L10.5 15L8.5 13" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Data residency across supported regions including Canada, the US, and Europe</span></li>
                     <li><svg class="platform-item-check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12Z" fill="currentColor"/><path d="M15 9.5L10.5 15L8.5 13" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Open-weight model support</span></li>
-                    <li><svg class="platform-item-check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12Z" fill="currentColor"/><path d="M15 9.5L10.5 15L8.5 13" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Dedicated infrastructure, including VPS options</span></li>
+                    <li><svg class="platform-item-check" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21.25 12C21.25 17.1086 17.1086 21.25 12 21.25C6.89137 21.25 2.75 17.1086 2.75 12C2.75 6.89137 6.89137 2.75 12 2.75C17.1086 2.75 21.25 6.89137 21.25 12Z" fill="currentColor"/><path d="M15 9.5L10.5 15L8.5 13" stroke="#fff" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Dedicated infrastructure and VPS options</span></li>
                   </ul>
                 </div>
               </div>
@@ -955,6 +1524,26 @@
     </div>
   </section>
 
+  <!-- ===== INDUSTRIES ===== -->
+  <section class="industries-section" aria-labelledby="industries-title">
+    <div class="section-container split-container industries-layout">
+      <aside class="industries-sidebar"><p>For any industries</p></aside>
+      <div class="industries-content">
+        <h2 id="industries-title">One platform. <span>Different industries.</span></h2>
+        <div class="industries-grid">
+          <article class="industry-card"><img src="assets/industry-insurance.png" alt="Insurance professional at work" /><div><h3>Insurance</h3><p>Policy and account questions, service journeys, routing, and sensitive handoffs.</p></div></article>
+          <article class="industry-card"><img src="assets/industry-finance.png" alt="Banking and finance team" /><div><h3>Banking / Finance</h3><p>Customer acquisition and service workflows with governed workflows and human control.</p><nav class="industry-related-stories" aria-label="Related case studies"><span>Related stories:</span><div class="industry-related-stories-links"><a href="https://www.expertise.ai/live/case-studies/holistiplan" target="_blank" rel="noopener">Holistiplan</a><a href="https://www.expertise.ai/live/case-studies/david-sklar" target="_blank" rel="noopener">David Sklar</a></div></nav></div></article>
+          <article class="industry-card"><img src="assets/industry-retail.png" alt="Retail fulfillment line" /><div><h3>Retail</h3><p>Product discovery, purchase questions, service requests, and complex issue routing.</p></div></article>
+          <article class="industry-card"><img src="assets/industry-manufacturing.png" alt="Manufacturing floor" /><div><h3>Manufacturing</h3><p>Complex product questions, customer and partner support, order and service workflows.</p><nav class="industry-related-stories" aria-label="Related case studies"><span>Related stories:</span><div class="industry-related-stories-links"><a href="https://www.expertise.ai/live/case-studies/gutterglove" target="_blank" rel="noopener">Gutterglove</a></div></nav></div></article>
+          <article class="industry-card"><img src="assets/industry-airlines.png" alt="Aircraft on runway" /><div><h3>Airlines</h3><p>Booking and service questions, disruption workflows, coordination, and complex handoffs.</p></div></article>
+          <article class="industry-card"><img src="assets/industry-logistics.png" alt="Logistics yard" /><div><h3>Logistics</h3><p>Customer questions, shipment updates, coordination, sales inquiries, and exception handling.</p></div></article>
+          <article class="industry-card"><img src="assets/industry-utilities.png" alt="Wind turbines for utilities" /><div><h3>Utilities</h3><p>Products, programs, service requests, sales journeys, and customer support.</p><nav class="industry-related-stories" aria-label="Related case studies"><span>Related stories:</span><div class="industry-related-stories-links"><a href="https://www.expertise.ai/live/case-studies/circuit-electric" target="_blank" rel="noopener">Circuit Electric</a></div></nav></div></article>
+          <article class="industry-card"><img src="assets/industry-telecom.png" alt="Telecommunications tower" /><div><h3>Telecommunications</h3><p>Qualification, upgrades, billing, account servicing, and technical routing.</p></div></article>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== SECURITY ===== -->
   <section class="security-section" aria-labelledby="security-title">
     <div class="section-container split-container security-layout">
@@ -993,26 +1582,6 @@
             <h3>Observability</h3>
             <p>Logs, analytics, and alerts</p>
           </article>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===== INDUSTRIES ===== -->
-  <section class="industries-section" aria-labelledby="industries-title">
-    <div class="section-container split-container industries-layout">
-      <aside class="industries-sidebar"><p>For any industries</p></aside>
-      <div class="industries-content">
-        <h2 id="industries-title">One platform. <span>Different industries.</span></h2>
-        <div class="industries-grid">
-          <article class="industry-card"><img src="assets/industry-insurance.png" alt="Insurance professional at work" /><div><h3>Insurance</h3><p>Policy and account questions, service journeys, routing, and sensitive handoffs.</p></div></article>
-          <article class="industry-card"><img src="assets/industry-finance.png" alt="Banking and finance team" /><div><h3>Banking / Finance</h3><p>Customer acquisition and service workflows with governed workflows and human control.</p><nav class="industry-related-stories" aria-label="Related case studies"><span>Related stories:</span><div class="industry-related-stories-links"><a href="https://www.expertise.ai/live/case-studies/holistiplan" target="_blank" rel="noopener">Holistiplan</a><a href="https://www.expertise.ai/live/case-studies/david-sklar" target="_blank" rel="noopener">David Sklar</a></div></nav></div></article>
-          <article class="industry-card"><img src="assets/industry-retail.png" alt="Retail fulfillment line" /><div><h3>Retail</h3><p>Product discovery, purchase questions, service requests, and complex issue routing.</p></div></article>
-          <article class="industry-card"><img src="assets/industry-manufacturing.png" alt="Manufacturing floor" /><div><h3>Manufacturing</h3><p>Complex product questions, customer and partner support, order and service workflows.</p><nav class="industry-related-stories" aria-label="Related case studies"><span>Related stories:</span><div class="industry-related-stories-links"><a href="https://www.expertise.ai/live/case-studies/gutterglove" target="_blank" rel="noopener">Gutterglove</a></div></nav></div></article>
-          <article class="industry-card"><img src="assets/industry-airlines.png" alt="Aircraft on runway" /><div><h3>Airlines</h3><p>Booking and service questions, disruption workflows, coordination, and complex handoffs.</p></div></article>
-          <article class="industry-card"><img src="assets/industry-logistics.png" alt="Logistics yard" /><div><h3>Logistics</h3><p>Customer questions, shipment updates, coordination, sales inquiries, and exception handling.</p></div></article>
-          <article class="industry-card"><img src="assets/industry-utilities.png" alt="Wind turbines for utilities" /><div><h3>Utilities</h3><p>Products, programs, service requests, sales journeys, and customer support.</p><nav class="industry-related-stories" aria-label="Related case studies"><span>Related stories:</span><div class="industry-related-stories-links"><a href="https://www.expertise.ai/live/case-studies/circuit-electric" target="_blank" rel="noopener">Circuit Electric</a></div></nav></div></article>
-          <article class="industry-card"><img src="assets/industry-telecom.png" alt="Telecommunications tower" /><div><h3>Telecommunications</h3><p>Qualification, upgrades, billing, account servicing, and technical routing.</p></div></article>
         </div>
       </div>
     </div>

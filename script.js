@@ -696,11 +696,16 @@ function initCaseStudiesShowcase() {
 
 function initTestimonialControls() {
   const track = document.querySelector(".testimonials-track");
+  const viewport = document.querySelector(".testimonials-viewport");
   const previous = document.querySelector("[data-testimonials-previous]");
   const next = document.querySelector("[data-testimonials-next]");
   if (!track || !previous || !next) return;
 
   let isAnimating = false;
+  let autoplayTimer;
+  const AUTOPLAY_MS = 4500;
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
   const slideAmount = () => {
     const card = track.querySelector(".testimonial-card");
     const styles = getComputedStyle(track);
@@ -750,8 +755,106 @@ function initTestimonialControls() {
     });
   };
 
-  previous.addEventListener("click", movePrevious);
-  next.addEventListener("click", moveNext);
+  const stopAutoplay = () => {
+    window.clearInterval(autoplayTimer);
+    autoplayTimer = undefined;
+  };
+
+  const startAutoplay = () => {
+    stopAutoplay();
+    if (prefersReducedMotion.matches) return;
+    autoplayTimer = window.setInterval(moveNext, AUTOPLAY_MS);
+  };
+
+  previous.addEventListener("click", () => {
+    movePrevious();
+    startAutoplay();
+  });
+  next.addEventListener("click", () => {
+    moveNext();
+    startAutoplay();
+  });
+
+  // Touch / pointer swipe
+  let pointerId = null;
+  let startX = 0;
+  let deltaX = 0;
+  let swiping = false;
+
+  const onPointerDown = (event) => {
+    if (isAnimating || event.button) return;
+    pointerId = event.pointerId;
+    startX = event.clientX;
+    deltaX = 0;
+    swiping = true;
+    stopAutoplay();
+    track.setPointerCapture?.(pointerId);
+    track.style.transition = "none";
+  };
+
+  const onPointerMove = (event) => {
+    if (!swiping || event.pointerId !== pointerId) return;
+    deltaX = event.clientX - startX;
+    track.style.transform = `translateX(${deltaX}px)`;
+  };
+
+  const onPointerUp = (event) => {
+    if (!swiping || event.pointerId !== pointerId) return;
+    swiping = false;
+    pointerId = null;
+    const threshold = Math.min(80, slideAmount() * 0.22);
+    const dx = deltaX;
+    deltaX = 0;
+
+    if (dx <= -threshold) {
+      isAnimating = true;
+      track.style.transition = "transform 450ms cubic-bezier(0.16, 1, 0.3, 1)";
+      track.style.transform = `translateX(${-slideAmount()}px)`;
+      onTransitionEnd(() => {
+        track.append(track.firstElementChild);
+        resetPosition();
+        isAnimating = false;
+        startAutoplay();
+      });
+      return;
+    }
+
+    if (dx >= threshold) {
+      track.style.transition = "none";
+      track.style.transform = "translateX(0)";
+      void track.offsetWidth;
+      movePrevious();
+      startAutoplay();
+      return;
+    }
+
+    track.style.transition = "transform 320ms cubic-bezier(0.16, 1, 0.3, 1)";
+    track.style.transform = "translateX(0)";
+    onTransitionEnd(() => {
+      resetPosition();
+      startAutoplay();
+    });
+  };
+
+  const swipeTarget = viewport || track;
+  swipeTarget.style.touchAction = "pan-y";
+  swipeTarget.addEventListener("pointerdown", onPointerDown);
+  swipeTarget.addEventListener("pointermove", onPointerMove);
+  swipeTarget.addEventListener("pointerup", onPointerUp);
+  swipeTarget.addEventListener("pointercancel", onPointerUp);
+
+  // Pause autoplay while hovering / focused (desktop)
+  swipeTarget.addEventListener("mouseenter", stopAutoplay);
+  swipeTarget.addEventListener("mouseleave", startAutoplay);
+  swipeTarget.addEventListener("focusin", stopAutoplay);
+  swipeTarget.addEventListener("focusout", startAutoplay);
+
+  prefersReducedMotion.addEventListener("change", () => {
+    if (prefersReducedMotion.matches) stopAutoplay();
+    else startAutoplay();
+  });
+
+  startAutoplay();
 }
 
 function initClientBentoMarquee() {
@@ -770,6 +873,18 @@ function initIndustryCardReveals() {
   const cards = [...document.querySelectorAll(".industry-card")];
   if (!cards.length) return;
 
+  const scrollMq = window.matchMedia("(max-width: 900px)");
+  let observer;
+  let activeRow = -1;
+  let intersecting = new Set();
+
+  const getColumns = () => {
+    const grid = cards[0]?.parentElement;
+    if (!grid) return 2;
+    const cols = getComputedStyle(grid).gridTemplateColumns.split(" ").filter(Boolean).length;
+    return Math.max(1, cols);
+  };
+
   const updateHeights = () => {
     cards.forEach((card) => {
       const description = card.querySelector("p");
@@ -784,8 +899,89 @@ function initIndustryCardReveals() {
     });
   };
 
+  const clearActive = () => {
+    activeRow = -1;
+    cards.forEach((card) => card.classList.remove("is-active"));
+  };
+
+  const setActiveRow = (rowIndex) => {
+    if (rowIndex === activeRow) return;
+    activeRow = rowIndex;
+    const cols = getColumns();
+    cards.forEach((card, i) => {
+      card.classList.toggle("is-active", Math.floor(i / cols) === rowIndex);
+    });
+  };
+
+  // Pick the single row closest to the focus band; never leave two rows open.
+  const syncActiveRow = () => {
+    if (!scrollMq.matches || !intersecting.size) {
+      clearActive();
+      return;
+    }
+
+    const cols = getColumns();
+    // Offset focus line above center so the next row takes over before the previous stays open.
+    const focusY = window.innerHeight * 0.36;
+    let bestRow = -1;
+    let bestDist = Infinity;
+
+    intersecting.forEach((card) => {
+      const index = cards.indexOf(card);
+      if (index < 0) return;
+      const rect = card.getBoundingClientRect();
+      const mid = rect.top + rect.height * 0.5;
+      const dist = Math.abs(mid - focusY);
+      const row = Math.floor(index / cols);
+      if (dist < bestDist) {
+        bestDist = dist;
+        bestRow = row;
+      }
+    });
+
+    if (bestRow < 0) clearActive();
+    else setActiveRow(bestRow);
+  };
+
+  const disconnectObserver = () => {
+    if (!observer) return;
+    observer.disconnect();
+    observer = undefined;
+  };
+
+  // Mobile: same open/close animation as hover, one 2-card row at a time.
+  const bindViewportTriggers = () => {
+    disconnectObserver();
+    intersecting = new Set();
+    clearActive();
+    if (!scrollMq.matches) return;
+
+    observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) intersecting.add(entry.target);
+        else intersecting.delete(entry.target);
+      });
+      syncActiveRow();
+    }, {
+      // Narrow band with vertical offset — typically only one row sits inside.
+      threshold: [0, 0.2, 0.4, 0.6],
+      rootMargin: "-16% 0px -46% 0px"
+    });
+
+    cards.forEach((card) => observer.observe(card));
+  };
+
   updateHeights();
-  window.addEventListener("resize", updateHeights);
+  bindViewportTriggers();
+
+  window.addEventListener("resize", () => {
+    updateHeights();
+    if (scrollMq.matches) syncActiveRow();
+  });
+  scrollMq.addEventListener("change", () => {
+    updateHeights();
+    bindViewportTriggers();
+  });
 }
 
 const HERO_GRID_PHOTOS = [
@@ -831,8 +1027,17 @@ function initHeroGrid() {
     return Number.isFinite(declared) && declared > 0 ? declared : 42;
   }
 
+  function leftExclusion() {
+    return window.matchMedia("(max-width: 900px)").matches ? 0.06 : HERO_GRID_LEFT_EXCLUSION;
+  }
+
+  function isStackedHeroGrid() {
+    return window.matchMedia("(max-width: 900px)").matches;
+  }
+
   // Snap hero-content height to an exact multiple of the cell size so the
   // bottom edge of the grid lands on a full row (no clipped cells).
+  // On mobile the grid is a fixed-height band above the copy, so skip.
   function snapContentHeight() {
     const content = grid.closest(".hero-content");
     if (!content) return;
@@ -840,6 +1045,8 @@ function initHeroGrid() {
     cellSize = readCellSize();
     content.style.minHeight = "";
     content.style.height = "";
+
+    if (isStackedHeroGrid()) return;
 
     const natural = content.getBoundingClientRect().height;
     if (!natural) return;
@@ -919,7 +1126,7 @@ function initHeroGrid() {
   }
 
   function findSpot(tile, size) {
-    const leftReserve = Math.ceil(cols * HERO_GRID_LEFT_EXCLUSION);
+    const leftReserve = Math.ceil(cols * leftExclusion());
     const minCol = leftReserve + size - 1;
     const maxCol = Math.max(cols - 1, minCol);
     const minRow = 0;
@@ -952,7 +1159,7 @@ function initHeroGrid() {
       spot = findSpot(tile, size);
     }
 
-    const leftReserve = Math.ceil(cols * HERO_GRID_LEFT_EXCLUSION);
+    const leftReserve = Math.ceil(cols * leftExclusion());
     const col = spot ? spot.col : leftReserve + size - 1;
     const row = spot ? spot.row : 0;
 
@@ -1035,7 +1242,7 @@ function initHeroGrid() {
     });
   }
 
-  // Below 900px the grid is hidden, so build() no-ops until a resize brings it back.
+  // On mobile the grid stacks above the copy (full width); desktop overlays the right half.
   build();
 
   if (reducedMotion.matches) showStatic();
@@ -1074,13 +1281,879 @@ function initHeroGrid() {
   });
 }
 
+function initAgentsCaseSwitchers() {
+  document.querySelectorAll(".agents-case-block").forEach(block => {
+    const card = block.querySelector(".agents-case");
+    const stories = [...block.querySelectorAll(".agents-case-stories [data-case-href]")];
+    const prev = block.querySelector("[data-agents-case-prev]");
+    const next = block.querySelector("[data-agents-case-next]");
+    if (!card) return;
+
+    if (stories.length < 2) {
+      const controls = block.querySelector(".testimonials-controls");
+      if (controls) controls.hidden = true;
+      return;
+    }
+
+    const logoEl = card.querySelector("[data-agents-case-logo]");
+    const categoryEl = card.querySelector("[data-agents-case-category]");
+    const titleEl = card.querySelector("[data-agents-case-title]");
+    const quoteEl = card.querySelector(".agents-case-quote");
+    const quoteText = card.querySelector("[data-agents-case-quote]");
+    const citeText = card.querySelector("[data-agents-case-cite]");
+    let index = 0;
+
+    function applyCase(source) {
+      const href = source.getAttribute("data-case-href");
+      const bg = source.getAttribute("data-case-bg");
+      const quote = source.getAttribute("data-case-quote") || "";
+      const cite = source.getAttribute("data-case-cite") || "";
+
+      if (href) card.href = href;
+      if (bg) card.style.setProperty("--case-image", "url('" + bg + "')");
+      if (logoEl) {
+        logoEl.src = source.getAttribute("data-case-logo") || "";
+        logoEl.alt = source.getAttribute("data-case-logo-alt") || "";
+      }
+      if (categoryEl) categoryEl.textContent = source.getAttribute("data-case-category") || "";
+      if (titleEl) titleEl.textContent = source.getAttribute("data-case-title") || "";
+
+      [1, 2, 3].forEach(number => {
+        const valueEl = card.querySelector('[data-agents-metric-value="' + number + '"]');
+        const captionEl = card.querySelector('[data-agents-metric-caption="' + number + '"]');
+        if (valueEl) valueEl.textContent = source.getAttribute("data-case-metric-" + number + "-value") || "";
+        if (captionEl) captionEl.textContent = source.getAttribute("data-case-metric-" + number + "-caption") || "";
+      });
+
+      if (quoteEl) {
+        if (quote) {
+          quoteEl.hidden = false;
+          if (quoteText) quoteText.textContent = quote;
+          if (citeText) citeText.textContent = cite;
+        } else {
+          quoteEl.hidden = true;
+        }
+      }
+    }
+
+    function show(nextIndex) {
+      index = (nextIndex + stories.length) % stories.length;
+      applyCase(stories[index]);
+
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      card.classList.remove("is-switching");
+      void card.offsetWidth;
+      card.classList.add("is-switching");
+    }
+
+    if (prev) prev.addEventListener("click", () => show(index - 1));
+    if (next) next.addEventListener("click", () => show(index + 1));
+  });
+}
+
+let agentsVoiceDemo;
+let agentsSkillsDemo;
+let agentsChatDemo;
+
+function initAgentsVoiceDemo() {
+  const card = document.querySelector("[data-voice-card]");
+  if (!card) return null;
+
+  const caption = card.querySelector("[data-voice-caption]");
+  const leadEl = caption && caption.querySelector("[data-voice-lead-el]");
+  const inviteEl = caption && caption.querySelector("[data-voice-invite-el]");
+  const startButton = card.querySelector("[data-voice-start]");
+  const form = card.querySelector("[data-voice-panel='form']");
+  const panels = [...card.querySelectorAll("[data-voice-panel]")];
+  const select = card.querySelector("[data-voice-select]");
+  const selectTrigger = select && select.querySelector("[data-voice-select-trigger]");
+  const selectMenu = select && select.querySelector("[data-voice-select-menu]");
+  const selectFlag = select && select.querySelector("[data-voice-select-flag]");
+  const selectLabel = select && select.querySelector("[data-voice-select-label]");
+  const selectInput = select && select.querySelector("input[name='language']");
+  const leadText = caption ? caption.getAttribute("data-voice-lead") || "" : "";
+  const inviteText = caption ? caption.getAttribute("data-voice-invite") || "" : "";
+  let typeTimer;
+  let startTimer;
+
+  function prefersReducedMotion() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function showPanel(name) {
+    panels.forEach(panel => {
+      const on = panel.dataset.voicePanel === name;
+      panel.hidden = !on;
+      panel.classList.toggle("is-active", on);
+    });
+  }
+
+  function stopTyping() {
+    window.clearTimeout(typeTimer);
+    window.clearTimeout(startTimer);
+    if (leadEl) leadEl.classList.remove("is-typing");
+    if (inviteEl) inviteEl.classList.remove("is-typing");
+  }
+
+  function typeInto(el, text, done) {
+    if (!el) {
+      done();
+      return;
+    }
+
+    el.textContent = "";
+    el.classList.add("is-typing");
+    let index = 0;
+
+    function tick() {
+      index += 1;
+      el.textContent = text.slice(0, index);
+      if (index < text.length) {
+        typeTimer = window.setTimeout(tick, 46);
+      } else {
+        el.classList.remove("is-typing");
+        done();
+      }
+    }
+
+    tick();
+  }
+
+  function playCaption() {
+    if (!caption || !leadEl || !inviteEl) return;
+    stopTyping();
+    leadEl.textContent = "";
+    inviteEl.textContent = "";
+
+    if (prefersReducedMotion()) {
+      leadEl.textContent = leadText;
+      inviteEl.textContent = inviteText;
+      return;
+    }
+
+    startTimer = window.setTimeout(() => {
+      typeInto(leadEl, leadText, () => {
+        startTimer = window.setTimeout(() => {
+          typeInto(inviteEl, inviteText, () => {});
+        }, 560);
+      });
+    }, 420);
+  }
+
+  function closeSelect() {
+    if (!select || !selectTrigger || !selectMenu) return;
+    select.classList.remove("is-open");
+    selectTrigger.setAttribute("aria-expanded", "false");
+    selectMenu.hidden = true;
+  }
+
+  function setLanguage(option) {
+    if (!option || !selectInput || !selectFlag || !selectLabel || !selectMenu) return;
+    const value = option.dataset.value || "en";
+    selectInput.value = value;
+    selectFlag.textContent = option.dataset.flag || "";
+    selectLabel.textContent = option.dataset.label || "";
+    selectMenu.querySelectorAll("[role='option']").forEach(item => {
+      item.setAttribute("aria-selected", item === option ? "true" : "false");
+    });
+    closeSelect();
+  }
+
+  function resetSelect() {
+    if (!selectMenu) return;
+    const english = selectMenu.querySelector("[data-value='en']");
+    setLanguage(english);
+  }
+
+  function reset() {
+    stopTyping();
+    closeSelect();
+    if (form) form.reset();
+    resetSelect();
+    showPanel("intro");
+    if (leadEl) leadEl.textContent = "";
+    if (inviteEl) inviteEl.textContent = "";
+  }
+
+  function startIntro() {
+    reset();
+    playCaption();
+  }
+
+  if (startButton) {
+    startButton.addEventListener("click", () => {
+      stopTyping();
+      showPanel("form");
+      const nameInput = form && form.querySelector("input[name='name']");
+      if (nameInput) nameInput.focus();
+    });
+  }
+
+  if (form) {
+    form.addEventListener("submit", event => {
+      event.preventDefault();
+      closeSelect();
+      showPanel("success");
+    });
+  }
+
+  if (select && selectTrigger && selectMenu) {
+    selectTrigger.addEventListener("click", event => {
+      event.preventDefault();
+      const open = select.classList.contains("is-open");
+      if (open) {
+        closeSelect();
+        return;
+      }
+      select.classList.add("is-open");
+      selectTrigger.setAttribute("aria-expanded", "true");
+      selectMenu.hidden = false;
+    });
+
+    selectMenu.addEventListener("click", event => {
+      const option = event.target.closest("[role='option']");
+      if (option) setLanguage(option);
+    });
+
+    document.addEventListener("click", event => {
+      if (!select.contains(event.target)) closeSelect();
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") closeSelect();
+    });
+  }
+
+  return { startIntro, reset };
+}
+
+function initAgentsSkillsDemo() {
+  const root = document.querySelector("[data-skills-demo]");
+  if (!root) return null;
+
+  const caption = root.querySelector("[data-skills-caption]");
+  const stackStage = root.querySelector('[data-skills-stage="stack"]');
+  const runStage = root.querySelector('[data-skills-stage="run"]');
+  const demoButton = root.querySelector("[data-skills-demo-btn]");
+  const scenes = [...root.querySelectorAll("[data-skills-scene]")];
+  const fills = {
+    stack: root.querySelector('[data-skills-progress="stack"]'),
+    run: root.querySelector('[data-skills-progress="run"]')
+  };
+  const steps = [...root.querySelectorAll("[data-skills-step]")];
+  const output = root.querySelector("[data-skills-output]");
+  const timerEl = root.querySelector("[data-skills-timer]");
+  const tools = [...root.querySelectorAll(".agents-skills-run-tools [data-skills-tool]")];
+  const captions = {
+    stack: "Convert your best employee’s workflow into skills",
+    run: "Everyone runs the same workflow"
+  };
+  const stepGap = 920;
+  const spinHold = 420;
+  const tickHold = 320;
+  const stackHold = 5000;
+  const pressHold = 480;
+  const stageExit = 720;
+  let timeouts = [];
+  let timerInterval = 0;
+  let elapsed = 0;
+  let running = false;
+  let userPaused = false;
+  let phase = "stack";
+
+  function prefersReducedMotion() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function later(fn, ms) {
+    const id = window.setTimeout(fn, ms);
+    timeouts.push(id);
+    return id;
+  }
+
+  function clearTimers() {
+    timeouts.forEach(id => window.clearTimeout(id));
+    timeouts = [];
+    if (timerInterval) {
+      window.clearInterval(timerInterval);
+      timerInterval = 0;
+    }
+  }
+
+  function setCaption(key) {
+    if (caption) caption.textContent = captions[key];
+  }
+
+  function runDuration() {
+    if (prefersReducedMotion()) return 2800;
+    return 620 + steps.length * stepGap + 280 + 4200;
+  }
+
+  function setFill(key, mode, duration) {
+    const fill = fills[key];
+    if (!fill) return;
+    fill.style.transition = "none";
+    if (mode === "reset") {
+      fill.style.transform = "scaleX(0)";
+      return;
+    }
+    if (mode === "full") {
+      fill.style.transform = "scaleX(1)";
+      return;
+    }
+    fill.style.transform = "scaleX(0)";
+    void fill.offsetWidth;
+    if (prefersReducedMotion()) {
+      fill.style.transform = "scaleX(1)";
+      return;
+    }
+    fill.style.transition = `transform ${duration}ms linear`;
+    fill.style.transform = "scaleX(1)";
+  }
+
+  function startProgress(key) {
+    if (key === "stack") {
+      setFill("stack", "play", prefersReducedMotion() ? 900 : stackHold);
+      setFill("run", "reset");
+    } else {
+      setFill("stack", "full");
+      setFill("run", "play", runDuration());
+    }
+  }
+
+  function syncScenes(key) {
+    scenes.forEach(scene => {
+      const on = scene.dataset.skillsScene === key;
+      scene.classList.toggle("is-active", on);
+      scene.setAttribute("aria-current", on ? "true" : "false");
+    });
+  }
+
+  function showStage(key) {
+    phase = key;
+    if (stackStage) {
+      stackStage.hidden = key !== "stack";
+      stackStage.classList.toggle("is-active", key === "stack");
+      stackStage.classList.remove("is-exiting");
+    }
+    if (runStage) {
+      runStage.hidden = key !== "run";
+      runStage.classList.toggle("is-active", key === "run");
+      runStage.classList.remove("is-exiting");
+    }
+    syncScenes(key);
+  }
+
+  function setStepState(step, state) {
+    step.classList.toggle("is-on", Boolean(state));
+    step.classList.toggle("is-busy", state === "busy");
+    step.classList.toggle("is-checked", state === "checked");
+    step.classList.toggle("is-done", state === "done");
+  }
+
+  function resetRun() {
+    elapsed = 0;
+    if (timerEl) timerEl.textContent = "Worked for 0s";
+    steps.forEach(step => {
+      setStepState(step, "");
+      const label = step.querySelector("[data-skills-label]");
+      if (label && step.dataset.skillsDone) label.textContent = step.dataset.skillsDone;
+    });
+    tools.forEach(tool => tool.classList.remove("is-live"));
+    if (output) output.classList.remove("is-on");
+    if (demoButton) demoButton.classList.remove("is-pressed", "is-clicking");
+  }
+
+  function reset() {
+    running = false;
+    userPaused = false;
+    clearTimers();
+    resetRun();
+    setFill("stack", "reset");
+    setFill("run", "reset");
+    root.removeAttribute("data-phase");
+    showStage("stack");
+    setCaption("stack");
+  }
+
+  function playStack() {
+    resetRun();
+    showStage("stack");
+    setCaption("stack");
+    root.removeAttribute("data-phase");
+    void root.offsetWidth;
+    root.dataset.phase = "stack";
+    startProgress("stack");
+  }
+
+  function revealStep(step) {
+    const label = step.querySelector("[data-skills-label]");
+    const pending = step.dataset.skillsPending;
+    const done = step.dataset.skillsDone;
+    const toolKey = step.dataset.skillsTool;
+    const tool = toolKey && root.querySelector(`.agents-skills-run-tools [data-skills-tool="${toolKey}"]`);
+
+    if (prefersReducedMotion()) {
+      if (done && label) label.textContent = done;
+      setStepState(step, "done");
+      if (tool) tool.classList.add("is-live");
+      return;
+    }
+
+    if (pending && label) label.textContent = pending;
+    setStepState(step, "busy");
+
+    later(() => {
+      if (done && label) label.textContent = done;
+      setStepState(step, "checked");
+    }, spinHold);
+
+    later(() => {
+      setStepState(step, "done");
+      if (tool) tool.classList.add("is-live");
+    }, spinHold + tickHold);
+  }
+
+  function queueLoop(delay) {
+    later(() => {
+      if (!running || userPaused) return;
+      playStack();
+      later(pressInstall, prefersReducedMotion() ? 1400 : stackHold);
+    }, delay);
+  }
+
+  function playRun() {
+    resetRun();
+    showStage("run");
+    setCaption("run");
+    root.dataset.phase = "run";
+    startProgress("run");
+
+    if (prefersReducedMotion()) {
+      steps.forEach(step => revealStep(step));
+      if (output) output.classList.add("is-on");
+      if (timerEl) timerEl.textContent = "Worked for 10s";
+      queueLoop(2800);
+      return;
+    }
+
+    later(() => {
+      timerInterval = window.setInterval(() => {
+        elapsed += 1;
+        if (timerEl) timerEl.textContent = `Worked for ${elapsed}s`;
+      }, 1000);
+    }, 280);
+
+    steps.forEach((step, index) => {
+      later(() => revealStep(step), 620 + index * stepGap);
+    });
+
+    const outputAt = 620 + steps.length * stepGap + 280;
+    later(() => {
+      if (timerInterval) {
+        window.clearInterval(timerInterval);
+        timerInterval = 0;
+      }
+      if (output) output.classList.add("is-on");
+    }, outputAt);
+
+    queueLoop(outputAt + 4200);
+  }
+
+  function transitionToRun() {
+    if (prefersReducedMotion() || !stackStage) {
+      playRun();
+      return;
+    }
+
+    stackStage.classList.add("is-exiting");
+    later(() => {
+      if (!running) return;
+      playRun();
+    }, stageExit);
+  }
+
+  function pressInstall() {
+    if (phase !== "stack" || !running) return;
+    setFill("stack", "full");
+    if (demoButton) {
+      demoButton.classList.remove("is-pressed", "is-clicking");
+      void demoButton.offsetWidth;
+      demoButton.classList.add("is-pressed");
+      if (!prefersReducedMotion()) demoButton.classList.add("is-clicking");
+    }
+    later(() => {
+      if (demoButton) demoButton.classList.remove("is-pressed");
+    }, prefersReducedMotion() ? 0 : pressHold);
+    later(() => {
+      if (demoButton) demoButton.classList.remove("is-clicking");
+    }, prefersReducedMotion() ? 0 : 780);
+    later(() => {
+      if (!running || phase !== "stack") return;
+      transitionToRun();
+    }, prefersReducedMotion() ? 0 : pressHold);
+  }
+
+  function start() {
+    reset();
+    running = true;
+    playStack();
+    later(pressInstall, prefersReducedMotion() ? 900 : stackHold);
+  }
+
+  if (demoButton) {
+    demoButton.addEventListener("click", () => {
+      userPaused = false;
+      running = true;
+      clearTimers();
+      if (phase !== "stack") {
+        playStack();
+        later(pressInstall, prefersReducedMotion() ? 200 : 900);
+        return;
+      }
+      pressInstall();
+    });
+  }
+
+  scenes.forEach(scene => {
+    scene.addEventListener("click", () => {
+      const key = scene.dataset.skillsScene;
+      if (!key || key === phase) return;
+      userPaused = false;
+      running = true;
+      clearTimers();
+      if (key === "run") {
+        if (phase === "stack") pressInstall();
+        else playRun();
+        return;
+      }
+      playStack();
+      later(pressInstall, prefersReducedMotion() ? 900 : stackHold);
+    });
+  });
+
+  return { start, reset };
+}
+
+function initAgentsChatDemo() {
+  const root = document.querySelector("[data-chat-demo]");
+  if (!root) return null;
+
+  const caption = root.querySelector("[data-chat-caption]");
+  const welcomeStage = root.querySelector('[data-chat-stage="welcome"]');
+  const dialogStage = root.querySelector('[data-chat-stage="dialog"]');
+  const welcomeShell = root.querySelector("[data-chat-welcome]");
+  const composer = root.querySelector("[data-chat-composer]");
+  const typed = root.querySelector("[data-chat-typed]");
+  const send = root.querySelector("[data-chat-send]");
+  const suggestions = root.querySelector("[data-chat-suggestions]");
+  const lines = [...root.querySelectorAll("[data-chat-line]")];
+  const scenes = [...root.querySelectorAll("[data-chat-scene]")];
+  const fills = {
+    welcome: root.querySelector('[data-chat-progress="welcome"]'),
+    dialog: root.querySelector('[data-chat-progress="dialog"]')
+  };
+  const captions = {
+    welcome: "Meet buyers the moment they show intent",
+    dialog: "Qualify the deal, then book the next step"
+  };
+  const lineOrder = ["u1", "k1", "u2", "k2"];
+  const visitorLine = "We need to finance six refrigerated trailers, roughly $250K. What rates could we expect?";
+  const placeholder = "Ask our AI Assistant ...";
+  const welcomeHold = 7200;
+  const dialogHold = 11200;
+  const stageExit = 640;
+  let timeouts = [];
+  let running = false;
+  let userPaused = false;
+  let phase = "welcome";
+
+  function prefersReducedMotion() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function later(fn, ms) {
+    const id = window.setTimeout(fn, ms);
+    timeouts.push(id);
+    return id;
+  }
+
+  function clearTimers() {
+    timeouts.forEach(id => window.clearTimeout(id));
+    timeouts = [];
+  }
+
+  function setCaption(key) {
+    if (caption) caption.textContent = captions[key];
+  }
+
+  function setFill(key, mode, duration) {
+    const fill = fills[key];
+    if (!fill) return;
+    fill.style.transition = "none";
+    if (mode === "reset") {
+      fill.style.transform = "scaleX(0)";
+      return;
+    }
+    if (mode === "full") {
+      fill.style.transform = "scaleX(1)";
+      return;
+    }
+    fill.style.transform = "scaleX(0)";
+    void fill.offsetWidth;
+    if (prefersReducedMotion()) {
+      fill.style.transform = "scaleX(1)";
+      return;
+    }
+    fill.style.transition = `transform ${duration}ms linear`;
+    fill.style.transform = "scaleX(1)";
+  }
+
+  function startProgress(key) {
+    if (key === "welcome") {
+      setFill("welcome", "play", prefersReducedMotion() ? 900 : welcomeHold);
+      setFill("dialog", "reset");
+    } else {
+      setFill("welcome", "full");
+      setFill("dialog", "play", prefersReducedMotion() ? 1600 : dialogHold);
+    }
+  }
+
+  function syncScenes(key) {
+    scenes.forEach(scene => {
+      const on = scene.dataset.chatScene === key;
+      scene.classList.toggle("is-active", on);
+      scene.setAttribute("aria-current", on ? "true" : "false");
+    });
+  }
+
+  function showStage(key) {
+    phase = key;
+    if (welcomeStage) {
+      welcomeStage.hidden = key !== "welcome";
+      welcomeStage.classList.toggle("is-active", key === "welcome");
+      welcomeStage.classList.remove("is-exiting");
+    }
+    if (dialogStage) {
+      dialogStage.hidden = key !== "dialog";
+      dialogStage.classList.toggle("is-active", key === "dialog");
+      dialogStage.classList.remove("is-exiting");
+    }
+    syncScenes(key);
+  }
+
+  function typeInto(el, text, speed, done) {
+    if (!el) {
+      if (done) done();
+      return;
+    }
+    el.textContent = "";
+    if (prefersReducedMotion()) {
+      el.textContent = text;
+      if (done) done();
+      return;
+    }
+    let index = 0;
+    function tick() {
+      index += 1;
+      el.textContent = text.slice(0, index);
+      if (index < text.length) later(tick, speed);
+      else if (done) done();
+    }
+    tick();
+  }
+
+  function revealEl(el) {
+    if (!el) return;
+    el.hidden = false;
+    void el.offsetWidth;
+    el.classList.add("is-in");
+  }
+
+  function resetWelcome() {
+    if (welcomeShell) {
+      welcomeShell.hidden = true;
+      welcomeShell.classList.remove("is-in");
+    }
+    if (composer) {
+      composer.hidden = true;
+      composer.classList.remove("is-live", "is-in");
+    }
+    if (typed) typed.textContent = placeholder;
+    if (send) send.classList.remove("is-ready", "is-pressed");
+  }
+
+  function resetDialog() {
+    lines.forEach(line => {
+      line.classList.remove("is-in");
+      line.hidden = true;
+    });
+    if (suggestions) {
+      suggestions.hidden = true;
+      suggestions.classList.remove("is-in");
+    }
+  }
+
+  function reset() {
+    running = false;
+    userPaused = false;
+    clearTimers();
+    resetWelcome();
+    resetDialog();
+    setFill("welcome", "reset");
+    setFill("dialog", "reset");
+    showStage("welcome");
+    setCaption("welcome");
+  }
+
+  function revealLine(id) {
+    const line = lines.find(item => item.dataset.chatLine === id);
+    if (!line) return;
+    line.hidden = false;
+    void line.offsetWidth;
+    line.classList.add("is-in");
+  }
+
+  function playWelcome() {
+    resetWelcome();
+    resetDialog();
+    showStage("welcome");
+    setCaption("welcome");
+    startProgress("welcome");
+
+    if (prefersReducedMotion()) {
+      revealEl(welcomeShell);
+      revealEl(composer);
+      if (composer) composer.classList.add("is-live");
+      if (typed) typed.textContent = visitorLine;
+      if (send) send.classList.add("is-ready");
+      later(transitionToDialog, 1200);
+      return;
+    }
+
+    later(() => {
+      revealEl(welcomeShell);
+      later(() => {
+        revealEl(composer);
+        later(() => {
+          if (composer) composer.classList.add("is-live");
+          typeInto(typed, visitorLine, 16, () => {
+            if (send) send.classList.add("is-ready");
+            later(pressSend, 480);
+          });
+        }, 2800);
+      }, 900);
+    }, 280);
+  }
+
+  function pressSend() {
+    if (phase !== "welcome" || !running) return;
+    setFill("welcome", "full");
+    if (send) send.classList.add("is-pressed");
+    later(() => {
+      if (send) send.classList.remove("is-pressed");
+      if (!running || phase !== "welcome") return;
+      transitionToDialog();
+    }, prefersReducedMotion() ? 0 : 360);
+  }
+
+  function transitionToDialog() {
+    if (prefersReducedMotion() || !welcomeStage) {
+      playDialog();
+      return;
+    }
+    welcomeStage.classList.add("is-exiting");
+    later(() => {
+      if (!running) return;
+      playDialog();
+    }, stageExit);
+  }
+
+  function playDialog() {
+    resetDialog();
+    showStage("dialog");
+    setCaption("dialog");
+    startProgress("dialog");
+
+    if (prefersReducedMotion()) {
+      lineOrder.forEach(id => revealLine(id));
+      if (suggestions) {
+        suggestions.hidden = false;
+        suggestions.classList.add("is-in");
+      }
+      queueLoop(1600);
+      return;
+    }
+
+    const beats = [
+      { id: "u1", at: 320 },
+      { id: "k1", at: 1860 },
+      { id: "u2", at: 3960 },
+      { id: "k2", at: 5660 }
+    ];
+    beats.forEach(beat => {
+      later(() => revealLine(beat.id), beat.at);
+    });
+
+    later(() => {
+      if (suggestions) {
+        suggestions.hidden = false;
+        suggestions.classList.add("is-in");
+      }
+    }, 6860);
+
+    queueLoop(dialogHold);
+  }
+
+  function queueLoop(delay) {
+    later(() => {
+      if (!running || userPaused) return;
+      playWelcome();
+    }, delay);
+  }
+
+  function start() {
+    reset();
+    running = true;
+    playWelcome();
+  }
+
+  if (send) {
+    send.addEventListener("click", () => {
+      if (!running) {
+        running = true;
+        playWelcome();
+        return;
+      }
+      if (phase === "welcome") pressSend();
+    });
+  }
+
+  scenes.forEach(scene => {
+    scene.addEventListener("click", () => {
+      const key = scene.dataset.chatScene;
+      if (!key || key === phase) return;
+      userPaused = false;
+      running = true;
+      clearTimers();
+      if (key === "dialog") {
+        playDialog();
+        return;
+      }
+      playWelcome();
+    });
+  });
+
+  return { start, reset };
+}
+
 function initAgentsTabs() {
   const section = document.querySelector(".agents-section");
   if (!section) return;
 
   const tabs = [...section.querySelectorAll("[data-agent-tab]")];
   const panes = [...section.querySelectorAll("[data-agent-pane]")];
-  const visualFrame = section.querySelector(".agents-visual-frame");
+  const visualFrames = [...section.querySelectorAll("[data-agent-visual]")];
   if (!tabs.length || !panes.length) return;
 
   let activeTab = tabs.find(tab => tab.getAttribute("aria-selected") === "true") || tabs[0];
@@ -1089,6 +2162,20 @@ function initAgentsTabs() {
 
   function prefersReducedMotion() {
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function visualKeyFor(tabKey) {
+    if (tabKey === "support") return "voice";
+    if (tabKey === "workspace") return "skills";
+    return "chat";
+  }
+
+  function currentVisualFrame() {
+    return visualFrames.find(frame => !frame.hidden) || visualFrames[0];
+  }
+
+  function frameFor(key) {
+    return visualFrames.find(frame => frame.dataset.agentVisual === key);
   }
 
   function setActiveTab(tab) {
@@ -1101,19 +2188,37 @@ function initAgentsTabs() {
   }
 
   function clearVisualFrameMotion() {
-    if (!visualFrame) return;
-    visualFrame.classList.remove("is-fading-out", "is-entering");
+    visualFrames.forEach(frame => frame.classList.remove("is-fading-out", "is-entering"));
   }
 
-  function playVisualFrameEntrance() {
-    if (!visualFrame || prefersReducedMotion()) {
+  function setActiveVisual(key, animate) {
+    const nextFrame = frameFor(key);
+    if (!nextFrame) return;
+
+    visualFrames.forEach(frame => {
+      const on = frame === nextFrame;
+      frame.hidden = !on;
+      frame.classList.toggle("is-active", on);
+      frame.classList.remove("is-fading-out");
+    });
+
+    if (key === "voice") agentsVoiceDemo && agentsVoiceDemo.startIntro();
+    else if (agentsVoiceDemo) agentsVoiceDemo.reset();
+
+    if (key === "skills") agentsSkillsDemo && agentsSkillsDemo.start();
+    else if (agentsSkillsDemo) agentsSkillsDemo.reset();
+
+    if (key === "chat") agentsChatDemo && agentsChatDemo.start();
+    else if (agentsChatDemo) agentsChatDemo.reset();
+
+    if (!animate || prefersReducedMotion()) {
       clearVisualFrameMotion();
       return;
     }
 
-    visualFrame.classList.remove("is-fading-out", "is-entering");
-    void visualFrame.offsetWidth;
-    visualFrame.classList.add("is-entering");
+    nextFrame.classList.remove("is-entering");
+    void nextFrame.offsetWidth;
+    nextFrame.classList.add("is-entering");
   }
 
   function activatePane(pane, animate) {
@@ -1125,16 +2230,17 @@ function initAgentsTabs() {
       item.setAttribute("aria-hidden", on ? "false" : "true");
     });
 
+    const visualKey = visualKeyFor(pane.dataset.agentPane);
+    setActiveVisual(visualKey, animate);
+
     if (!animate || prefersReducedMotion()) {
       pane.classList.remove("is-entering");
-      clearVisualFrameMotion();
       return;
     }
 
     pane.classList.remove("is-entering");
     void pane.offsetWidth;
     pane.classList.add("is-entering");
-    playVisualFrameEntrance();
     window.clearTimeout(entranceTimer);
     entranceTimer = window.setTimeout(() => {
       pane.classList.remove("is-entering");
@@ -1160,16 +2266,17 @@ function initAgentsTabs() {
       return;
     }
 
+    const currentFrame = currentVisualFrame();
     currentPane.classList.remove("is-entering");
     currentPane.classList.add("is-fading-out");
-    if (visualFrame) {
-      visualFrame.classList.remove("is-entering");
-      visualFrame.classList.add("is-fading-out");
+    if (currentFrame) {
+      currentFrame.classList.remove("is-entering");
+      currentFrame.classList.add("is-fading-out");
     }
 
     transitionTimer = window.setTimeout(() => {
       currentPane.classList.remove("is-fading-out");
-      if (visualFrame) visualFrame.classList.remove("is-fading-out");
+      if (currentFrame) currentFrame.classList.remove("is-fading-out");
       activatePane(nextPane, true);
     }, 160);
   }
@@ -1194,16 +2301,331 @@ function initAgentsTabs() {
   });
 }
 
+function initDeploymentProcess(root) {
+  if (!root) return () => {};
+  const teams = [...root.querySelectorAll("[data-deployment-team]")];
+  const status = root.querySelector("[data-deployment-status]");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  // Both lanes share one clock: tasks have different lengths, but finish together.
+  const deploymentDuration = 22400;
+  const holdDuration = 5000;
+  const lanes = teams.map(team => ({
+    team,
+    rows: [...team.querySelectorAll("[data-deployment-step]")],
+    completed: -1
+  }));
+  const rings = [...teams.map(team => team.querySelector(".deployment-ring")), root.querySelector("[data-deployment-total]")]
+    .map(ring => ({ ring, label: ring.querySelector("span") }));
+  const expertiseTeam = root.querySelector('[data-deployment-step="map"]').closest("[data-deployment-team]");
+  const yourTeam = root.querySelector('[data-deployment-step="rules"]').closest("[data-deployment-team]");
+  let elapsed = reducedMotion.matches ? deploymentDuration : 0;
+  let inView = false;
+  let frame = null;
+  let previousTime = null;
+  let lastPaint = -Infinity;
+  let frontTeam = null;
+
+  const render = () => {
+    const progress = Math.min(elapsed / deploymentDuration, 1);
+    lanes.forEach(lane => {
+      const units = progress * lane.rows.length;
+      const done = Math.floor(units);
+      if (done !== lane.completed) {
+        lane.rows.forEach((row, index) => {
+          row.classList.toggle("is-done", index < done);
+          row.classList.toggle("is-working", index === done);
+        });
+        lane.completed = done;
+      }
+      // Each lane advances even when its card is behind the other one.
+      if (done < lane.rows.length) {
+        lane.rows[done].style.setProperty("--task-progress", (units - done).toFixed(3));
+      }
+    });
+    rings.forEach(({ ring, label }) => {
+      ring.style.setProperty("--progress", (progress * 100).toFixed(2) + "%");
+      const text = Math.floor(progress * 100) + "%";
+      if (label.textContent !== text) label.textContent = text;
+    });
+    // Presentation is independent of work: only two swaps during the whole run.
+    const nextTeam = progress >= 1 / 3 && progress < 2 / 3 ? yourTeam : expertiseTeam;
+    if (nextTeam !== frontTeam) {
+      teams.forEach(team => {
+        team.classList.toggle("is-front", team === nextTeam);
+        team.classList.toggle("is-arriving", frontTeam !== null && team === nextTeam);
+        team.classList.toggle("is-retreating", frontTeam !== null && team !== nextTeam);
+      });
+      frontTeam = nextTeam;
+    }
+    const complete = progress === 1;
+    const text = complete ? "IN PRODUCTION" : "Deployment in progress";
+    if (status.textContent !== text) status.textContent = text;
+    root.classList.toggle("is-complete", complete);
+  };
+  const animate = (now) => {
+    frame = null;
+    if (previousTime !== null) elapsed += now - previousTime;
+    previousTime = now;
+    if (elapsed >= deploymentDuration + holdDuration) elapsed = 0;
+    if (now - lastPaint >= 32) {
+      // Three small rings at ~30fps; no layout reads or per-frame DOM queries.
+      render();
+      lastPaint = now;
+    }
+    frame = requestAnimationFrame(animate);
+  };
+  const sync = () => {
+    const running = root.classList.contains("is-active") && inView && !document.hidden && !reducedMotion.matches;
+    root.classList.toggle("is-running", running);
+    if (!running) {
+      if (frame !== null) cancelAnimationFrame(frame);
+      frame = null;
+      previousTime = null;
+    } else if (frame === null) {
+      previousTime = null;
+      frame = requestAnimationFrame(animate);
+    }
+  };
+  render();
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      sync();
+    }, { threshold: 0.1 });
+    observer.observe(root.parentElement);
+  } else {
+    inView = true;
+  }
+  document.addEventListener("visibilitychange", sync);
+  reducedMotion.addEventListener("change", () => {
+    elapsed = reducedMotion.matches ? deploymentDuration : 0;
+    previousTime = null;
+    render();
+    sync();
+  });
+  return sync;
+}
+
+function initUsageProcess(root) {
+  if (!root) return () => {};
+  const count = root.querySelector("[data-usage-count]");
+  const history = root.querySelector("[data-usage-history]");
+  const historyCount = root.querySelector("[data-usage-history-count]");
+  const historyRows = [...history.children];
+  const timestamps = new Map(historyRows.map((row, i) => [row, -[0, 5, 12, 18, 24][i] * 60000]));
+  const timeLabels = new Map(historyRows.map(row => [row, row.querySelector("time")]));
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const examples = [
+    ["Product questions", "Sales · Answered"],
+    ["Order status", "Support · Resolved"],
+    ["Demo request", "Sales · Meeting booked"],
+    ["Account access", "Support · Resolved"],
+    ["Plan comparison", "Sales · Answered"],
+    ["Delivery update", "Support · Resolved"]
+  ];
+  const formatter = new Intl.NumberFormat("en-US");
+  let elapsed = 0;
+  let previousTime = null;
+  let lastPaint = -Infinity;
+  let nextEntry = 2000;
+  let entryIndex = 0;
+  let frame = null;
+  let inView = false;
+  const paint = () => {
+    const seconds = elapsed / 1000;
+    const value = 284650 + seconds * 24;
+    const tokenText = formatter.format(Math.floor(value));
+    if (count.textContent !== tokenText) count.textContent = tokenText;
+    historyRows.forEach(row => {
+      const age = Math.max(0, Math.floor((elapsed - timestamps.get(row)) / 1000));
+      const minutes = Math.floor(age / 60);
+      const hours = Math.floor(minutes / 60);
+      const text = hours > 0 ? hours + (hours === 1 ? " hr ago" : " hrs ago")
+        : minutes > 0 ? minutes + (minutes === 1 ? " min ago" : " mins ago")
+        : "Just now";
+      const label = timeLabels.get(row);
+      if (label.textContent !== text) label.textContent = text;
+    });
+  };
+  const addEntry = () => {
+    // Recycle a fixed pool; the illustrated feed never grows the DOM.
+    const row = history.lastElementChild;
+    const [title, detail] = examples[entryIndex++ % examples.length];
+    row.querySelector("strong").textContent = title;
+    row.querySelector(".usage-history-detail").textContent = detail;
+    timestamps.set(row, elapsed);
+    timeLabels.get(row).textContent = "Just now";
+    historyCount.textContent = formatter.format(1284 + entryIndex);
+    history.prepend(row);
+    // Compressed illustrative history: irregular minute gaps, newest stays live.
+    let minutesAgo = 0;
+    [...history.children].forEach((entry, index) => {
+      if (index > 0) minutesAgo += 2 + Math.floor(Math.random() * 7);
+      timestamps.set(entry, elapsed - minutesAgo * 60000);
+    });
+    paint();
+    history.classList.add("is-updating");
+  };
+  history.addEventListener("animationend", () => history.classList.remove("is-updating"));
+  const animate = (now) => {
+    frame = null;
+    if (previousTime !== null) elapsed += now - previousTime;
+    previousTime = now;
+    if (now - lastPaint >= 32) {
+      paint();
+      lastPaint = now;
+    }
+    if (elapsed >= nextEntry) {
+      addEntry();
+      nextEntry = elapsed + 2000;
+    }
+    frame = requestAnimationFrame(animate);
+  };
+  const sync = () => {
+    const running = root.classList.contains("is-active") && inView && !document.hidden && !reducedMotion.matches;
+    root.classList.toggle("is-running", running);
+    if (!running) {
+      if (frame !== null) cancelAnimationFrame(frame);
+      frame = null;
+      previousTime = null;
+    } else if (frame === null) {
+      previousTime = null;
+      frame = requestAnimationFrame(animate);
+    }
+  };
+  paint();
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      sync();
+    }, { threshold: .1 }).observe(root.parentElement);
+  } else {
+    inView = true;
+  }
+  document.addEventListener("visibilitychange", sync);
+  reducedMotion.addEventListener("change", () => { paint(); sync(); });
+  return sync;
+}
+
+function initPlatformRotation(section, items, activate) {
+  const controls = section.querySelector(".platform-rotation");
+  if (!controls) return () => {};
+  const tracks = [...controls.querySelectorAll("[data-rotation-step]")];
+  const configurator = section.querySelector(".private-process");
+  const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const durations = { usage: 10000, forward: 26000, private: 10000 };
+  let paused = motion.matches;
+  let inView = false;
+  let interacting = false;
+  let elapsed = 0;
+  let previousTime = null;
+  let frame = null;
+  let lastPaint = -Infinity;
+  const activeIndex = () => Math.max(0, items.findIndex(item => item.classList.contains("is-open")));
+  const paint = () => {
+    const index = activeIndex();
+    const key = items[index].getAttribute("data-platform-item");
+    tracks.forEach((track, i) => {
+      track.style.setProperty("--rotation-progress",
+        i < index ? "1" : i === index ? String(Math.min(elapsed / durations[key], 1)) : "0");
+      track.setAttribute("aria-selected", i === index ? "true" : "false");
+      track.tabIndex = i === index ? 0 : -1;
+    });
+  };
+  const animate = now => {
+    frame = null;
+    if (previousTime !== null) elapsed += now - previousTime;
+    previousTime = now;
+    const index = activeIndex();
+    const duration = durations[items[index].getAttribute("data-platform-item")];
+    if (elapsed >= duration) activate(items[(index + 1) % items.length]);
+    if (now - lastPaint >= 32) { paint(); lastPaint = now; }
+    frame = requestAnimationFrame(animate);
+  };
+  const sync = () => {
+    const focused = configurator && configurator.contains(document.activeElement);
+    const running = inView && !paused && !interacting && !focused && !document.hidden;
+    if (!running) {
+      if (frame !== null) cancelAnimationFrame(frame);
+      frame = null;
+      previousTime = null;
+    } else if (frame === null) {
+      previousTime = null;
+      frame = requestAnimationFrame(animate);
+    }
+  };
+  const reset = () => { elapsed = 0; previousTime = null; paint(); };
+
+  tracks.forEach((track) => {
+    track.addEventListener("click", () => {
+      const key = track.getAttribute("data-rotation-step");
+      const item = items.find((entry) => entry.getAttribute("data-platform-item") === key);
+      if (item) activate(item);
+    });
+    track.addEventListener("keydown", (event) => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight" && event.key !== "Home" && event.key !== "End") return;
+      event.preventDefault();
+      const index = activeIndex();
+      let next = index;
+      if (event.key === "ArrowRight") next = (index + 1) % items.length;
+      if (event.key === "ArrowLeft") next = (index - 1 + items.length) % items.length;
+      if (event.key === "Home") next = 0;
+      if (event.key === "End") next = items.length - 1;
+      activate(items[next]);
+      const nextTrack = tracks.find((entry) => entry.getAttribute("data-rotation-step") === items[next].getAttribute("data-platform-item"));
+      if (nextTrack) nextTrack.focus();
+    });
+  });
+
+  if (configurator) {
+    configurator.addEventListener("pointerenter", () => { interacting = true; sync(); });
+    configurator.addEventListener("pointerleave", () => { interacting = false; sync(); });
+    configurator.addEventListener("focusin", sync);
+    configurator.addEventListener("focusout", () => queueMicrotask(sync));
+    configurator.addEventListener("change", reset);
+  }
+  document.addEventListener("visibilitychange", sync);
+  motion.addEventListener("change", () => { paused = motion.matches; sync(); });
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      sync();
+    }, { threshold: .25 }).observe(section.querySelector(".platform-visual"));
+  } else { inView = true; }
+  paint();
+  sync();
+  return reset;
+}
+
 function initPlatformAccordion() {
   const roots = [...document.querySelectorAll("[data-platform-accordion]")];
 
   roots.forEach((root) => {
     const section = root.closest(".platform-section") || root;
     const items = [...root.querySelectorAll(".platform-item")];
-    const images = [...section.querySelectorAll(".platform-visual-img")];
+    const images = [...section.querySelectorAll("[data-platform-image]")];
+    const processes = images.filter((node) =>
+      node.matches(".usage-process, .deployment-process, .private-process")
+    );
+    const syncDeployment = initDeploymentProcess(section.querySelector(".deployment-process"));
+    const syncUsage = initUsageProcess(section.querySelector(".usage-process"));
     if (!items.length) return;
+    let resetRotation = () => {};
+    let entranceTimer;
+
+    const playProcessEntrance = (process) => {
+      if (!process || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      window.clearTimeout(entranceTimer);
+      processes.forEach((node) => node.classList.remove("is-entering"));
+      void process.offsetWidth;
+      process.classList.add("is-entering");
+      entranceTimer = window.setTimeout(() => {
+        process.classList.remove("is-entering");
+      }, 1100);
+    };
 
     const activate = (item) => {
+      resetRotation();
       if (!item || item.classList.contains("is-open")) return;
       const key = item.getAttribute("data-platform-item");
 
@@ -1216,7 +2638,15 @@ function initPlatformAccordion() {
 
       images.forEach((img) => {
         img.classList.toggle("is-active", img.getAttribute("data-platform-image") === key);
+        if (img.classList.contains("private-process")) {
+          img.toggleAttribute("inert", key !== "private");
+          img.setAttribute("aria-hidden", key === "private" ? "false" : "true");
+        }
       });
+      syncDeployment();
+      syncUsage();
+      playProcessEntrance(processes.find((node) => node.getAttribute("data-platform-image") === key));
+      resetRotation();
     };
 
     items.forEach((item) => {
@@ -1225,6 +2655,20 @@ function initPlatformAccordion() {
         trigger.addEventListener("click", () => activate(item));
       }
     });
+    syncDeployment();
+    syncUsage();
+    resetRotation = initPlatformRotation(section, items, activate);
+
+    const visual = section.querySelector(".platform-visual");
+    if (visual && processes.length && "IntersectionObserver" in window) {
+      const entranceObserver = new IntersectionObserver((entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        const current = processes.find((node) => node.classList.contains("is-active"));
+        playProcessEntrance(current);
+        entranceObserver.disconnect();
+      }, { threshold: 0.25 });
+      entranceObserver.observe(visual);
+    }
   });
 }
 
@@ -1244,7 +2688,12 @@ document.addEventListener("DOMContentLoaded", () => {
   initTestimonialControls();
   initClientBentoMarquee();
   initIndustryCardReveals();
+  agentsVoiceDemo = initAgentsVoiceDemo();
+  agentsSkillsDemo = initAgentsSkillsDemo();
+  agentsChatDemo = initAgentsChatDemo();
   initAgentsTabs();
+  if (agentsChatDemo) agentsChatDemo.start();
+  initAgentsCaseSwitchers();
   initHeroGrid();
   initPlatformAccordion();
 });
