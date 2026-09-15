@@ -1,0 +1,1674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expertise.ai — Deploy AI agents for sales and customer support (V2)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="polish.css" />
+</head>
+<body class="page-v2">
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="navbar">
+    <div class="section-container navbar-container">
+      <div class="navbar-content">
+      <a href="#" class="logo" aria-label="Expertise.ai">
+        <img src="../assets/expertise-logo.svg" alt="Expertise.ai" class="nav-logo-img" />
+      </a>
+      <nav class="nav-links" id="nav-links">
+        <a href="#" class="nav-link">Product <svg viewBox="0 0 16 16" width="12" height="12" fill="none"><path d="M4 6l4 4 4-4" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#" class="nav-link">Pricing</a>
+        <a href="#" class="nav-link">Resources <svg viewBox="0 0 16 16" width="12" height="12" fill="none"><path d="M4 6l4 4 4-4" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a href="#" class="nav-link">Partner Program</a>
+      </nav>
+      <div class="navbar-actions">
+        <button class="btn-flag" aria-label="Language">
+          <svg viewBox="0 0 24 16" width="24" height="16" fill="none">
+            <rect width="24" height="16" fill="#CA4638"/>
+            <rect y="1.2" width="24" height="1.2" fill="white"/>
+            <rect y="3.6" width="24" height="1.2" fill="white"/>
+            <rect y="6" width="24" height="1.2" fill="white"/>
+            <rect y="8.4" width="24" height="1.2" fill="white"/>
+            <rect y="10.8" width="24" height="1.2" fill="white"/>
+            <rect y="13.6" width="24" height="1.2" fill="white"/>
+            <rect width="12" height="8.53333" fill="#346DA6"/>
+          </svg>
+          <svg viewBox="0 0 16 16" width="12" height="12" fill="none"><path d="M4 6l4 4 4-4" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <a href="#" class="btn-signin">Sign in</a>
+        <a href="#" class="btn-start">Start for free</a>
+        <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="nav-mobile-drawer">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile nav drawer -->
+  <nav class="nav-mobile-drawer" id="nav-mobile-drawer" aria-label="Mobile navigation">
+    <a href="#" class="mobile-link">Product</a>
+    <a href="#" class="mobile-link">Pricing</a>
+    <a href="#" class="mobile-link">Resources</a>
+    <a href="#" class="mobile-link">Partner Program</a>
+    <div class="mobile-actions">
+      <a href="#" class="mobile-btn-start">Start for free</a>
+      <a href="#" class="mobile-btn-signin">Sign in</a>
+    </div>
+  </nav>
+
+  <!-- ===== SECTION 1: HERO ===== -->
+  <section class="hero">
+    <div class="section-container hero-layout">
+      <div class="hero-content">
+        <div class="hero-grid" id="hero-grid" aria-hidden="true"></div>
+        <div class="hero-container">
+          <div class="hero-intro">
+            <div class="hero-trust-strip" aria-label="Customer rating and compliance credentials">
+              <a class="hero-trust-rating" href="https://www.g2.com/products/expertise-ai/reviews" target="_blank" rel="noopener" aria-label="View Expertise AI's 4.9 rating on G2">
+                <img src="../assets/trust-g2-rating.svg" alt="G2 rating: 4.9 out of 5" />
+              </a>
+              <span class="hero-trust-divider" aria-hidden="true"></span>
+              <a class="hero-compliance-link" href="https://trust.expertise.ai/" target="_blank" rel="noopener">
+                <img class="hero-compliance-logo" src="../assets/trust-aicpa-soc.webp" alt="" aria-hidden="true" />
+                <span>SOC 2 Type II &amp; SOC 3</span>
+              </a>
+              <a class="hero-compliance-link" href="https://trust.expertise.ai/" target="_blank" rel="noopener">
+                <img class="hero-compliance-logo" src="../assets/trust-gdpr.svg" alt="" aria-hidden="true" />
+                <span>GDPR</span>
+              </a>
+              <span class="hero-compliance-dot" aria-hidden="true">•</span>
+              <a class="hero-compliance-link" href="https://trust.expertise.ai/" target="_blank" rel="noopener">
+                <img class="hero-compliance-logo" src="../assets/trust-ccpa.webp" alt="" aria-hidden="true" />
+                <span>CCPA</span>
+              </a>
+            </div>
+            <h1 class="hero-heading">
+              <span class="hero-heading-line">Deploy AI agents for</span>
+              <span class="hero-heading-line hero-heading-green">sales and customer support.</span>
+            </h1>
+            <p class="hero-copy">
+              Turn customer questions into resolved requests and qualified opportunities. We work with your team to connect your knowledge, systems, and workflows, with the controls your business needs.
+            </p>
+            <div class="hero-actions">
+              <a class="hero-demo-cta" href="https://meetings.hubspot.com/nick-raja/expertise-ai" target="_blank" rel="noopener"><span class="hero-demo-label">Book a demo</span><span class="hero-demo-arrow" aria-hidden="true"></span></a>
+              <button class="hero-navi-cta" type="button">
+                <svg class="hero-navi-icon" viewBox="0 0 16 16" width="16" height="16" fill="none" aria-hidden="true">
+                  <path d="M6 2V14" stroke="currentColor" stroke-linecap="square"/>
+                  <path d="M4 4.667V11.334" stroke="currentColor" stroke-linecap="square"/>
+                  <path d="M8 4V12" stroke="currentColor" stroke-linecap="square"/>
+                  <path d="M10 6V10" stroke="currentColor" stroke-linecap="square"/>
+                  <path d="M12 4.667V11.334" stroke="currentColor" stroke-linecap="square"/>
+                  <path d="M14 7.333V8.666" stroke="currentColor" stroke-linecap="square"/>
+                  <path d="M2 7.333V8.666" stroke="currentColor" stroke-linecap="square"/>
+                </svg>
+                <span>Talk to Navi</span>
+              </button>
+            </div>
+          </div>
+        <div class="stats-grid hero-stats-grid" aria-hidden="true">
+          <a href="https://www.expertise.ai/live/case-studies/anchain-ai" target="_blank" rel="noopener" class="stat-card">
+            <div class="stat-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.0225724 3.86871C0.0225724 3.31485 0.693408 3.02661 1.09534 3.42788L6.88943 9.21518C7.27156 9.61928 7.00832 10.2918 6.44787 10.2918H0.65095C0.311286 10.2918 0.0197419 10.0064 0.0225724 9.65884V3.86871Z" fill="currentColor"/><path d="M6.86969 14.7169L1.08126 20.507C0.676496 20.9054 0 20.6228 0 20.0662V14.276C0 13.9313 0.291544 13.643 0.636869 13.6459H6.42813C7.00273 13.6459 7.27163 14.3156 6.86969 14.7169Z" fill="currentColor"/><path d="M24 14.3184V20.1086C24 20.6653 23.3292 20.9507 22.9216 20.5494L17.1275 14.7593C16.7284 14.358 17.0171 13.6826 17.5719 13.6883H23.3631C23.7113 13.6883 23.9774 13.9539 23.9972 14.3184H24Z" fill="currentColor"/><path d="M10.3258 17.5146V23.3019C10.3258 23.6495 10.0343 23.9377 9.68894 23.9349H3.89768C3.3429 23.9349 3.05701 23.2652 3.45612 22.8583L9.24738 17.0766C9.65214 16.6923 10.3286 16.9551 10.3286 17.5118L10.3258 17.5146Z" fill="currentColor"/><path d="M10.3258 0.613205V6.42029C10.3258 6.97415 9.65496 7.25956 9.25302 6.86112L3.4561 1.07664C3.05417 0.672548 3.34005 0 3.89483 0H9.68609C10.0541 0 10.3201 0.265628 10.323 0.613205H10.3258Z" fill="currentColor"/><path d="M13.677 6.42029V0.63016C13.677 0.285409 13.9686 0 14.3111 0H20.1052C20.66 0 20.9458 0.669722 20.5467 1.07664L14.7555 6.86394C14.3507 7.24543 13.6742 6.9798 13.6742 6.42311L13.677 6.42029Z" fill="currentColor"/><path d="M17.1105 9.22367L22.9018 3.43637C23.3065 3.03228 23.983 3.31769 23.9802 3.87155V9.65885C23.9802 10.0234 23.7141 10.2918 23.349 10.2918H17.5549C17.0001 10.2918 16.7142 9.62212 17.1133 9.22367H17.1105Z" fill="currentColor"/><path d="M20.5495 22.9234C20.9486 23.3275 20.6599 24.0028 20.108 23.9943L14.3139 24C13.9488 23.9943 13.6799 23.7061 13.6799 23.3642V17.5769C13.6799 17.023 14.3563 16.732 14.7611 17.1361L20.5524 22.9234H20.5495Z" fill="currentColor"/></svg>
+            </div>
+            <div class="stat-body">
+              <div class="stat-number">+84%</div>
+              <div class="stat-label">chat-to-lead conversion</div>
+              <div class="stat-divider"></div>
+              <div class="stat-company-row"><div class="stat-company">AnChain.AI</div><span class="stat-arrow" aria-hidden="true"></span></div>
+            </div>
+          </a>
+          <a href="https://www.expertise.ai/live/case-studies/gutterglove" target="_blank" rel="noopener" class="stat-card">
+            <div class="stat-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.0225724 3.86871C0.0225724 3.31485 0.693408 3.02661 1.09534 3.42788L6.88943 9.21518C7.27156 9.61928 7.00832 10.2918 6.44787 10.2918H0.65095C0.311286 10.2918 0.0197419 10.0064 0.0225724 9.65884V3.86871Z" fill="currentColor"/><path d="M6.86969 14.7169L1.08126 20.507C0.676496 20.9054 0 20.6228 0 20.0662V14.276C0 13.9313 0.291544 13.643 0.636869 13.6459H6.42813C7.00273 13.6459 7.27163 14.3156 6.86969 14.7169Z" fill="currentColor"/><path d="M24 14.3184V20.1086C24 20.6653 23.3292 20.9507 22.9216 20.5494L17.1275 14.7593C16.7284 14.358 17.0171 13.6826 17.5719 13.6883H23.3631C23.7113 13.6883 23.9774 13.9539 23.9972 14.3184H24Z" fill="currentColor"/><path d="M10.3258 17.5146V23.3019C10.3258 23.6495 10.0343 23.9377 9.68894 23.9349H3.89768C3.3429 23.9349 3.05701 23.2652 3.45612 22.8583L9.24738 17.0766C9.65214 16.6923 10.3286 16.9551 10.3286 17.5118L10.3258 17.5146Z" fill="currentColor"/><path d="M10.3258 0.613205V6.42029C10.3258 6.97415 9.65496 7.25956 9.25302 6.86112L3.4561 1.07664C3.05417 0.672548 3.34005 0 3.89483 0H9.68609C10.0541 0 10.3201 0.265628 10.323 0.613205H10.3258Z" fill="currentColor"/><path d="M13.677 6.42029V0.63016C13.677 0.285409 13.9686 0 14.3111 0H20.1052C20.66 0 20.9458 0.669722 20.5467 1.07664L14.7555 6.86394C14.3507 7.24543 13.6742 6.9798 13.6742 6.42311L13.677 6.42029Z" fill="currentColor"/><path d="M17.1105 9.22367L22.9018 3.43637C23.3065 3.03228 23.983 3.31769 23.9802 3.87155V9.65885C23.9802 10.0234 23.7141 10.2918 23.349 10.2918H17.5549C17.0001 10.2918 16.7142 9.62212 17.1133 9.22367H17.1105Z" fill="currentColor"/><path d="M20.5495 22.9234C20.9486 23.3275 20.6599 24.0028 20.108 23.9943L14.3139 24C13.9488 23.9943 13.6799 23.7061 13.6799 23.3642V17.5769C13.6799 17.023 14.3563 16.732 14.7611 17.1361L20.5524 22.9234H20.5495Z" fill="currentColor"/></svg>
+            </div>
+            <div class="stat-body">
+              <div class="stat-number">99%</div>
+              <div class="stat-label">chats resolved autonomously</div>
+              <div class="stat-divider"></div>
+              <div class="stat-company-row"><div class="stat-company">Gutterglove</div><span class="stat-arrow" aria-hidden="true"></span></div>
+            </div>
+          </a>
+          <a href="https://www.expertise.ai/live/case-studies/holistiplan" target="_blank" rel="noopener" class="stat-card">
+            <div class="stat-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.0225724 3.86871C0.0225724 3.31485 0.693408 3.02661 1.09534 3.42788L6.88943 9.21518C7.27156 9.61928 7.00832 10.2918 6.44787 10.2918H0.65095C0.311286 10.2918 0.0197419 10.0064 0.0225724 9.65884V3.86871Z" fill="currentColor"/><path d="M6.86969 14.7169L1.08126 20.507C0.676496 20.9054 0 20.6228 0 20.0662V14.276C0 13.9313 0.291544 13.643 0.636869 13.6459H6.42813C7.00273 13.6459 7.27163 14.3156 6.86969 14.7169Z" fill="currentColor"/><path d="M24 14.3184V20.1086C24 20.6653 23.3292 20.9507 22.9216 20.5494L17.1275 14.7593C16.7284 14.358 17.0171 13.6826 17.5719 13.6883H23.3631C23.7113 13.6883 23.9774 13.9539 23.9972 14.3184H24Z" fill="currentColor"/><path d="M10.3258 17.5146V23.3019C10.3258 23.6495 10.0343 23.9377 9.68894 23.9349H3.89768C3.3429 23.9349 3.05701 23.2652 3.45612 22.8583L9.24738 17.0766C9.65214 16.6923 10.3286 16.9551 10.3286 17.5118L10.3258 17.5146Z" fill="currentColor"/><path d="M10.3258 0.613205V6.42029C10.3258 6.97415 9.65496 7.25956 9.25302 6.86112L3.4561 1.07664C3.05417 0.672548 3.34005 0 3.89483 0H9.68609C10.0541 0 10.3201 0.265628 10.323 0.613205H10.3258Z" fill="currentColor"/><path d="M13.677 6.42029V0.63016C13.677 0.285409 13.9686 0 14.3111 0H20.1052C20.66 0 20.9458 0.669722 20.5467 1.07664L14.7555 6.86394C14.3507 7.24543 13.6742 6.9798 13.6742 6.42311L13.677 6.42029Z" fill="currentColor"/><path d="M17.1105 9.22367L22.9018 3.43637C23.3065 3.03228 23.983 3.31769 23.9802 3.87155V9.65885C23.9802 10.0234 23.7141 10.2918 23.349 10.2918H17.5549C17.0001 10.2918 16.7142 9.62212 17.1133 9.22367H17.1105Z" fill="currentColor"/><path d="M20.5495 22.9234C20.9486 23.3275 20.6599 24.0028 20.108 23.9943L14.3139 24C13.9488 23.9943 13.6799 23.7061 13.6799 23.3642V17.5769C13.6799 17.023 14.3563 16.732 14.7611 17.1361L20.5524 22.9234H20.5495Z" fill="currentColor"/></svg>
+            </div>
+            <div class="stat-body">
+              <div class="stat-number">2.7x</div>
+              <div class="stat-label">more leads at 90% lower cost</div>
+              <div class="stat-divider"></div>
+              <div class="stat-company-row"><div class="stat-company">Holistiplan</div><span class="stat-arrow" aria-hidden="true"></span></div>
+            </div>
+          </a>
+          <a href="https://www.expertise.ai/live/case-studies/david-sklar" target="_blank" rel="noopener" class="stat-card">
+            <div class="stat-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.0225724 3.86871C0.0225724 3.31485 0.693408 3.02661 1.09534 3.42788L6.88943 9.21518C7.27156 9.61928 7.00832 10.2918 6.44787 10.2918H0.65095C0.311286 10.2918 0.0197419 10.0064 0.0225724 9.65884V3.86871Z" fill="currentColor"/><path d="M6.86969 14.7169L1.08126 20.507C0.676496 20.9054 0 20.6228 0 20.0662V14.276C0 13.9313 0.291544 13.643 0.636869 13.6459H6.42813C7.00273 13.6459 7.27163 14.3156 6.86969 14.7169Z" fill="currentColor"/><path d="M24 14.3184V20.1086C24 20.6653 23.3292 20.9507 22.9216 20.5494L17.1275 14.7593C16.7284 14.358 17.0171 13.6826 17.5719 13.6883H23.3631C23.7113 13.6883 23.9774 13.9539 23.9972 14.3184H24Z" fill="currentColor"/><path d="M10.3258 17.5146V23.3019C10.3258 23.6495 10.0343 23.9377 9.68894 23.9349H3.89768C3.3429 23.9349 3.05701 23.2652 3.45612 22.8583L9.24738 17.0766C9.65214 16.6923 10.3286 16.9551 10.3286 17.5118L10.3258 17.5146Z" fill="currentColor"/><path d="M10.3258 0.613205V6.42029C10.3258 6.97415 9.65496 7.25956 9.25302 6.86112L3.4561 1.07664C3.05417 0.672548 3.34005 0 3.89483 0H9.68609C10.0541 0 10.3201 0.265628 10.323 0.613205H10.3258Z" fill="currentColor"/><path d="M13.677 6.42029V0.63016C13.677 0.285409 13.9686 0 14.3111 0H20.1052C20.66 0 20.9458 0.669722 20.5467 1.07664L14.7555 6.86394C14.3507 7.24543 13.6742 6.9798 13.6742 6.42311L13.677 6.42029Z" fill="currentColor"/><path d="M17.1105 9.22367L22.9018 3.43637C23.3065 3.03228 23.983 3.31769 23.9802 3.87155V9.65885C23.9802 10.0234 23.7141 10.2918 23.349 10.2918H17.5549C17.0001 10.2918 16.7142 9.62212 17.1133 9.22367H17.1105Z" fill="currentColor"/><path d="M20.5495 22.9234C20.9486 23.3275 20.6599 24.0028 20.108 23.9943L14.3139 24C13.9488 23.9943 13.6799 23.7061 13.6799 23.3642V17.5769C13.6799 17.023 14.3563 16.732 14.7611 17.1361L20.5524 22.9234H20.5495Z" fill="currentColor"/></svg>
+            </div>
+            <div class="stat-body">
+              <div class="stat-number">9x</div>
+              <div class="stat-label">pipeline ROI in 6 months</div>
+              <div class="stat-divider"></div>
+              <div class="stat-company-row"><div class="stat-company">David Sklar &amp; Associates</div><span class="stat-arrow" aria-hidden="true"></span></div>
+            </div>
+          </a>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRUSTED CLIENT BENTO ===== -->
+  <section class="client-marquee-section" aria-label="Trusted by top companies">
+    <div class="section-container client-marquee-layout">
+      <div class="client-marquee-content">
+        <div class="client-bento-viewport">
+          <div class="client-bento-track">
+        <div class="client-bento">
+          <a class="client-bento-card client-bento-card--case-study client-bento-card--logo client-bento-go" href="https://www.expertise.ai/live/case-studies/401go" target="_blank" rel="noopener" data-case-study-title="How 401GO Uncovered Hidden Customer Demand">
+            <img src="../assets/client-401go.png" alt="401GO" />
+            <span class="client-bento-arrow" aria-hidden="true"></span>
+          </a>
+
+          <a class="client-bento-card client-bento-card--case-study client-bento-card--quote client-bento-anchain" href="https://www.expertise.ai/live/case-studies/anchain-ai" target="_blank" rel="noopener" data-case-study-title="AnChain.AI Increases Conversion by 84%">
+            <img src="../assets/client-anchain.svg" alt="AnChain.AI" />
+            <p>“We saw an 84% lift in chat-to-lead conversion rate.”</p>
+            <span class="client-bento-arrow" aria-hidden="true"></span>
+          </a>
+
+          <a class="client-bento-card client-bento-card--case-study client-bento-card--logo client-bento-gutter" href="https://www.expertise.ai/live/case-studies/gutterglove" target="_blank" rel="noopener" data-case-study-title="Gutterglove Automates 99% of Customer Chats">
+            <img src="../assets/client-gutterglove.png" alt="Gutterglove" />
+            <span class="client-bento-arrow" aria-hidden="true"></span>
+          </a>
+
+          <a class="client-bento-card client-bento-card--case-study client-bento-card--feature client-bento-holisti" href="https://www.expertise.ai/live/case-studies/holistiplan" target="_blank" rel="noopener" data-case-study-title="Holistiplan Gets 2.7× More Leads at 90% Lower Cost">
+            <img src="../assets/client-holistiplan.webp" alt="Holistiplan" />
+            <p>“We captured so many leads that we otherwise wouldn’t have without the bot.”</p>
+            <span class="client-bento-arrow" aria-hidden="true"></span>
+          </a>
+
+          <a class="client-bento-card client-bento-card--case-study client-bento-card--quote client-bento-circuit" href="https://www.expertise.ai/live/case-studies/circuit-electric" target="_blank" rel="noopener" data-case-study-title="Circuit Electric Cuts Support Requests by 22%">
+            <img src="../assets/logo-circuit-electric.png" alt="Circuit Electric" />
+            <p>“The results have exceeded our expectations, lowering costs and improving customer experience.”</p>
+            <span class="client-bento-arrow" aria-hidden="true"></span>
+          </a>
+
+          <a class="client-bento-card client-bento-card--case-study client-bento-card--stat client-bento-stat84" href="https://www.expertise.ai/live/case-studies/anchain-ai" target="_blank" rel="noopener" data-case-study-title="AnChain.AI Increases Conversion by 84%">
+            <strong>+84%</strong>
+            <span>chat-to-lead conversion</span>
+            <i class="client-bento-arrow" aria-hidden="true"></i>
+          </a>
+
+          <a class="client-bento-card client-bento-card--case-study client-bento-card--stat client-bento-stat99" href="https://www.expertise.ai/live/case-studies/gutterglove" target="_blank" rel="noopener" data-case-study-title="Gutterglove Automates 99% of Customer Chats">
+            <strong>99%</strong>
+            <span>chats resolved autonomously</span>
+            <i class="client-bento-arrow" aria-hidden="true"></i>
+          </a>
+
+          <a class="client-bento-card client-bento-card--case-study client-bento-card--logo client-bento-safecheck" href="https://www.expertise.ai/live/case-studies/safecheck" target="_blank" rel="noopener" data-case-study-title="SafeCheck Increases Corporate Leads by 50%">
+            <img src="../assets/logo-safecheck.png" alt="SafeCheck" />
+            <span class="client-bento-arrow" aria-hidden="true"></span>
+          </a>
+
+          <a class="client-bento-card client-bento-card--case-study client-bento-card--logo client-bento-swim" href="https://www.expertise.ai/live/case-studies/swimmingly" target="_blank" rel="noopener" data-case-study-title="Swimmingly Raises AI Resolution Rate to 90%">
+            <img src="../assets/logo-swimmingly.png" alt="Swimmingly" />
+            <span class="client-bento-arrow" aria-hidden="true"></span>
+          </a>
+
+          <a class="client-bento-card client-bento-card--case-study client-bento-card--stat client-bento-sklar" href="https://www.expertise.ai/live/case-studies/david-sklar" target="_blank" rel="noopener" data-case-study-title="David Sklar Generates 5× ROI After Hours">
+            <img src="../assets/client-david-sklar.webp" alt="" />
+            <div>
+              <strong>5×</strong>
+              <span>ROI after hours</span>
+            </div>
+            <i class="client-bento-arrow" aria-hidden="true"></i>
+          </a>
+
+          <a class="client-bento-card client-bento-card--case-study client-bento-card--logo client-bento-bigbuy" href="https://www.expertise.ai/live/case-studies/big-buy" target="_blank" rel="noopener" data-case-study-title="BigBuy Scales AI Lead Capture and Support">
+            <img src="../assets/logo-bigbuy.jpg" alt="BigBuy" />
+            <span class="client-bento-arrow" aria-hidden="true"></span>
+          </a>
+
+          <a class="client-bento-card client-bento-card--case-study client-bento-card--logo client-bento-solimar" href="https://www.expertise.ai/live/case-studies/solimar-systems-inc" target="_blank" rel="noopener" data-case-study-title="Solimar Achieves 99.9% AI Answer Accuracy">
+            <img src="../assets/client-solimar.webp" alt="Solimar" />
+            <span class="client-bento-arrow" aria-hidden="true"></span>
+          </a>
+
+          <div class="client-bento-card client-bento-card--logo client-bento-austin">
+            <img src="../assets/client-austin-industries.svg" alt="Austin Industries" />
+          </div>
+          <div class="client-bento-card client-bento-card--logo client-bento-infigo">
+            <img src="../assets/client-infigo.webp" alt="Infigo" />
+          </div>
+          <div class="client-bento-card client-bento-card--logo client-bento-nevvon">
+            <img src="../assets/client-nevvon.webp" alt="Nevvon" />
+          </div>
+          <div class="client-bento-card client-bento-card--logo client-bento-process">
+            <img src="../assets/client-processfusion.webp" alt="Process Fusion" />
+          </div>
+          <div class="client-bento-card client-bento-card--logo client-bento-agora">
+            <img src="../assets/client-agora.webp" alt="Agora" />
+          </div>
+          <div class="client-bento-card client-bento-card--logo client-bento-software">
+            <img src="../assets/client-safe-software.svg" alt="Safe Software" />
+          </div>
+          <div class="client-bento-card client-bento-card--logo client-bento-viventium">
+            <img src="../assets/client-viventium.webp" alt="Viventium" />
+          </div>
+          <div class="client-bento-card client-bento-card--logo client-bento-naturgy">
+            <img src="../assets/client-naturgy.webp" alt="Naturgy" />
+          </div>
+          <div class="client-bento-card client-bento-card--logo client-bento-cognna">
+            <img src="../assets/client-cognna.webp" alt="Cognna" />
+          </div>
+          <div class="client-bento-card client-bento-card--logo client-bento-access">
+            <img src="../assets/client-access-group.png" alt="Access Group" />
+          </div>
+          <div class="client-bento-card client-bento-card--logo client-bento-kraft">
+            <img src="../assets/client-4kraft.svg" alt="4Kraft" />
+          </div>
+          <div class="client-bento-card client-bento-card--logo client-bento-usergems">
+            <img src="../assets/client-usergems.webp" alt="UserGems" />
+          </div>
+          <div class="client-bento-card client-bento-card--logo client-bento-stonex">
+            <img src="../assets/client-stonex.webp" alt="StoneX" />
+          </div>
+        </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AGENTS / SOLUTION — ALTERNATIVE V2 ===== -->
+  <section class="agents-section agents-section--v2" aria-labelledby="agents-v2-title">
+    <div class="agents-bg" aria-hidden="true"></div>
+    <div class="section-container agents-v2-layout">
+      <div class="agents-v2-intro">
+        <h2 id="agents-v2-title">Pick the right agent for the job.</h2>
+        <p>Start with the workflow you need today. Each agent can be deployed independently, while sharing the same integrations, controls, and enterprise infrastructure.</p>
+      </div>
+
+      <div class="agents-v2-stage">
+        <div class="agents-v2-tabs-rail">
+          <div class="agents-v2-tabs" role="tablist" aria-label="Agent types">
+            <button class="agents-v2-tab" type="button" role="tab" id="agent-v2-tab-sales" data-agent-v2-tab="sales" aria-controls="agent-v2-pane-sales" aria-selected="true" tabindex="0">
+              <img class="agents-v2-tab-icon" src="../assets/agent-tab-sales.svg" alt="" width="24" height="24" />
+              Sales Agent
+            </button>
+            <button class="agents-v2-tab" type="button" role="tab" id="agent-v2-tab-support" data-agent-v2-tab="support" aria-controls="agent-v2-pane-support" aria-selected="false" tabindex="-1">
+              <img class="agents-v2-tab-icon" src="../assets/agent-tab-support.svg" alt="" width="24" height="24" />
+              Support Agent
+            </button>
+            <button class="agents-v2-tab" type="button" role="tab" id="agent-v2-tab-workspace" data-agent-v2-tab="workspace" aria-controls="agent-v2-pane-workspace" aria-selected="false" tabindex="-1">
+              <img class="agents-v2-tab-icon" src="../assets/agent-tab-workspace.svg" alt="" width="24" height="24" />
+              AI Workspace
+            </button>
+          </div>
+        </div>
+
+        <div class="agents-v2-panel">
+          <div class="agents-v2-copy-stage">
+            <article class="agents-v2-pane is-active" data-agent-v2-pane="sales" role="tabpanel" id="agent-v2-pane-sales" aria-labelledby="agent-v2-tab-sales">
+              <div class="agents-v2-pane-copy">
+                <div class="agents-v2-badge" aria-hidden="true">
+                  <img src="../assets/agent-tab-sales.svg" alt="" width="32" height="32" />
+                </div>
+                <div class="agents-v2-pane-text">
+                  <h3 class="agents-v2-pane-title">Turn high-intent traffic into pipeline.</h3>
+                  <p class="agents-v2-pane-body">Engage buyers while they are on your site. Answer questions, qualify intent, book the next step, and pass the right context into your sales systems.</p>
+                </div>
+                <ul class="agents-v2-features">
+                  <li><span class="workspace-feature-index" aria-hidden="true">01</span><span><strong>Website conversations and proactive engagement</strong></span></li>
+                  <li><span class="workspace-feature-index" aria-hidden="true">02</span><span><strong>Visitor identification and qualification</strong></span></li>
+                  <li><span class="workspace-feature-index" aria-hidden="true">03</span><span><strong>Personalized microsites</strong></span></li>
+                  <li><span class="workspace-feature-index" aria-hidden="true">04</span><span><strong>Meeting booking and CRM handoff</strong></span></li>
+                </ul>
+              </div>
+              <div class="agents-case-block agents-v2-case-block">
+                <div class="agents-case-nav agents-v2-case-nav">
+                  <p>Related stories</p>
+                  <div class="testimonials-controls agents-v2-case-controls" aria-label="Related stories">
+                    <button type="button" class="agents-v2-case-control" data-agents-case-prev aria-controls="agents-v2-case-sales" aria-label="Previous story">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                    </button>
+                    <button type="button" class="agents-v2-case-control" data-agents-case-next aria-controls="agents-v2-case-sales" aria-label="Next story">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="agents-case-stories" hidden>
+                  <span data-case-href="https://www.expertise.ai/live/case-studies/anchain-ai" data-case-bg="../assets/story-bg-anchain.jpg" data-case-logo="../assets/client-anchain.svg" data-case-logo-alt="AnChain.AI" data-case-avatar="../assets/testimonial-victor.webp" data-case-category="Technology / Sales" data-case-title="AnChain.AI Increases Conversion by 84%" data-case-quote="“We saw an 84% lift in chat-to-lead conversion rate.”" data-case-cite="Victor Fang, CEO — AnChain.AI"></span>
+                  <span data-case-href="https://www.expertise.ai/live/case-studies/holistiplan" data-case-bg="../assets/story-bg-holistiplan.jpg" data-case-logo="../assets/client-holistiplan.webp" data-case-logo-alt="Holistiplan" data-case-avatar="../assets/testimonial-renan.webp" data-case-category="Financial Services SaaS / Sales" data-case-title="Holistiplan: 2.7× More Leads, 90% Lower Cost" data-case-quote="“We captured so many leads that we otherwise wouldn’t have without the bot.”" data-case-cite="Renan Ronchi, Lifecycle Marketing Manager — Holistiplan"></span>
+                  <span data-case-href="https://www.expertise.ai/live/case-studies/david-sklar" data-case-bg="../assets/story-bg-david-sklar.jpg" data-case-logo="../assets/client-david-sklar.webp" data-case-logo-alt="David Sklar &amp; Associates" data-case-category="Financial Services / Sales" data-case-title="David Sklar Generates 5× ROI After Hours" data-case-quote="“What this tool did for us is give us an opportunity to not only catch visitors' chats, but also to let them book appointments directly inside.”" data-case-cite="Archit Gupta, Operations Coordinator — David Sklar &amp; Associates"></span>
+                </div>
+                <a class="agents-case agents-v2-story-card" id="agents-v2-case-sales" href="https://www.expertise.ai/live/case-studies/anchain-ai" target="_blank" rel="noopener">
+                  <div class="agents-v2-story-head">
+                    <img data-agents-case-logo src="../assets/client-anchain.svg" alt="AnChain.AI" />
+                    <p class="agents-v2-story-kicker">
+                      <span data-agents-case-category>Technology</span>
+                      <span class="agents-v2-story-cta">Read case study <i aria-hidden="true"></i></span>
+                    </p>
+                  </div>
+                  <h3 data-agents-case-title>AnChain.AI Increases Conversion by 84%</h3>
+                  <div class="agents-case-quote agents-v2-story-quote">
+                    <div class="agents-v2-story-quote-copy">
+                      <p data-agents-case-quote>“We saw an 84% lift in chat-to-lead conversion rate.”</p>
+                      <p data-agents-case-cite>Victor Fang, CEO — AnChain.AI</p>
+                      <div class="agents-v2-story-author">
+                        <img class="agents-v2-story-avatar" data-agents-case-avatar src="../assets/testimonial-victor.webp" alt="" width="34" height="34" />
+                        <span class="agents-v2-story-author-copy"><strong data-agents-case-author>Victor Fang</strong><span data-agents-case-role>CEO — AnChain.AI</span></span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </article>
+
+            <article class="agents-v2-pane" data-agent-v2-pane="support" role="tabpanel" id="agent-v2-pane-support" aria-labelledby="agent-v2-tab-support" aria-hidden="true" inert>
+              <div class="agents-v2-pane-copy">
+                <div class="agents-v2-badge" aria-hidden="true">
+                  <img src="../assets/agent-tab-support.svg" alt="" width="32" height="32" />
+                </div>
+                <div class="agents-v2-pane-text">
+                  <h3 class="agents-v2-pane-title">Resolve more customer requests across web and voice.</h3>
+                  <p class="agents-v2-pane-body">Handle routine questions, guide customers through the right process, and escalate complex cases with full context. Extend the same experience to phone, voice, and avatar interactions.</p>
+                </div>
+                <ul class="agents-v2-features">
+                  <li><span class="workspace-feature-index" aria-hidden="true">01</span><span><strong>Web chat and website voice</strong></span></li>
+                  <li><span class="workspace-feature-index" aria-hidden="true">02</span><span><strong>Live microsite generation</strong></span></li>
+                  <li><span class="workspace-feature-index" aria-hidden="true">03</span><span><strong>Inbound and outbound phone calling</strong></span></li>
+                  <li><span class="workspace-feature-index" aria-hidden="true">04</span><span><strong>Multilingual support and human handoff</strong></span></li>
+                  <li><span class="workspace-feature-index" aria-hidden="true">05</span><span><strong>AI avatar experiences</strong></span></li>
+                </ul>
+              </div>
+              <div class="agents-case-block agents-v2-case-block">
+                <div class="agents-case-nav agents-v2-case-nav">
+                  <p>Related stories</p>
+                  <div class="testimonials-controls agents-v2-case-controls" aria-label="Related stories">
+                    <button type="button" class="agents-v2-case-control" data-agents-case-prev aria-controls="agents-v2-case-support" aria-label="Previous story">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                    </button>
+                    <button type="button" class="agents-v2-case-control" data-agents-case-next aria-controls="agents-v2-case-support" aria-label="Next story">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </button>
+                  </div>
+                </div>
+                <div class="agents-case-stories" hidden>
+                  <span data-case-href="https://www.expertise.ai/live/case-studies/circuit-electric" data-case-bg="../assets/story-bg-circuit-electric.png" data-case-logo="../assets/logo-circuit-electric.png" data-case-logo-alt="Circuit Electric" data-case-avatar="../assets/testimonial-felix.webp" data-case-category="Utilities / Support" data-case-title="Circuit Electric Cuts Support Requests by 22%" data-case-quote="“The results have exceeded our expectations, lowering costs and improving customer experience.”" data-case-cite="Félix Normandin, Team Lead — Customer Experience"></span>
+                  <span data-case-href="https://www.expertise.ai/live/case-studies/gutterglove" data-case-bg="../assets/story-bg-gutterglove.jpg" data-case-logo="../assets/client-gutterglove.png" data-case-logo-alt="Gutterglove" data-case-avatar="../assets/testimonial-logan.webp" data-case-category="Manufacturing / Support" data-case-title="Gutterglove Automates 99% of Customer Chats" data-case-quote="“We’re resolving more than 99% of customer chats without human involvement, something that wasn’t possible before Expertise AI.”" data-case-cite="Logan Ollinger, Customer Experience Manager — Gutterglove"></span>
+                  <span data-case-href="https://www.expertise.ai/live/case-studies/safecheck" data-case-bg="../assets/story-bg-safecheck.jpg" data-case-logo="../assets/logo-safecheck.png" data-case-logo-alt="SafeCheck" data-case-category="Training &amp; Compliance / Sales + Support" data-case-title="SafeCheck Increases Corporate Leads by 50%" data-case-quote="“Within the first week, our support person said: this is too good.”" data-case-cite="Domenic Pedulla, President — SafeCheck"></span>
+                </div>
+                <a class="agents-case agents-v2-story-card" id="agents-v2-case-support" href="https://www.expertise.ai/live/case-studies/circuit-electric" target="_blank" rel="noopener">
+                  <div class="agents-v2-story-head">
+                    <img data-agents-case-logo src="../assets/logo-circuit-electric.png" alt="Circuit Electric" />
+                    <p class="agents-v2-story-kicker">
+                      <span data-agents-case-category>Utilities</span>
+                      <span class="agents-v2-story-cta">Read case study <i aria-hidden="true"></i></span>
+                    </p>
+                  </div>
+                  <h3 data-agents-case-title>Circuit Electric Cuts Support Requests by 22%</h3>
+                  <div class="agents-case-quote agents-v2-story-quote">
+                    <div class="agents-v2-story-quote-copy">
+                      <p data-agents-case-quote>“The results have exceeded our expectations, lowering costs and improving customer experience.”</p>
+                      <p data-agents-case-cite>Félix Normandin, Team Lead — Customer Experience</p>
+                      <div class="agents-v2-story-author">
+                        <img class="agents-v2-story-avatar" data-agents-case-avatar src="../assets/testimonial-felix.webp" alt="" width="34" height="34" />
+                        <span class="agents-v2-story-author-copy"><strong data-agents-case-author>Félix Normandin</strong><span data-agents-case-role>Team Lead — Customer Experience</span></span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </article>
+
+            <article class="agents-v2-pane" data-agent-v2-pane="workspace" role="tabpanel" id="agent-v2-pane-workspace" aria-labelledby="agent-v2-tab-workspace" aria-hidden="true" inert>
+              <div class="agents-v2-pane-copy">
+                <div class="agents-v2-badge" aria-hidden="true">
+                  <img src="../assets/agent-tab-workspace.svg" alt="" width="32" height="32" />
+                </div>
+                <div class="agents-v2-pane-text">
+                  <h3 class="agents-v2-pane-title">Build agents around the way your teams work.</h3>
+                  <p class="agents-v2-pane-body">Everyone in your company has AI. Few are fluent enough to change how work gets done. Expertise turns those 5 people’s workflows into agents everyone can run.</p>
+                </div>
+                <ul class="agents-v2-features">
+                  <li><span class="workspace-feature-index" aria-hidden="true">01</span><span><strong>Build task-specific agents</strong></span></li>
+                  <li><span class="workspace-feature-index" aria-hidden="true">02</span><span><strong>Connect company knowledge and systems</strong></span></li>
+                  <li><span class="workspace-feature-index" aria-hidden="true">03</span><span><strong>Reuse workflows across teams</strong></span></li>
+                  <li><span class="workspace-feature-index" aria-hidden="true">04</span><span><strong>Add approvals and access controls</strong></span></li>
+                  <li><span class="workspace-feature-index" aria-hidden="true">05</span><span><strong>Govern how agents act across the organization</strong></span></li>
+                </ul>
+              </div>
+              <div class="agents-case-block agents-v2-case-block">
+                <div class="agents-case-nav agents-v2-case-nav">
+                  <p>Related report</p>
+                </div>
+                <a class="agents-case agents-v2-story-card" id="agents-v2-case-workspace" href="https://www.ipsos.com/sites/default/files/ct/news/documents/2026-02/The%20Path%20to%20AI%20Fluency.%20AI%20Works%20for%20America%20-%20Google-Ipsos.pdf" target="_blank" rel="noopener">
+                  <div class="agents-v2-story-head">
+                    <img data-agents-case-logo src="../assets/logo-google-ipsos.svg" alt="Google and Ipsos" />
+                    <p class="agents-v2-story-kicker">
+                      <span data-agents-case-category>Workplace</span>
+                      <span class="agents-v2-story-cta">Read report <i aria-hidden="true"></i></span>
+                    </p>
+                  </div>
+                  <h3 data-agents-case-title>Everyone Has AI. Only 5% Are Fluent.</h3>
+                  <div class="agents-case-quote agents-v2-story-quote">
+                    <div class="agents-v2-story-quote-copy">
+                      <p data-agents-case-quote>“Using AI is like using a computer used to be. It’s inevitable. It’s unavoidable, so you have to figure it out.”</p>
+                      <p data-agents-case-cite>Small Business Owner — Google / Ipsos, The Path to AI Fluency</p>
+                      <div class="agents-v2-story-author">
+                        <img class="agents-v2-story-avatar" data-agents-case-avatar hidden alt="" width="34" height="34" />
+                        <span class="agents-v2-story-author-copy"><strong data-agents-case-author>Small Business Owner</strong><span data-agents-case-role>Google / Ipsos, The Path to AI Fluency</span></span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </article>
+          </div>
+
+          <div class="agents-v2-visual">
+            <div class="agents-visual-photo" aria-hidden="true">
+              <img src="../assets/agent-visual-bg.png" alt="" width="800" height="1200" />
+            </div>
+
+            <!-- Reuse the animated Solution visuals and assets from v1. -->
+            <div class="agents-v2-visual-frame agents-visual-frame is-active" data-agent-v2-visual="chat">
+              <div class="agents-chat" data-chat-demo>
+                <p class="agents-skills-caption" data-chat-caption>Meet buyers the moment they show intent</p>
+                <div class="agents-chat-stage agents-v2-scene is-active" data-chat-stage="prompt">
+                  <div class="agents-v2-scene-scale">
+                  <div class="agents-chat-welcome">
+                    <div class="agents-chat-welcome-shell" data-chat-welcome hidden>
+                      <div class="agents-chat-welcome-card">
+                        <img class="agents-chat-kate" src="../assets/agent-kate.png" alt="" width="21" height="21" />
+                        <p><strong>Kate:</strong> Exploring pricing? Learn more about our different plans.</p>
+                      </div>
+                    </div>
+                    <div class="agents-chat-chips agents-chat-chips--welcome" data-chat-chips="welcome" hidden>
+                      <button class="agents-chat-chip" type="button" data-chat-chip="show-me">Show me</button>
+                      <button class="agents-chat-chip" type="button" data-chat-chip="compare-plans">Compare plans</button>
+                    </div>
+                    <div class="agents-chat-input" data-chat-composer hidden>
+                      <img class="agents-chat-input-search" src="../assets/agent-chat-search.svg" alt="" width="18" height="18" />
+                      <span class="agents-chat-input-value" data-chat-typed>Ask our AI Assistant …</span>
+                      <img class="agents-chat-input-mic" src="../assets/agent-chat-mic.svg" alt="" width="19" height="19" />
+                      <button class="agents-chat-input-send" type="button" data-chat-send aria-label="Send"><svg viewBox="0 0 10 10" width="10" height="10" fill="none" aria-hidden="true"><path d="M5 1.5v6.2M7.1 3.5 5 1.5 2.9 3.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                <div class="agents-chat-stage agents-v2-scene" data-chat-stage="conversation" hidden>
+                  <div class="agents-v2-scene-scale">
+                  <div class="agents-chat-glass" data-chat-panel>
+                    <div class="agents-chat-split" data-chat-split>
+                      <div class="agents-chat-window">
+                        <div class="agents-chat-header">
+                          <div class="agents-chat-header-id"><img class="agents-chat-kate" src="../assets/agent-kate.png" alt="" width="21" height="21" /><strong>Kate</strong><span class="agents-chat-by">Powered by <img src="../assets/expertise-logo.svg" alt="expertise.ai" /></span></div>
+                          <div class="agents-chat-header-actions"><img src="../assets/agent-chat-close.svg" alt="" width="16" height="16" /></div>
+                        </div>
+                        <div class="agents-chat-body" data-chat-thread>
+                          <p class="agents-chat-bubble agents-chat-bubble--user" data-chat-line="u1" hidden>Show me</p>
+                          <div class="agents-chat-bubble agents-chat-bubble--bot" data-chat-line="k1" hidden><div class="agents-chat-bot-head"><img class="agents-chat-kate" src="../assets/agent-kate.png" alt="" width="21" height="21" /><strong>Kate</strong></div><p>Acme has three plans: Starter, Growth and Enterprise. All of them include the AI sales agent, CRM sync and analytics; the difference is seats, channels and support. How big is the team that would use it?</p></div>
+                          <div class="agents-chat-chips agents-chat-chips--grid" data-chat-chips="seats" hidden>
+                            <button class="agents-chat-chip" type="button" data-chat-chip="seats-1">1–5 seats</button>
+                            <button class="agents-chat-chip" type="button" data-chat-chip="seats-2">6–25 seats</button>
+                            <button class="agents-chat-chip" type="button" data-chat-chip="seats-3">25–50 seats</button>
+                            <button class="agents-chat-chip" type="button" data-chat-chip="seats-4">50+ seats</button>
+                          </div>
+                          <p class="agents-chat-bubble agents-chat-bubble--user" data-chat-line="u2" hidden>50+ seats</p>
+                          <div class="agents-chat-bubble agents-chat-bubble--bot" data-chat-line="k2" hidden><div class="agents-chat-bot-head"><img class="agents-chat-kate" src="../assets/agent-kate.png" alt="" width="21" height="21" /><strong>Kate</strong></div><p>For a team that size, Enterprise is the best fit: unlimited channels, SSO and dedicated onboarding. I’ve laid the comparison out on the right.</p></div>
+                          <div class="agents-chat-bubble agents-chat-bubble--bot agents-chat-bubble--follow" data-chat-line="k3" hidden><p>Want to see it running on your own site? I can book a 30-minute demo with a specialist.</p></div>
+                          <div class="agents-chat-chips" data-chat-chips="cta" hidden>
+                            <button class="agents-chat-chip agents-chat-chip--primary" type="button" data-chat-chip="book">Book a demo</button>
+                            <button class="agents-chat-chip" type="button" data-chat-chip="pdf">Send me the pricing PDF</button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <aside class="agents-chat-site" data-chat-site hidden>
+                        <div class="agents-chat-site-bar" aria-hidden="true">
+                          <span class="agents-chat-site-dots"><i></i><i></i><i></i></span>
+                          <span class="agents-chat-site-url">acme.ai</span>
+                        </div>
+                        <div class="agents-chat-site-viewport">
+                          <section class="agents-chat-site-panel is-active" data-site-panel="pricing">
+                            <p class="agents-site-badge">Generated for Northwind Freight</p>
+                            <h3 class="agents-site-title">Compare plans</h3>
+                            <p class="agents-site-sub">Based on 50+ seats across sales and support</p>
+                            <ul class="agents-site-plans">
+                              <li class="agents-site-plan">
+                                <div class="agents-site-plan-top"><h4>Starter</h4><span class="agents-site-plan-seats">Up to 5 seats</span></div>
+                                <p class="agents-site-plan-price"><strong>$49</strong><span>per seat / month</span></p>
+                                <p class="agents-site-plan-copy">Website AI agent, meeting booking, one CRM, email support.</p>
+                              </li>
+                              <li class="agents-site-plan">
+                                <div class="agents-site-plan-top"><h4>Growth</h4><span class="agents-site-plan-seats">Up to 25 seats</span></div>
+                                <p class="agents-site-plan-price"><strong>$89</strong><span>per seat / month</span></p>
+                                <p class="agents-site-plan-copy">Everything in Starter plus voice, playbooks, two CRMs and analytics.</p>
+                              </li>
+                              <li class="agents-site-plan agents-site-plan--best">
+                                <div class="agents-site-plan-top"><h4>Enterprise</h4><span class="agents-site-plan-seats">50+ seats · multiple teams</span><span class="agents-site-plan-flag">Best fit</span></div>
+                                <p class="agents-site-plan-price"><strong>Custom</strong><span>annual agreement</span></p>
+                                <p class="agents-site-plan-copy">Unlimited channels, SSO, roles and audit, dedicated onboarding, 99.9% SLA.</p>
+                              </li>
+                            </ul>
+                          </section>
+
+                          <section class="agents-chat-site-panel" data-site-panel="booking" hidden>
+                            <h3 class="agents-site-title">Book a demo</h3>
+                            <p class="agents-site-sub">30 minutes. We’ll show Enterprise running on your own site.</p>
+                            <div class="agents-site-person">
+                              <img src="../assets/agent-eric.png" alt="Eric Chen" width="44" height="44" />
+                              <span class="agents-site-person-copy"><strong>Eric Chen</strong><span>Enterprise Solutions Specialist</span></span>
+                            </div>
+                            <div class="agents-site-form">
+                              <label class="agents-site-field"><span>Name</span><input type="text" data-site-input="name" value="" placeholder="Your name" readonly tabindex="-1" /></label>
+                              <label class="agents-site-field"><span>Work email</span><input type="text" data-site-input="email" value="" placeholder="you@company.com" readonly tabindex="-1" /></label>
+                              <button class="agents-site-submit" type="button" data-site-submit>Confirm booking</button>
+                            </div>
+                          </section>
+
+                          <section class="agents-chat-site-panel agents-chat-site-panel--confirm" data-site-panel="confirmed" hidden>
+                            <span class="agents-site-check" aria-hidden="true"><svg viewBox="0 0 16 16" width="16" height="16" fill="none"><path d="m3.5 8.4 3 3 6-6.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                            <h3 class="agents-site-title">Demo booked</h3>
+                            <p class="agents-site-when">Thursday, Sep 17 · 2:30 PM ET</p>
+                            <div class="agents-site-person">
+                              <img src="../assets/agent-eric.png" alt="Eric Chen" width="44" height="44" />
+                              <span class="agents-site-person-copy"><strong>Eric Chen</strong><span>Enterprise Solutions Specialist</span></span>
+                            </div>
+                            <dl class="agents-site-summary">
+                              <div><dt>Name</dt><dd>Daniel Reyes</dd></div>
+                              <div><dt>Company</dt><dd>Northwind Freight</dd></div>
+                              <div><dt>Plan</dt><dd>Enterprise · 50+ seats</dd></div>
+                            </dl>
+                            <button class="agents-site-calendar" type="button">Add to calendar</button>
+                          </section>
+                        </div>
+                      </aside>
+                    </div>
+                  </div>
+                  <div class="agents-chat-input agents-chat-input--docked" aria-hidden="true"><img class="agents-chat-input-search" src="../assets/agent-chat-search.svg" alt="" width="18" height="18" /><span>Ask our AI Assistant …</span><img class="agents-chat-input-mic" src="../assets/agent-chat-mic.svg" alt="" width="19" height="19" /><span class="agents-chat-input-send"><svg viewBox="0 0 10 10" width="10" height="10" fill="none" aria-hidden="true"><path d="M5 1.5v6.2M7.1 3.5 5 1.5 2.9 3.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+                  </div>
+                </div>
+                <div class="agents-skills-progress agents-skills-progress--five" role="tablist" aria-label="Sales visual scenes"><button class="is-active" type="button" role="tab" data-chat-scene="prompt" aria-label="Proactive prompt" aria-current="true"><span class="agents-skills-progress-track"><i data-chat-progress="prompt"></i></span></button><button type="button" role="tab" data-chat-scene="chat" aria-label="Guided conversation" aria-current="false"><span class="agents-skills-progress-track"><i data-chat-progress="chat"></i></span></button><button type="button" role="tab" data-chat-scene="microsite" aria-label="Personalized microsite" aria-current="false"><span class="agents-skills-progress-track"><i data-chat-progress="microsite"></i></span></button><button type="button" role="tab" data-chat-scene="booking" aria-label="Demo booking" aria-current="false"><span class="agents-skills-progress-track"><i data-chat-progress="booking"></i></span></button><button type="button" role="tab" data-chat-scene="confirmed" aria-label="Meeting confirmed" aria-current="false"><span class="agents-skills-progress-track"><i data-chat-progress="confirmed"></i></span></button></div>
+              </div>
+            </div>
+
+            <div class="agents-v2-visual-frame agents-visual-frame" data-agent-v2-visual="voice" hidden>
+              <div class="agents-voice">
+                <p class="agents-skills-caption">Hear Navi for yourself. Start a live call below.</p>
+                <div class="agents-v2-scene">
+                <div class="agents-v2-scene-scale">
+                <div class="agents-voice-glass"><div class="agents-voice-card" data-voice-card>
+                  <header class="agents-voice-head"><div><p class="agents-voice-name">Navi</p><p class="agents-voice-role">Personal AI Agent</p></div><span class="agents-voice-badge"><svg class="agents-voice-badge-wave" viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><path d="M6 2V14M4 4.7v6.6M8 4v8M10 6v4M12 4.7v6.6M14 7.3v1.4M2 7.3v1.4" stroke="currentColor"/></svg>AI Voice</span></header>
+                  <div class="agents-voice-panel is-active" data-voice-panel="intro">
+                    <div class="agents-voice-orb" aria-hidden="true"><span class="agents-voice-orb-ring"></span><span class="agents-voice-orb-ring agents-voice-orb-ring--delay"></span><span class="agents-voice-orb-core"><span class="agents-voice-orb-blob"></span><span class="agents-voice-orb-blob agents-voice-orb-blob--alt"></span></span></div>
+                    <p class="agents-voice-caption" data-voice-caption data-voice-lead="Hi, I’m Navi. Want to hear how AI voice support sounds?" data-voice-invite="Drop your number and I’ll ring you for a live demo."><span class="agents-voice-caption-lead" data-voice-lead-el></span><span class="agents-voice-caption-invite" data-voice-invite-el></span></p>
+                    <div class="agents-voice-intro-form">
+                      <label class="agents-voice-field"><span>Phone number</span><input type="tel" name="phone" autocomplete="tel" placeholder="+1 555 123 4567" data-voice-phone /></label>
+                      <button class="agents-voice-cta" type="button" data-voice-start><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2.1z"/></svg><span>Start a live call</span></button>
+                    </div>
+                  </div>
+                  <form class="agents-voice-panel agents-voice-form" data-voice-panel="form" hidden>
+                    <div class="agents-voice-form-head">
+                      <h3 class="agents-voice-form-title">Who is Navi calling?</h3>
+                      <p class="agents-voice-form-note">Tell Navi your name and the language you’d like the call in.</p>
+                    </div>
+                    <label class="agents-voice-field"><span>Name</span><input type="text" name="name" autocomplete="name" required placeholder="Your name" /></label>
+                    <div class="agents-voice-field">
+                      <span>Preferred language</span>
+                      <div class="agents-voice-select" data-voice-select>
+                        <button class="agents-voice-select-trigger" type="button" aria-label="Preferred language" aria-haspopup="listbox" aria-expanded="false" data-voice-select-trigger><span class="agents-voice-flag" data-voice-select-flag aria-hidden="true">🇺🇸</span><span data-voice-select-label>English</span><svg viewBox="0 0 16 16" width="12" height="12" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                        <ul class="agents-voice-select-menu" role="listbox" hidden data-voice-select-menu>
+                          <li role="option" aria-selected="true" data-value="en" data-flag="🇺🇸" data-label="English"><span class="agents-voice-flag" aria-hidden="true">🇺🇸</span> English</li>
+                          <li role="option" aria-selected="false" data-value="fr" data-flag="🇫🇷" data-label="Français"><span class="agents-voice-flag" aria-hidden="true">🇫🇷</span> Français</li>
+                          <li role="option" aria-selected="false" data-value="es" data-flag="🇪🇸" data-label="Español"><span class="agents-voice-flag" aria-hidden="true">🇪🇸</span> Español</li>
+                          <li role="option" aria-selected="false" data-value="de" data-flag="🇩🇪" data-label="Deutsch"><span class="agents-voice-flag" aria-hidden="true">🇩🇪</span> Deutsch</li>
+                          <li role="option" aria-selected="false" data-value="pt" data-flag="🇵🇹" data-label="Português"><span class="agents-voice-flag" aria-hidden="true">🇵🇹</span> Português</li>
+                          <li role="option" aria-selected="false" data-value="ja" data-flag="🇯🇵" data-label="日本語"><span class="agents-voice-flag" aria-hidden="true">🇯🇵</span> 日本語</li>
+                        </ul>
+                        <input type="hidden" name="language" value="en" />
+                      </div>
+                    </div>
+                    <button class="agents-voice-cta" type="submit"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2.1z"/></svg><span>Call me now</span></button>
+                  </form>
+                  <div class="agents-voice-panel agents-voice-success" data-voice-panel="success" hidden>
+                    <div class="agents-voice-success-orb" aria-hidden="true"><span class="agents-voice-success-ring"></span><span class="agents-voice-success-ring agents-voice-success-ring--delay"></span><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2.1z"/></svg></div>
+                    <div class="agents-voice-success-copy">
+                      <h3>Navi is dialling you now</h3>
+                      <p>Stay close to your phone and pick up when it rings — it’s a live, real-time call.</p>
+                    </div>
+                    <dl class="agents-voice-success-meta">
+                      <div><dt>Calling</dt><dd data-voice-success-phone>+1 555 123 4567</dd></div>
+                      <div><dt>Language</dt><dd data-voice-success-language>English</dd></div>
+                    </dl>
+                    <p class="agents-voice-success-status"><span class="agents-voice-success-dots" aria-hidden="true"><i></i><i></i><i></i></span>Connecting your live demo</p>
+                  </div>
+                </div></div>
+                </div>
+                </div>
+                <div class="agents-skills-progress agents-voice-progress" aria-hidden="true"><span class="agents-skills-progress-track"><i></i></span></div>
+              </div>
+            </div>
+
+            <div class="agents-v2-visual-frame agents-visual-frame" data-agent-v2-visual="skills" hidden>
+              <div class="agents-skills" data-skills-demo>
+                <p class="agents-skills-caption" data-skills-caption>Open the workspace and describe the job</p>
+                <div class="agents-skills-stage agents-v2-scene is-active" data-skills-stage="app">
+                  <div class="agents-v2-scene-scale">
+                  <div class="agents-skills-run-glass">
+                    <div class="agents-work-app" data-work-app>
+                      <header class="agents-work-bar">
+                        <img class="agents-work-logo" src="../assets/expertise-logo.svg" alt="Expertise AI" />
+                        <nav class="agents-work-nav" aria-hidden="true"><span>Agents</span><span>Tasks</span><span>Knowledge</span></nav>
+                        <span class="agents-work-avatar" aria-hidden="true">J</span>
+                      </header>
+
+                      <div class="agents-work-views">
+                        <section class="agents-work-view agents-work-home is-active" data-work-view="home">
+                          <p class="agents-work-hello"><strong>Good morning, Jane.</strong><span>What should we work on?</span></p>
+                          <div class="agents-work-composer" data-work-composer>
+                            <p class="agents-work-composer-text"><span data-work-typed></span><i class="agents-work-caret" aria-hidden="true"></i></p>
+                            <div class="agents-work-composer-foot">
+                              <span class="agents-work-plus" aria-hidden="true">+</span>
+                              <span class="agents-work-model" aria-hidden="true">Max</span>
+                              <button class="agents-work-send" type="button" data-work-send aria-label="Send prompt"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+                            </div>
+                            <div class="agents-work-connect">
+                              <span>Connect</span>
+                              <ul>
+                                <li><img src="../assets/skills/logo-salesforce.png" alt="" />Salesforce</li>
+                                <li><img src="../assets/skills/logo-gmail.png" alt="" />Gmail</li>
+                                <li><img src="../assets/skills/logo-hubspot.png" alt="" />HubSpot</li>
+                                <li><img src="../assets/skills/logo-sheets.png" alt="" />Sheets</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </section>
+
+                        <section class="agents-work-view agents-work-run" data-work-view="run" hidden>
+                          <div class="agents-work-scroll" data-work-scroll>
+                            <p class="agents-work-sent" data-work-sent>Check my open Salesforce deals for stale stages or no activity in two weeks. Clean up the CRM and draft follow-ups for anyone who’s gone quiet.</p>
+                            <div class="agents-work-trace">
+                              <p class="agents-work-status" data-work-status><span class="agents-work-spinner" aria-hidden="true"></span><span data-work-timer>Working for 0s</span></p>
+                              <p class="agents-work-reply" data-work-reply hidden><span class="agents-work-check" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none"><path d="m3.5 8.4 3 3 6-6.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>Got it — I’ll clean up your open Salesforce deals and draft follow-ups for the quiet ones.</p>
+                              <ul class="agents-work-tools">
+                                <li data-work-tool hidden><img src="../assets/skills/logo-salesforce.png" alt="" /><span>Pulled 42 open deals from Salesforce</span><em data-work-tool-state>Running</em></li>
+                                <li data-work-tool hidden><img src="../assets/skills/logo-hubspot.png" alt="" /><span>Checked stage, last activity and next steps</span><em data-work-tool-state>Running</em></li>
+                                <li data-work-tool hidden><img src="../assets/skills/logo-salesforce.png" alt="" /><span>Updated 7 deal records in Salesforce</span><em data-work-tool-state>Running</em></li>
+                                <li data-work-tool hidden><img src="../assets/skills/logo-gmail.png" alt="" /><span>Drafted 2 follow-up emails in Gmail</span><em data-work-tool-state>Running</em></li>
+                              </ul>
+                            </div>
+                            <article class="agents-work-report" data-work-report hidden>
+                              <header class="agents-work-report-head">
+                                <span class="agents-work-report-copy"><strong>Done. CRM cleaned up, follow-ups drafted.</strong><span>42 open deals checked</span></span>
+                                <span class="agents-work-shared" data-work-shared hidden><svg viewBox="0 0 16 16" width="11" height="11" fill="none" aria-hidden="true"><path d="m3.5 8.4 3 3 6-6.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Shared with Sales team</span>
+                              </header>
+                              <div class="agents-work-stats">
+                                <div><strong>7</strong><span>records updated</span></div>
+                                <div><strong>2</strong><span>follow-ups drafted</span></div>
+                              </div>
+                              <ul class="agents-work-findings">
+                                <li><span class="agents-work-tick" aria-hidden="true"><svg viewBox="0 0 16 16" width="10" height="10" fill="none"><path d="m3.5 8.4 3 3 6-6.4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>3 stages corrected</span><em>Northwind · Brightline</em></li>
+                                <li><span class="agents-work-tick" aria-hidden="true"><svg viewBox="0 0 16 16" width="10" height="10" fill="none"><path d="m3.5 8.4 3 3 6-6.4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>2 follow-ups drafted, nothing sent</span><em>Atlas Freight</em></li>
+                              </ul>
+                            </article>
+                          </div>
+                          <div class="agents-work-report-actions">
+                            <span class="agents-work-ghost" aria-hidden="true"><img src="../assets/skills/logo-gmail.png" alt="" />Review 2 drafts</span>
+                            <button class="agents-work-save" type="button" data-work-save><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Save as agent</button>
+                          </div>
+                        </section>
+                      </div>
+
+                      <div class="agents-work-overlay" data-work-overlay hidden>
+                        <div class="agents-work-modal" data-work-modal>
+                          <div class="agents-work-modal-inner">
+                            <section class="agents-work-modal-panel is-active" data-work-panel="save">
+                              <header class="agents-work-modal-head">
+                                <h3>Save as agent</h3>
+                                <p>Keep this run as a workflow anyone in the company can trigger.</p>
+                              </header>
+                              <div class="agents-work-modal-body">
+                                <div class="agents-work-field">
+                                  <span>Name</span>
+                                  <span class="agents-work-input" data-work-name-field><span class="agents-work-input-mark"><img src="../assets/skills/logo-expertise.svg" alt="" /></span><span data-work-agent-name></span><i class="agents-work-caret" aria-hidden="true"></i></span>
+                                </div>
+                                <div class="agents-work-field">
+                                  <span>What it does</span>
+                                  <p class="agents-work-note">Checks open Salesforce deals for stale stages, missing next steps or no activity in two weeks. Fixes the records and drafts follow-ups in Gmail.</p>
+                                </div>
+                              </div>
+                              <footer class="agents-work-modal-foot">
+                                <span class="agents-work-ghost-btn" aria-hidden="true">Cancel</span>
+                                <button class="agents-work-primary" type="button" data-work-confirm-save>Save agent</button>
+                              </footer>
+                            </section>
+
+                            <section class="agents-work-modal-panel agents-work-modal-panel--saved" data-work-panel="saved" hidden>
+                              <div class="agents-work-saved-banner">
+                                <span class="agents-work-saved-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="16" height="16" fill="none"><path d="m3.5 8.4 3 3 6-6.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                                <div>
+                                  <h3>Saved as a company agent</h3>
+                                  <p>Pipeline Hygiene Sweep can be shared across the company. Everyone runs the same workflow on their own tools.</p>
+                                </div>
+                              </div>
+                              <article class="agents-work-saved-skill">
+                                <div class="agents-work-saved-skill-top">
+                                  <div>
+                                    <p class="agents-work-saved-skill-meta"><span>Company skill</span><span class="agents-skill-verified" aria-hidden="true"><svg viewBox="0 0 16 16" width="13" height="13" fill="none"><path d="m3.5 8.4 3 3 6-6.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></p>
+                                    <h4>Pipeline Hygiene Sweep</h4>
+                                  </div>
+                                  <span class="agents-work-saved-flag">Ready to share</span>
+                                </div>
+                                <p>Analyze stale Salesforce deals and draft follow-ups so the team can reactivate the pipeline in one click.</p>
+                                <div class="agents-work-saved-connections">
+                                  <span>Connections</span>
+                                  <ul>
+                                    <li><img src="../assets/skills/logo-gmail.png" alt="" />Gmail</li>
+                                    <li><img src="../assets/skills/logo-salesforce.png" alt="" />Salesforce</li>
+                                    <li><img src="../assets/skills/logo-hubspot.png" alt="" />HubSpot</li>
+                                  </ul>
+                                </div>
+                              </article>
+                              <button class="agents-work-primary" type="button" data-work-open-share><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Share across the company</button>
+                            </section>
+
+                            <section class="agents-work-modal-panel agents-work-modal-panel--share" data-work-panel="share" hidden>
+                              <header class="agents-work-share-head">
+                                <span class="agents-work-share-mark"><img src="../assets/skills/logo-expertise.svg" alt="" /></span>
+                                <span class="agents-work-share-copy"><strong>Share “Pipeline Hygiene Sweep”</strong><span>Anyone with the link adds it free. It runs with their own tools.</span></span>
+                              </header>
+                              <div class="agents-work-modal-body">
+                                <div class="agents-work-share-link">
+                                  <span>Link is created when you copy or send</span>
+                                  <span class="agents-work-share-copybtn" aria-hidden="true">Copy link</span>
+                                </div>
+                                <div class="agents-work-share-via">
+                                  <span>Share via</span>
+                                  <ul>
+                                    <li aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14"><rect x="3" y="9" width="5.5" height="5.5" rx="1.6" fill="#E01E5A"/><rect x="9.25" y="3" width="5.5" height="5.5" rx="1.6" fill="#36C5F0"/><rect x="15.5" y="9" width="5.5" height="5.5" rx="1.6" fill="#2EB67D"/><rect x="9.25" y="15.5" width="5.5" height="5.5" rx="1.6" fill="#ECB22E"/></svg></li>
+                                    <li aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14"><path fill="#0A66C2" d="M6.5 9H4v11h2.5V9ZM5.2 4A1.5 1.5 0 1 0 5.2 7a1.5 1.5 0 0 0 0-3ZM20 20h-2.5v-5.6c0-1.8-.8-2.4-1.8-2.4s-2 .9-2 2.5V20H11V9h2.4v1.5c.6-.9 1.8-1.8 3.4-1.8 2.4 0 3.2 1.5 3.2 4.4V20Z"/></svg></li>
+                                    <li aria-hidden="true"><img src="../assets/skills/logo-gmail.png" alt="" /></li>
+                                  </ul>
+                                </div>
+                                <div class="agents-work-share-toggle">
+                                  <span><strong>Guided setup for recipients</strong><em>Recipients personalize their own copy instead of using yours as-is.</em></span>
+                                  <span class="agents-work-switch" aria-hidden="true"></span>
+                                </div>
+                                <div class="agents-work-field">
+                                  <span>Share directly</span>
+                                  <span class="agents-work-input agents-work-input--share" data-work-share-field><span class="agents-work-team-chip" data-work-share-chip hidden><i aria-hidden="true">S</i>Sales team · 12</span><span data-work-share-typed></span><i class="agents-work-caret" aria-hidden="true"></i></span>
+                                </div>
+                              </div>
+                              <footer class="agents-work-modal-foot">
+                                <span class="agents-work-ghost-btn" aria-hidden="true">Cancel</span>
+                                <button class="agents-work-primary" type="button" data-work-share-submit>Share agent</button>
+                              </footer>
+                            </section>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="agents-work-toast" data-work-toast hidden>
+                        <span class="agents-work-toast-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="13" height="13" fill="none"><path d="m3.5 8.4 3 3 6-6.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                        <span class="agents-work-toast-copy"><strong>Shared with Sales team</strong><span>12 people can run Pipeline Hygiene Sweep in one click.</span></span>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+                <div class="agents-skills-progress agents-skills-progress--four" role="tablist" aria-label="Workspace visual scenes"><button class="is-active" type="button" role="tab" data-skills-scene="describe" aria-label="Open the workspace" aria-current="true"><span class="agents-skills-progress-track"><i data-skills-progress="describe"></i></span></button><button type="button" role="tab" data-skills-scene="run" aria-label="Watch it work" aria-current="false"><span class="agents-skills-progress-track"><i data-skills-progress="run"></i></span></button><button type="button" role="tab" data-skills-scene="save" aria-label="Save as agent" aria-current="false"><span class="agents-skills-progress-track"><i data-skills-progress="save"></i></span></button><button type="button" role="tab" data-skills-scene="share" aria-label="Share with the company" aria-current="false"><span class="agents-skills-progress-track"><i data-skills-progress="share"></i></span></button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 2: ABSTRACT / TRIANGLES ===== -->
+  <section class="abstract-section" id="abstract-section">
+    <div class="abstract-bg" aria-hidden="true"></div>
+    <div class="section-container abstract-layout">
+      <div class="abstract-content">
+        <div class="abstract-container">
+        <div class="triangle-grid-wrapper" id="triangle-grid-wrapper">
+          <div class="triangle-grid" id="triangle-grid" aria-hidden="true"></div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MEASURED IMPACT ===== -->
+  <section class="impact-section" aria-label="Measured customer impact">
+    <div class="section-container impact-layout">
+      <div class="impact-content">
+        <div class="stats-grid impact-stats-grid">
+          <a href="https://www.expertise.ai/live/case-studies/anchain-ai" target="_blank" rel="noopener" class="stat-card">
+            <div class="stat-icon" aria-hidden="true"><img src="../assets/icon-expertise.svg" alt="" /></div>
+            <div class="stat-body">
+              <div class="stat-number">+84%</div>
+              <div class="stat-label">chat-to-lead conversion</div>
+              <div class="stat-divider"></div>
+              <div class="stat-company-row"><div class="stat-company">AnChain.AI</div><span class="stat-arrow" aria-hidden="true"></span></div>
+            </div>
+          </a>
+          <a href="https://www.expertise.ai/live/case-studies/gutterglove" target="_blank" rel="noopener" class="stat-card">
+            <div class="stat-icon" aria-hidden="true"><img src="../assets/icon-expertise.svg" alt="" /></div>
+            <div class="stat-body">
+              <div class="stat-number">99%</div>
+              <div class="stat-label">chats resolved autonomously</div>
+              <div class="stat-divider"></div>
+              <div class="stat-company-row"><div class="stat-company">Gutterglove</div><span class="stat-arrow" aria-hidden="true"></span></div>
+            </div>
+          </a>
+          <a href="https://www.expertise.ai/live/case-studies/holistiplan" target="_blank" rel="noopener" class="stat-card">
+            <div class="stat-icon" aria-hidden="true"><img src="../assets/icon-expertise.svg" alt="" /></div>
+            <div class="stat-body">
+              <div class="stat-number">2.7x</div>
+              <div class="stat-label">more leads at 90% lower cost</div>
+              <div class="stat-divider"></div>
+              <div class="stat-company-row"><div class="stat-company">Holistiplan</div><span class="stat-arrow" aria-hidden="true"></span></div>
+            </div>
+          </a>
+          <a href="https://www.expertise.ai/live/case-studies/david-sklar" target="_blank" rel="noopener" class="stat-card">
+            <div class="stat-icon" aria-hidden="true"><img src="../assets/icon-expertise.svg" alt="" /></div>
+            <div class="stat-body">
+              <div class="stat-number">9x</div>
+              <div class="stat-label">pipeline ROI in 6 months</div>
+              <div class="stat-divider"></div>
+              <div class="stat-company-row"><div class="stat-company">David Sklar &amp; Associates</div><span class="stat-arrow" aria-hidden="true"></span></div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ENTERPRISE DEPLOYMENT (legacy green) ===== -->
+  <section class="platform-section" aria-labelledby="platform-title" hidden>
+    <div class="section-container split-container platform-layout">
+      <aside class="platform-sidebar">
+        <p>One platform.<br />Every step connected.</p>
+      </aside>
+      <div class="platform-content">
+        <header class="platform-intro">
+          <h2 id="platform-title">Enterprise deployment built around your requirements.</h2>
+          <p>Choose how you run, host, and scale your AI. The deployment model is designed around your systems, security requirements, and operating environment.</p>
+        </header>
+
+        <div class="platform-stage">
+          <div class="platform-visual" aria-hidden="true">
+            <img class="platform-visual-img is-active" data-platform-image="usage" src="../assets/platform-talk-with-customers.png" alt="" />
+            <img class="platform-visual-img" data-platform-image="forward" src="../assets/platform-work-with-teams.png" alt="" />
+            <img class="platform-visual-img" data-platform-image="private" src="../assets/platform-act-across-stack.png" alt="" />
+            <span class="platform-visual-shade"></span>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ENTERPRISE DEPLOYMENT — LIGHT ALTERNATIVE ===== -->
+  <section class="platform-section platform-section--light" aria-labelledby="platform-title-light" hidden>
+    <div class="section-container platform-layout">
+      <div class="platform-content">
+        <header class="platform-intro">
+          <p class="section-eyebrow">Hands-on deployment</p>
+          <h2 id="platform-title-light">Enterprise deployment <span>built around your requirements.</span></h2>
+          <p>Choose how you run, host, and scale your AI. The deployment model is designed around your systems, security requirements, and operating environment.</p>
+        </header>
+
+        <div class="platform-stage">
+          <div class="platform-cards" data-platform-accordion>
+            <button class="platform-card is-open" type="button" data-platform-item="usage" aria-pressed="true">
+              <span class="platform-card-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16c5 0 7-8 12-8a4 4 0 0 1 0 8c-5 0-7-8-12-8a4 4 0 1 0 0 8"/></svg>
+              </span>
+              <span class="platform-card-title">Unlimited usage for production</span>
+              <span class="platform-card-body">Scale without watching every conversation. Run high-volume sales and support without metering every interaction.</span>
+            </button>
+            <button class="platform-card" type="button" data-platform-item="forward" aria-pressed="false">
+              <span class="platform-card-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 19 22 12 13 5 13 19"/><polygon points="2 19 11 12 2 5 2 19"/></svg>
+              </span>
+              <span class="platform-card-title">Forward deployment</span>
+              <span class="platform-card-body">Work directly with the Expertise AI team to design workflows, connect systems, test scenarios, and improve after launch.</span>
+            </button>
+            <button class="platform-card" type="button" data-platform-item="private" aria-pressed="false">
+              <span class="platform-card-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="9" y="2" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/><path d="M12 12V8"/></svg>
+              </span>
+              <span class="platform-card-title">Private infrastructure &amp; model choice</span>
+              <span class="platform-card-body">Choose where your AI and data run — flexible hosting, private infrastructure, and open-weight models.</span>
+            </button>
+          </div>
+
+          <div class="platform-visual">
+            <div class="platform-rotation">
+              <div class="platform-rotation-tracks" role="tablist" aria-label="Deployment options">
+                <button type="button" role="tab" data-rotation-step="usage" aria-label="Unlimited usage for production" aria-selected="true"><i aria-hidden="true"></i></button>
+                <button type="button" role="tab" data-rotation-step="forward" aria-label="Forward deployment" aria-selected="false"><i aria-hidden="true"></i></button>
+                <button type="button" role="tab" data-rotation-step="private" aria-label="Private infrastructure and model choice" aria-selected="false"><i aria-hidden="true"></i></button>
+              </div>
+            </div>
+            <div class="usage-process is-active" data-platform-image="usage" aria-hidden="true">
+              <div class="deployment-production usage-meter">
+                <div class="usage-meter-head"><span class="deployment-eyebrow">Token usage this month</span><span class="usage-live"><i class="usage-live-dot"></i>Live</span></div>
+                <div class="usage-count-row"><strong data-usage-count>284,650</strong><span class="usage-infinity">∞</span></div>
+                <div class="usage-flow"><i class="usage-flow-indicator"></i><div class="usage-track"><span data-usage-fill></span></div></div>
+              </div>
+              <div class="deployment-production usage-history">
+                <div class="usage-history-head"><strong>Conversation history</strong><span class="usage-history-count" data-usage-history-count>1,284</span></div>
+                <div class="usage-history-window">
+                  <div class="usage-history-list" data-usage-history>
+                    <div class="usage-history-row"><span class="usage-chat-icon"><svg class="lucide lucide-message-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span><div><strong>Product questions</strong><span class="usage-history-detail">Sales · Answered</span></div><time>Just now</time></div>
+                    <div class="usage-history-row"><span class="usage-chat-icon"><svg class="lucide lucide-message-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span><div><strong>Order status</strong><span class="usage-history-detail">Support · Resolved</span></div><time>5 mins ago</time></div>
+                    <div class="usage-history-row"><span class="usage-chat-icon"><svg class="lucide lucide-message-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span><div><strong>Demo request</strong><span class="usage-history-detail">Sales · Meeting booked</span></div><time>12 mins ago</time></div>
+                    <div class="usage-history-row"><span class="usage-chat-icon"><svg class="lucide lucide-message-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span><div><strong>Account access</strong><span class="usage-history-detail">Support · Resolved</span></div><time>18 mins ago</time></div>
+                    <div class="usage-history-row"><span class="usage-chat-icon"><svg class="lucide lucide-message-circle" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span><div><strong>Plan comparison</strong><span class="usage-history-detail">Sales · Answered</span></div><time>24 mins ago</time></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="deployment-process" data-platform-image="forward" aria-hidden="true">
+              <div class="deployment-production">
+                <div><span class="deployment-eyebrow">Together, from workflow to live</span><strong data-deployment-status>Deployment in progress</strong></div>
+                <span class="deployment-ring" data-deployment-total style="--progress: 0%"><span>0%</span></span>
+              </div>
+              <div class="deployment-converge"><span></span><span></span></div>
+              <div class="deployment-stack">
+                <div class="deployment-team" data-deployment-team="yours">
+                  <div class="deployment-team-head"><strong>Your team</strong><span class="deployment-ring deployment-ring--small" style="--progress: 0%"><span>0%</span></span></div>
+                  <ul class="deployment-tasks">
+                    <li data-deployment-step="rules"><span class="deployment-check"></span>Define business rules</li>
+                    <li data-deployment-step="systems"><span class="deployment-check"></span>Share system access</li>
+                    <li data-deployment-step="scenarios"><span class="deployment-check"></span>Validate real scenarios</li>
+                  </ul>
+                </div>
+                <div class="deployment-team is-front" data-deployment-team="expertise">
+                  <div class="deployment-team-head"><strong>Expertise team</strong><span class="deployment-ring deployment-ring--small" style="--progress: 0%"><span>0%</span></span></div>
+                  <ul class="deployment-tasks">
+                    <li data-deployment-step="map"><span class="deployment-check"></span>Map your workflow</li>
+                    <li data-deployment-step="connect"><span class="deployment-check"></span>Connect your systems</li>
+                    <li data-deployment-step="test"><span class="deployment-check"></span>Test agent guardrails</li>
+                    <li data-deployment-step="launch"><span class="deployment-check"></span>Launch to production</li>
+                    <li data-deployment-step="tune"><span class="deployment-check"></span>Tune live performance</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="private-process" data-platform-image="private" aria-label="Example deployment configurator" aria-hidden="true" inert>
+              <div class="deployment-production private-config">
+                <div class="private-config-head">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="7" rx="2"/><path d="M7 6.5h.01M7 17.5h.01M11 6.5h6M11 17.5h6"/></svg>
+                  <strong>Deployment configuration</strong>
+                </div>
+                <fieldset class="private-config-group">
+                  <legend>Data residency</legend>
+                  <div class="private-options private-options--regions">
+                    <label><input type="radio" name="private-region" value="Canada" checked /><span>Canada</span></label>
+                    <label><input type="radio" name="private-region" value="US" /><span>US</span></label>
+                    <label><input type="radio" name="private-region" value="Europe" /><span>Europe</span></label>
+                    <label><input type="radio" name="private-region" value="Other supported regions" /><span>Other supported regions</span></label>
+                  </div>
+                </fieldset>
+                <fieldset class="private-config-group">
+                  <legend>Infrastructure</legend>
+                  <div class="private-options private-options--infra">
+                    <label><input type="radio" name="private-infrastructure" value="Managed" /><span>Managed</span></label>
+                    <label><input type="radio" name="private-infrastructure" value="Dedicated" checked /><span>Dedicated</span></label>
+                    <label><input type="radio" name="private-infrastructure" value="Private VPS" /><span>Private VPS</span></label>
+                  </div>
+                </fieldset>
+                <fieldset class="private-config-group">
+                  <legend>Model</legend>
+                  <div class="private-options">
+                    <label><input type="radio" name="private-model" value="Hosted models" /><span>Hosted models</span></label>
+                    <label><input type="radio" name="private-model" value="Open-weight models" checked /><span>Open-weight models</span></label>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+            <span class="platform-visual-shade"></span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ENTERPRISE DEPLOYMENT — THREE-CARD ALTERNATIVE ===== -->
+  <section class="deployment-alt-section" aria-labelledby="deployment-alt-title">
+    <div class="section-container deployment-alt-layout">
+      <div class="deployment-alt-content">
+        <header class="deployment-alt-intro">
+          <p class="section-eyebrow">Hands-on deployment</p>
+          <h2 id="deployment-alt-title">Enterprise deployment <span>built around your requirements.</span></h2>
+          <p>Choose how you run, host, and scale your AI. The deployment model is designed around your systems, security requirements, and operating environment.</p>
+        </header>
+        <div class="deployment-alt-grid">
+          <article class="deployment-alt-card deployment-alt-card--usage">
+            <div class="deployment-alt-art" aria-hidden="true">
+              <div class="deployment-alt-glass">
+                <div class="deployment-production usage-meter deployment-alt-token">
+                  <div class="usage-meter-head"><span class="deployment-eyebrow">Unlimited usage</span><span class="usage-live"><i class="usage-live-dot"></i>Live</span></div>
+                  <div class="usage-count-row"><strong data-alt-usage-count>284,650</strong><span class="usage-infinity">∞</span></div>
+                  <div class="usage-flow"><i class="usage-flow-indicator"></i><div class="usage-track"><span></span></div></div>
+                </div>
+              </div>
+            </div>
+            <div class="deployment-alt-card-copy"><span class="deployment-alt-card-index">01 / Scale</span><h3>Unlimited usage for production</h3><p>Scale without watching every conversation. Run high-volume sales and support workflows with unlimited conversations and more predictable deployment economics as usage grows.</p></div>
+          </article>
+          <article class="deployment-alt-card deployment-alt-card--forward">
+            <div class="deployment-alt-art" aria-hidden="true">
+              <div class="deployment-alt-glass">
+                <div class="deployment-alt-workflow-ui">
+                  <div class="deployment-alt-workflow-head"><svg class="deployment-alt-workflow-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3 6 2 2 4-4M13 6h8M3 12l2 2 4-4M13 12h8M3 18l2 2 4-4M13 18h8"/></svg><span>Deployment plan</span><span class="deployment-alt-workflow-progress"><span class="deployment-alt-workflow-track"><i></i></span><span class="deployment-alt-workflow-percent"><b>75%</b><b>100%</b></span></span></div>
+                  <ol class="deployment-alt-workflow-list"><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i><span>Design workflows</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i><span>Connect integrations</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i><span>Test real scenarios</span></li><li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></i><span>Launch &amp; keep tuning</span></li></ol>
+                  <div class="deployment-alt-workflow-team"><span class="deployment-alt-team-icon">E</span><span class="deployment-alt-team-icon">Y</span><strong>Your team + Expertise AI</strong></div>
+                </div>
+              </div>
+            </div>
+            <div class="deployment-alt-card-copy"><span class="deployment-alt-card-index">02 / Partner</span><h3>Forward deployment</h3><p>Work directly with the Expertise AI team. We work alongside your team to design workflows, connect integrations, test real scenarios, establish guardrails, and continue tuning after launch.</p></div>
+          </article>
+          <article class="deployment-alt-card deployment-alt-card--private">
+            <div class="deployment-alt-art" role="group" aria-label="Example deployment configuration">
+              <div class="deployment-alt-glass">
+                <div class="deployment-alt-private-ui">
+                  <div class="deployment-alt-ui-head"><span class="deployment-alt-ui-dot"></span><span class="deployment-alt-ui-dot"></span><span class="deployment-alt-ui-dot"></span><span class="deployment-alt-ui-label">Deployment configuration</span></div>
+                  <div class="deployment-alt-private-group"><span>Data residency</span><div class="deployment-alt-region-row"><b>Canada</b><b>United States</b><b>Europe</b></div></div>
+                  <div class="deployment-alt-private-group deployment-alt-private-group--infrastructure" data-alt-dropdown>
+                    <span id="deployment-alt-infrastructure-label">Infrastructure</span>
+                    <button class="deployment-alt-private-option" type="button" aria-labelledby="deployment-alt-infrastructure-label deployment-alt-infrastructure-value" aria-expanded="false" aria-controls="deployment-alt-infrastructure-menu" data-alt-dropdown-trigger>
+                      <svg class="deployment-alt-option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="7" rx="2"/><rect x="3" y="14" width="18" height="7" rx="2"/><path d="M7 6.5h.01M7 17.5h.01"/></svg><span id="deployment-alt-infrastructure-value" data-alt-dropdown-value>Dedicated infrastructure / VPS</span><svg class="deployment-alt-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                    <div class="deployment-alt-dropdown-menu" id="deployment-alt-infrastructure-menu" data-alt-dropdown-menu hidden>
+                      <button type="button" data-alt-dropdown-option aria-pressed="true">Dedicated infrastructure / VPS</button>
+                      <button type="button" data-alt-dropdown-option aria-pressed="false">Managed cloud</button>
+                      <button type="button" data-alt-dropdown-option aria-pressed="false">Private VPS</button>
+                    </div>
+                  </div>
+                  <div class="deployment-alt-private-group deployment-alt-private-group--model" data-alt-dropdown>
+                    <span id="deployment-alt-model-label">Model choice</span>
+                    <button class="deployment-alt-private-option" type="button" aria-labelledby="deployment-alt-model-label deployment-alt-model-value" aria-expanded="false" aria-controls="deployment-alt-model-menu" data-alt-dropdown-trigger>
+                      <svg class="deployment-alt-option-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h16M4 16h16M8 4v16M16 4v16"/><circle cx="12" cy="12" r="2"/></svg><span id="deployment-alt-model-value" data-alt-dropdown-value>Open-weight models</span><svg class="deployment-alt-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                    <div class="deployment-alt-dropdown-menu" id="deployment-alt-model-menu" data-alt-dropdown-menu hidden>
+                      <button type="button" data-alt-dropdown-option aria-pressed="true">Open-weight models</button>
+                      <button type="button" data-alt-dropdown-option aria-pressed="false">Hosted models</button>
+                      <button type="button" data-alt-dropdown-option aria-pressed="false">Hybrid model routing</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="deployment-alt-card-copy"><span class="deployment-alt-card-index">03 / Control</span><h3>Private infrastructure &amp; model choice</h3><p>Meet your data-residency and architecture requirements with flexible hosting across regions including Canada, the US, and Europe, plus open-weight models and dedicated infrastructure or VPS options.</p></div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 3: TRUSTED BY ===== -->
+  <section class="trusted-section">
+    <div class="section-container trusted-layout">
+      <div class="trusted-content">
+        <p class="section-eyebrow trusted-label">Trusted by top companies</p>
+      <div class="logo-grid-container">
+        <div class="logo-grid">
+
+          <!-- CELLS 0–17: visible on all breakpoints (6 rows at 3-col mobile) -->
+          <!-- 9 case studies at positions 0,2,4,6,8,10,12,14,16 — zero conflicts at 3,5,7 cols -->
+          <!-- ROW 0 (desktop) — cells 0–6 -->
+          <a href="https://www.expertise.ai/live/case-studies/gutterglove" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">Gutterglove</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">Gutterglove Automates 99% of Customer Chats</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Nexora</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/anchain-ai" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">AnChain.AI</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">AnChain.AI Increases Conversion by 84%</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Aventis</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/401go" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">401GO</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">How 401GO Uncovered Hidden Customer Demand</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Cylara</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/holistiplan" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">Holistiplan</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">Holistiplan Gets 2.7× More Leads at 90% Lower Cost</span>
+            </div>
+          </a>
+          <!-- ROW 1 (desktop) — cells 7–13 -->
+          <div class="logo-cell"><span class="logo-name">Draxion</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/safecheck" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">SafeCheck</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">SafeCheck Increases Corporate Leads by 50%</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Elara</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/david-sklar" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">David Sklar</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">David Sklar Generates 5× ROI After Hours</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Galvora</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/swimmingly" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">Swimmingly</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">Swimmingly Raises AI Resolution Rate to 90%</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Fynex</span></div>
+          <!-- ROW 2 (desktop) — cells 14–20 -->
+          <a href="https://www.expertise.ai/live/case-studies/big-buy" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">BigBuy</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">BigBuy Scales AI Lead Capture and Support</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Veltrix</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/circuit-electric" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">Hydro-Québec</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">Hydro-Québec Cuts Support Requests by 22%</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Zentara</span></div>
+
+          <!-- CELLS 18+: tablet/desktop only — hidden on mobile (≤600px) -->
+          <!-- 4 remaining case studies at positions 20,24,28,32 — zero conflicts at 5,7 cols -->
+          <div class="logo-cell"><span class="logo-name">Lumora</span></div>
+          <div class="logo-cell"><span class="logo-name">Clypto</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/gic-green" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">GIC-GREEN</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">GIC-GREEN Generates 30–40% of Leads with AI</span>
+            </div>
+          </a>
+          <!-- ROW 3 (desktop) — cells 21–27 -->
+          <div class="logo-cell"><span class="logo-name">Orbisys</span></div>
+          <div class="logo-cell"><span class="logo-name">Virelia</span></div>
+          <div class="logo-cell"><span class="logo-name">Trivanta</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/imagine-ai-live" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">ImagineAI</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">ImagineAI LIVE Increases Registrations by 85%</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Solvexa</span></div>
+          <div class="logo-cell"><span class="logo-name">Kintara</span></div>
+          <div class="logo-cell"><span class="logo-name">Quantiflow</span></div>
+          <!-- ROW 4 (desktop) — cells 28–34 -->
+          <a href="https://www.expertise.ai/live/case-studies/rachel-bjerstedt" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">R. Bjerstedt</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">Rachel Bjerstedt Cuts Live Chat Demand by 94%</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Axionex</span></div>
+          <div class="logo-cell"><span class="logo-name">Polarisys</span></div>
+          <div class="logo-cell"><span class="logo-name">Dynexis</span></div>
+          <a href="https://www.expertise.ai/live/case-studies/solimar-systems-inc" target="_blank" rel="noopener" class="logo-cell has-case-study">
+            <span class="logo-name">Solimar</span>
+            <span class="cell-arrow" aria-hidden="true"></span>
+            <div class="hover-panel">
+              <span class="hover-arrow-icon" aria-hidden="true"></span>
+              <span class="hover-title">Solimar Achieves 99.9% AI Answer Accuracy</span>
+            </div>
+          </a>
+          <div class="logo-cell"><span class="logo-name">Nexora</span></div>
+          <div class="logo-cell"><span class="logo-name">Aventis</span></div>
+          <!-- ROW 5 (desktop) — faded -->
+          <div class="logo-cell logo-faded"><span class="logo-name">Infiniscope</span></div>
+          <div class="logo-cell logo-faded"><span class="logo-name">CelerityTech</span></div>
+          <div class="logo-cell logo-faded"><span class="logo-name">Veridion</span></div>
+          <div class="logo-cell logo-faded"><span class="logo-name">AetherLink</span></div>
+          <div class="logo-cell logo-faded"><span class="logo-name">QuantumDrive</span></div>
+          <div class="logo-cell logo-faded"><span class="logo-name">Solaris Dynamics</span></div>
+          <div class="logo-cell logo-faded"><span class="logo-name">Vertex Innovations</span></div>
+        </div>
+        <div class="logo-grid-fade" aria-hidden="true"></div>
+      </div>
+      <p class="trusted-more">and 300+ companies more</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 3B: TRUSTED BY — ALTERNATIVE EDITORIAL CONCEPT ===== -->
+  <section class="trusted-alt-section" aria-labelledby="stories-title" hidden>
+    <div class="section-container split-container trusted-alt-layout">
+      <div class="trusted-alt-sidebar">
+        <p>Case studies</p>
+      </div>
+      <div class="trusted-alt-content">
+      <div class="trusted-alt-intro">
+        <div>
+          <h2 id="stories-title">Solving real world problems</h2>
+        </div>
+        <a class="view-all-case-studies" href="https://www.expertise.ai/live/case-studies" target="_blank" rel="noopener">View all case studies <span aria-hidden="true"></span></a>
+      </div>
+
+      <div class="story-layout">
+        <div class="story-index" aria-label="Customer case studies">
+          <a class="story-logo-link is-active" href="https://www.expertise.ai/live/case-studies/circuit-electric" target="_blank" rel="noopener" style="--story-bg: url('../assets/story-bg-circuit-electric.png')" data-story-bg="../assets/story-bg-circuit-electric.png" data-story-logo="Circuit Electric" data-story-title="Circuit Electric Cuts Support Requests by 22%" data-story-logo-image="../assets/logo-circuit-electric.png" data-story-category="Utilities / Support" data-story-index="01" data-story-position="40% 30%" data-story-metric-1-value="22.35%" data-story-metric-1-caption="fewer contact-form submissions" data-story-metric-2-value="557" data-story-metric-2-caption="customer contacts avoided · Dec 2024" data-story-metric-3-value="60 days" data-story-metric-3-caption="to measurable impact"><img class="company-logo" src="../assets/story-logo-circuit-electric.png" alt="Circuit Electric" /><i aria-hidden="true"></i></a>
+          <a class="story-logo-link" href="https://www.expertise.ai/live/case-studies/anchain-ai" target="_blank" rel="noopener" style="--story-bg: url('../assets/story-bg-anchain.jpg')" data-story-bg="../assets/story-bg-anchain.jpg" data-story-logo="AnChain.AI" data-story-title="AnChain.AI Increases Conversion by 84%" data-story-logo-image="../assets/client-anchain.svg" data-story-category="Technology / Sales" data-story-index="02" data-story-position="65% 45%" data-story-metric-1-value="+84%" data-story-metric-1-caption="chat-to-lead conversion" data-story-metric-2-value="85%" data-story-metric-2-caption="faster first touch" data-story-metric-3-value="492" data-story-metric-3-caption="qualified signals · 6 months"><img class="company-logo" src="../assets/story-logo-anchain.png" alt="AnChain.AI" /><i aria-hidden="true"></i></a>
+          <a class="story-logo-link" href="https://www.expertise.ai/live/case-studies/gutterglove" target="_blank" rel="noopener" style="--story-bg: url('../assets/story-bg-gutterglove.jpg')" data-story-bg="../assets/story-bg-gutterglove.jpg" data-story-logo="Gutterglove" data-story-title="Gutterglove Automates 99% of Customer Chats" data-story-logo-image="../assets/client-gutterglove.png" data-story-category="Manufacturing / Support" data-story-index="03" data-story-position="28% 62%" data-story-metric-1-value="&gt;99%" data-story-metric-1-caption="chats resolved autonomously" data-story-metric-2-value="21%" data-story-metric-2-caption="fewer support interactions · YoY" data-story-metric-3-value="~30 min" data-story-metric-3-caption="initial setup time"><img class="company-logo" src="../assets/story-logo-gutterglove.png" alt="Gutterglove" /><i aria-hidden="true"></i></a>
+          <a class="story-logo-link" href="https://www.expertise.ai/live/case-studies/holistiplan" target="_blank" rel="noopener" style="--story-bg: url('../assets/story-bg-holistiplan.jpg')" data-story-bg="../assets/story-bg-holistiplan.jpg" data-story-logo="Holistiplan" data-story-title="Holistiplan: 2.7× More Leads, 90% Lower Cost" data-story-logo-image="../assets/client-holistiplan.webp" data-story-category="Financial Services SaaS / Sales" data-story-index="04" data-story-position="72% 28%" data-story-metric-1-value="2.7×" data-story-metric-1-caption="more leads" data-story-metric-2-value="90%" data-story-metric-2-caption="lower cost" data-story-metric-3-value="543" data-story-metric-3-caption="visitor leads captured"><img class="company-logo" src="../assets/story-logo-holistiplan.png" alt="Holistiplan" /><i aria-hidden="true"></i></a>
+          <a class="story-logo-link" href="https://www.expertise.ai/live/case-studies/safecheck" target="_blank" rel="noopener" style="--story-bg: url('../assets/story-bg-safecheck.jpg')" data-story-bg="../assets/story-bg-safecheck.jpg" data-story-logo="SafeCheck" data-story-title="SafeCheck Increases Corporate Leads by 50%" data-story-logo-image="../assets/logo-safecheck.png" data-story-category="Training &amp; Compliance / Sales + Support" data-story-index="05" data-story-position="52% 72%" data-story-metric-1-value="50%" data-story-metric-1-caption="increase in corporate inbound leads" data-story-metric-2-value="80%+" data-story-metric-2-caption="customer queries resolved by AI" data-story-metric-3-value="60 days" data-story-metric-3-caption="to measurable impact"><img class="company-logo" src="../assets/story-logo-safecheck.png" alt="SafeCheck" /><i aria-hidden="true"></i></a>
+          <a class="story-logo-link" href="https://www.expertise.ai/live/case-studies/david-sklar" target="_blank" rel="noopener" style="--story-bg: url('../assets/story-bg-david-sklar.jpg')" data-story-bg="../assets/story-bg-david-sklar.jpg" data-story-logo="David Sklar &amp; Associates" data-story-title="David Sklar Generates 5× ROI After Hours" data-story-logo-image="../assets/client-david-sklar.webp" data-story-category="Financial Services / Sales" data-story-index="06" data-story-position="30% 36%" data-story-metric-1-value="5×" data-story-metric-1-caption="ROI from after-hours deployment" data-story-metric-2-value="20%" data-story-metric-2-caption="AI conversations → consultations" data-story-metric-3-value="24%" data-story-metric-3-caption="consultations → signed engagements"><img class="company-logo" src="../assets/story-logo-david-sklar.png" alt="David Sklar &amp; Associates" /><i aria-hidden="true"></i></a>
+          <a class="story-logo-link" href="https://www.expertise.ai/live/case-studies/big-buy" target="_blank" rel="noopener" style="--story-bg: url('../assets/story-bg-bigbuy.jpg')" data-story-bg="../assets/story-bg-bigbuy.jpg" data-story-logo="BigBuy" data-story-title="BigBuy Scales AI Lead Capture and Support" data-story-logo-image="../assets/logo-bigbuy.jpg" data-story-category="Ecommerce / Sales + Support" data-story-index="08" data-story-position="44% 50%" data-story-metric-1-value="10–20%" data-story-metric-1-caption="repetitive queries automated" data-story-metric-2-value="100–200" data-story-metric-2-caption="tickets offloaded monthly" data-story-metric-3-value="1–2%" data-story-metric-3-caption="projected lift in lead conversion"><img class="company-logo" src="../assets/story-logo-bigbuy.png" alt="BigBuy" /><i aria-hidden="true"></i></a>
+          <a class="story-logo-link" href="https://www.expertise.ai/live/case-studies/swimmingly" target="_blank" rel="noopener" style="--story-bg: url('../assets/story-bg-swimmingly.jpg')" data-story-bg="../assets/story-bg-swimmingly.jpg" data-story-logo="Swimmingly" data-story-title="Swimmingly Raises AI Resolution Rate to 90%" data-story-logo-image="../assets/logo-swimmingly.png" data-story-category="Sports Software / Support" data-story-index="07" data-story-position="68% 68%" data-story-metric-1-value="90%" data-story-metric-1-caption="automated resolution rate" data-story-metric-2-value="30 days" data-story-metric-2-caption="to measurable impact" data-story-metric-3-value="15 pts" data-story-metric-3-caption="lift in automated resolution"><img class="company-logo" src="../assets/story-logo-swimmingly.png" alt="Swimmingly" /><i aria-hidden="true"></i></a>
+        </div>
+
+        <div class="story-stage" aria-live="polite" style="--story-bg-image: url('../assets/story-bg-circuit-electric.png')">
+          <div class="story-stage-image" aria-hidden="true"></div>
+          <div class="story-stage-pulse" aria-hidden="true"></div>
+          <p class="story-stage-logo"><img data-story-logo src="../assets/logo-circuit-electric.png" alt="Circuit Electric" /></p>
+          <div class="story-stage-content">
+            <p class="story-stage-meta" data-story-category>Utilities / Support</p>
+            <h3 class="story-stage-title" data-story-title>Circuit Electric Cuts Support Requests by 22%</h3>
+            <dl class="story-metrics">
+              <div><dt data-story-metric-value="1">22.35%</dt><dd data-story-metric-caption="1">fewer contact-form submissions</dd></div>
+              <div><dt data-story-metric-value="2">557</dt><dd data-story-metric-caption="2">customer contacts avoided · Dec 2024</dd></div>
+              <div><dt data-story-metric-value="3">60 days</dt><dd data-story-metric-caption="3">to measurable impact</dd></div>
+            </dl>
+          </div>
+          <a class="story-stage-cta" data-story-link href="https://www.expertise.ai/live/case-studies/circuit-electric" target="_blank" rel="noopener">Read case study <span class="story-link-arrow" aria-hidden="true"></span></a>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 3C: CASE STUDIES — INTERACTIVE EDITORIAL ALTERNATIVE ===== -->
+  <section class="case-studies-alt-section" aria-labelledby="stories-alt-title">
+    <div class="section-container case-studies-alt-layout">
+      <div class="case-studies-alt-content">
+        <div class="case-studies-alt-intro">
+          <p class="section-eyebrow">Case studies</p>
+          <h2 id="stories-alt-title">Solving real world problems</h2>
+          <a class="view-all-case-studies" href="https://www.expertise.ai/live/case-studies" target="_blank" rel="noopener">View all case studies <span aria-hidden="true"></span></a>
+        </div>
+
+        <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"><defs><filter id="case-photo-soften" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="2.5 0.35" /></filter></defs></svg>
+        <div class="case-studies-showcase" id="case-studies-active" aria-live="polite" aria-atomic="true" style="--case-image: url('../assets/story-bg-holistiplan.jpg')">
+          <article class="case-studies-primary">
+            <div class="case-studies-media" aria-hidden="true"></div>
+            <div class="case-studies-copy-wrap">
+              <h3 data-case-title>Holistiplan: 2.7× More Leads, 90% Lower Cost</h3>
+              <dl class="case-studies-metrics">
+                <div><dt data-case-metric-value="1">2.7×</dt><dd data-case-metric-caption="1">more leads</dd></div>
+                <div><dt data-case-metric-value="2">90%</dt><dd data-case-metric-caption="2">lower cost</dd></div>
+                <div><dt data-case-metric-value="3">543</dt><dd data-case-metric-caption="3">visitor leads captured</dd></div>
+              </dl>
+            </div>
+          </article>
+          <a class="case-studies-highlight" data-case-link href="https://www.expertise.ai/live/case-studies/holistiplan" target="_blank" rel="noopener">
+            <div class="case-studies-highlight-meta">
+              <img data-case-logo src="../assets/client-holistiplan.webp" alt="Holistiplan" />
+              <p data-case-category>Financial Services SaaS</p>
+            </div>
+            <div class="case-studies-highlight-block">
+              <p class="case-studies-highlight-label">The problem</p>
+              <p class="case-studies-highlight-summary" data-case-problem>Traditional chat flows missed early-stage visitors, while events were expensive to scale.</p>
+            </div>
+            <div class="case-studies-highlight-block">
+              <p class="case-studies-highlight-label">The solution</p>
+              <p class="case-studies-highlight-summary" data-case-solution>Visitor identification reveals engaged prospects beyond form fills, giving the marketing team new opportunities without disrupting existing sales workflows.</p>
+            </div>
+            <span class="case-studies-read-link">Read case study <span aria-hidden="true"></span></span>
+          </a>
+        </div>
+
+        <div class="case-studies-pickers" aria-label="Choose a customer case study">
+          <button class="case-studies-picker is-active" aria-controls="case-studies-active" aria-pressed="true" type="button" data-case-index="01" data-case-problem="Traditional chat flows missed early-stage visitors, while events were expensive to scale." data-case-solution="Visitor identification reveals engaged prospects beyond form fills, giving the marketing team new opportunities without disrupting existing sales workflows." data-case-logo="../assets/client-holistiplan.webp" data-case-logo-alt="Holistiplan" data-case-bg="../assets/story-bg-holistiplan.jpg" data-case-category="Financial Services SaaS / Sales" data-case-title="Holistiplan: 2.7× More Leads, 90% Lower Cost" data-case-href="https://www.expertise.ai/live/case-studies/holistiplan" data-case-metric-1-value="2.7×" data-case-metric-1-caption="more leads" data-case-metric-2-value="90%" data-case-metric-2-caption="lower cost" data-case-metric-3-value="543" data-case-metric-3-caption="visitor leads captured"><img src="../assets/client-holistiplan.webp" alt="Holistiplan" /></button>
+          <button class="case-studies-picker" aria-controls="case-studies-active" aria-pressed="false" type="button" data-case-index="02" data-case-problem="Growing EV adoption put pressure on a support team that could not scale at the same pace." data-case-solution="A tailored AI agent answers driver questions, freeing the team for more personal support." data-case-logo="../assets/logo-circuit-electric.png" data-case-logo-alt="Circuit Electric" data-case-bg="../assets/story-bg-circuit-electric.png" data-case-category="Utilities / Support" data-case-title="Circuit Electric Cuts Support Requests by 22%" data-case-href="https://www.expertise.ai/live/case-studies/circuit-electric" data-case-metric-1-value="22.35%" data-case-metric-1-caption="fewer contact-form submissions" data-case-metric-2-value="557" data-case-metric-2-caption="customer contacts avoided · Dec 2024" data-case-metric-3-value="60 days" data-case-metric-3-caption="to measurable impact"><img src="../assets/logo-circuit-electric.png" alt="Circuit Electric" /></button>
+          <button class="case-studies-picker" aria-controls="case-studies-active" aria-pressed="false" type="button" data-case-index="03" data-case-problem="High-intent website conversations went unnoticed, leaving sales teams following up too late." data-case-solution="Daily lead summaries and HubSpot integration turn previously overlooked website conversations into timely, informed sales follow-up." data-case-logo="../assets/client-anchain.svg" data-case-logo-alt="AnChain.AI" data-case-bg="../assets/story-bg-anchain.jpg" data-case-category="Technology / Sales" data-case-title="AnChain.AI Increases Conversion by 84%" data-case-href="https://www.expertise.ai/live/case-studies/anchain-ai" data-case-metric-1-value="+84%" data-case-metric-1-caption="chat-to-lead conversion" data-case-metric-2-value="85%" data-case-metric-2-caption="faster first touch" data-case-metric-3-value="492" data-case-metric-3-caption="qualified signals · 6 months"><img src="../assets/client-anchain.svg" alt="AnChain.AI" /></button>
+          <button class="case-studies-picker" aria-controls="case-studies-active" aria-pressed="false" type="button" data-case-index="04" data-case-problem="Customers struggled to find the right products, overwhelming support with repetitive questions." data-case-solution="Dedicated AI agents for each brand help customers choose the right products while freeing the support team from repetitive questions." data-case-logo="../assets/client-gutterglove.png" data-case-logo-alt="Gutterglove" data-case-bg="../assets/story-bg-gutterglove.jpg" data-case-category="Manufacturing / Support" data-case-title="Gutterglove Automates 99% of Customer Chats" data-case-href="https://www.expertise.ai/live/case-studies/gutterglove" data-case-metric-1-value="&gt;99%" data-case-metric-1-caption="chats resolved autonomously" data-case-metric-2-value="21%" data-case-metric-2-caption="fewer support interactions · YoY" data-case-metric-3-value="~30 min" data-case-metric-3-caption="initial setup time"><img src="../assets/client-gutterglove.png" alt="Gutterglove" /></button>
+          <button class="case-studies-picker" aria-controls="case-studies-active" aria-pressed="false" type="button" data-case-index="05" data-case-problem="Repetitive pricing and registration questions stretched a small support team and slowed purchases." data-case-solution="Instant guidance on pricing, registration and checkout helps learners buy with confidence and directs corporate customers to the right team." data-case-logo="../assets/logo-safecheck.png" data-case-logo-alt="SafeCheck" data-case-bg="../assets/story-bg-safecheck.jpg" data-case-category="Training &amp; Compliance / Sales + Support" data-case-title="SafeCheck Increases Corporate Leads by 50%" data-case-href="https://www.expertise.ai/live/case-studies/safecheck" data-case-metric-1-value="50%" data-case-metric-1-caption="increase in corporate inbound leads" data-case-metric-2-value="80%+" data-case-metric-2-caption="customer queries resolved by AI" data-case-metric-3-value="60 days" data-case-metric-3-caption="to measurable impact"><img src="../assets/logo-safecheck.png" alt="SafeCheck" /></button>
+          <button class="case-studies-picker" aria-controls="case-studies-active" aria-pressed="false" type="button" data-case-index="06" data-case-problem="Visitors seeking debt advice after hours could not reach live agents to book consultations." data-case-solution="Visitors seeking debt advice after hours can engage immediately and book consultations directly, instead of waiting for the team to come online." data-case-logo="../assets/client-david-sklar.webp" data-case-logo-alt="David Sklar &amp; Associates" data-case-bg="../assets/story-bg-david-sklar.jpg" data-case-category="Financial Services / Sales" data-case-title="David Sklar Generates 5× ROI After Hours" data-case-href="https://www.expertise.ai/live/case-studies/david-sklar" data-case-metric-1-value="5×" data-case-metric-1-caption="ROI from after-hours deployment" data-case-metric-2-value="20%" data-case-metric-2-caption="AI conversations → consultations" data-case-metric-3-value="24%" data-case-metric-3-caption="consultations → signed engagements"><img src="../assets/client-david-sklar.webp" alt="David Sklar &amp; Associates" /></button>
+          <button class="case-studies-picker" aria-controls="case-studies-active" aria-pressed="false" type="button" data-case-index="07" data-case-problem="A complex catalog and limited support availability made navigation and lead qualification difficult." data-case-solution="Around-the-clock guidance helps diverse ecommerce audiences navigate a complex catalog while capturing leads and handling routine support questions." data-case-logo="../assets/logo-bigbuy.jpg" data-case-logo-alt="BigBuy" data-case-bg="../assets/story-bg-bigbuy.jpg" data-case-category="Ecommerce / Sales + Support" data-case-title="BigBuy Scales AI Lead Capture and Support" data-case-href="https://www.expertise.ai/live/case-studies/big-buy" data-case-metric-1-value="10–20%" data-case-metric-1-caption="repetitive queries automated" data-case-metric-2-value="100–200" data-case-metric-2-caption="tickets offloaded monthly" data-case-metric-3-value="1–2%" data-case-metric-3-caption="projected lift in lead conversion"><img src="../assets/logo-bigbuy.jpg" alt="BigBuy" /></button>
+          <button class="case-studies-picker" aria-controls="case-studies-active" aria-pressed="false" type="button" data-case-index="08" data-case-problem="Seasonal support demand and rising per-conversation costs made the existing solution hard to scale." data-case-solution="More flexible understanding of customer questions and guided answers improve self-service for swim teams ahead of the busy season." data-case-logo="../assets/logo-swimmingly.png" data-case-logo-alt="Swimmingly" data-case-bg="../assets/story-bg-swimmingly.jpg" data-case-category="Sports Software / Support" data-case-title="Swimmingly Raises AI Resolution Rate to 90%" data-case-href="https://www.expertise.ai/live/case-studies/swimmingly" data-case-metric-1-value="90%" data-case-metric-1-caption="automated resolution rate" data-case-metric-2-value="30 days" data-case-metric-2-caption="to measurable impact" data-case-metric-3-value="15 pts" data-case-metric-3-caption="lift in automated resolution"><img src="../assets/logo-swimmingly.png" alt="Swimmingly" /></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== INDUSTRIES ===== -->
+  <section class="industries-section" aria-labelledby="industries-title">
+    <div class="section-container industries-layout">
+      <div class="industries-content">
+        <p class="section-eyebrow">For any industries</p>
+        <h2 id="industries-title">One platform. <span>Different industries.</span></h2>
+        <div class="industries-grid">
+          <article class="industry-card"><img src="../assets/industry-insurance.png" alt="Insurance professional at work" /><div><h3>Insurance</h3><p>Policy and account questions, service journeys, routing, and sensitive handoffs.</p></div></article>
+          <article class="industry-card"><img src="../assets/industry-finance.png" alt="Banking and finance team" /><div><h3>Banking / Finance</h3><p>Customer acquisition and service workflows with governed workflows and human control.</p><nav class="industry-related-stories" aria-label="Related case studies"><span>Related stories:</span><div class="industry-related-stories-links"><a href="https://www.expertise.ai/live/case-studies/holistiplan" target="_blank" rel="noopener">Holistiplan</a><a href="https://www.expertise.ai/live/case-studies/david-sklar" target="_blank" rel="noopener">David Sklar</a></div></nav></div></article>
+          <article class="industry-card"><img src="../assets/industry-retail.png" alt="Retail fulfillment line" /><div><h3>Retail</h3><p>Product discovery, purchase questions, service requests, and complex issue routing.</p></div></article>
+          <article class="industry-card"><img src="../assets/industry-manufacturing.png" alt="Manufacturing floor" /><div><h3>Manufacturing</h3><p>Complex product questions, customer and partner support, order and service workflows.</p><nav class="industry-related-stories" aria-label="Related case studies"><span>Related stories:</span><div class="industry-related-stories-links"><a href="https://www.expertise.ai/live/case-studies/gutterglove" target="_blank" rel="noopener">Gutterglove</a></div></nav></div></article>
+          <article class="industry-card"><img src="../assets/industry-airlines.png" alt="Aircraft on runway" /><div><h3>Airlines</h3><p>Booking and service questions, disruption workflows, coordination, and complex handoffs.</p></div></article>
+          <article class="industry-card"><img src="../assets/industry-logistics.png" alt="Logistics yard" /><div><h3>Logistics</h3><p>Customer questions, shipment updates, coordination, sales inquiries, and exception handling.</p></div></article>
+          <article class="industry-card"><img src="../assets/industry-utilities.png" alt="Wind turbines for utilities" /><div><h3>Utilities</h3><p>Products, programs, service requests, sales journeys, and customer support.</p><nav class="industry-related-stories" aria-label="Related case studies"><span>Related stories:</span><div class="industry-related-stories-links"><a href="https://www.expertise.ai/live/case-studies/circuit-electric" target="_blank" rel="noopener">Circuit Electric</a></div></nav></div></article>
+          <article class="industry-card"><img src="../assets/industry-telecom.png" alt="Telecommunications tower" /><div><h3>Telecommunications</h3><p>Qualification, upgrades, billing, account servicing, and technical routing.</p></div></article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECURITY ===== -->
+  <section class="security-section" aria-labelledby="security-title">
+    <div class="section-container security-layout">
+      <div class="security-content">
+        <div class="security-copy">
+          <p class="section-eyebrow">Security</p>
+          <h2 id="security-title">Backed by enterprise grade <span>security &amp; privacy</span></h2>
+          <p>ExpertiseAI is SOC2 TypeII and GDPR compliant, giving you best-in-class support and privacy. This includes complete safeguards for your data with state-of-the-art encryption.</p>
+        </div>
+        <div class="security-details">
+          <ul class="security-list">
+            <li><svg class="security-check" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg><span>Expand your business globally — we’ll take care of your compliance with local regulations.</span></li>
+            <li><svg class="security-check" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg><span>AI engages with visitors through voice in 200+ languages.</span></li>
+            <li><svg class="security-check" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg><span>Support your customer base with opt-out and DNC support.</span></li>
+          </ul>
+          <img class="security-compliance-logo" src="../assets/security-compliance-logo.png" alt="GDPR, AICPA SOC, and CCPA compliant" />
+        </div>
+        <div class="security-certifications" aria-label="Security certifications and enterprise capabilities">
+          <article class="security-certification">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-8 9-4.5-1.5-8-4-8-9V5l8-3 8 3z"></path><path d="m9 12 2 2 4-4"></path></svg>
+            <h3>SOC 2 (Type II) &amp; SOC 3</h3>
+            <p>Annually audited</p>
+          </article>
+          <article class="security-certification">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 0 20"></path><path d="M12 2a15.3 15.3 0 0 0 0 20"></path></svg>
+            <h3>GDPR &amp; CCPA</h3>
+            <p>Full compliance</p>
+          </article>
+          <article class="security-certification">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"></path><path d="M14 13.12c0 2.38 0 6.38-1 8.88"></path><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"></path><path d="M2 12a10 10 0 0 1 18-6"></path><path d="M2 16h.01"></path><path d="M21.8 16c.2-2 .131-5.354 0-6"></path><path d="M5 19.5C5.5 18 6 15 6 12a6 6 0 0 1 .34-2"></path><path d="M8.65 22c.21-.66.45-1.32.57-2"></path><path d="M9 6.8a6 6 0 0 1 9 5.2v2"></path></svg>
+            <h3>Enterprise SSO</h3>
+            <p>SAML 2.0 + SCIM</p>
+          </article>
+          <article class="security-certification">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.1 12.2a1.7 1.7 0 0 1 0-1.4C3.6 7.8 7.3 5 12 5s8.4 2.8 9.9 5.8a1.7 1.7 0 0 1 0 1.4C20.4 15.2 16.7 18 12 18s-8.4-2.8-9.9-5.8Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            <h3>Observability</h3>
+            <p>Logs, analytics, and alerts</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CUSTOMER VOICES ===== -->
+  <section class="testimonials-section" aria-labelledby="testimonials-title">
+    <div class="section-container testimonials-layout">
+      <div class="testimonials-content">
+        <p class="section-eyebrow">Customer voices</p>
+        <div class="testimonials-heading">
+          <h2 id="testimonials-title">What teams say after launch.</h2>
+          <div class="testimonials-controls" aria-label="Testimonial navigation">
+            <button type="button" class="testimonial-control testimonial-control--previous" data-testimonials-previous aria-label="Previous testimonials"><i aria-hidden="true"></i></button>
+            <button type="button" class="testimonial-control" data-testimonials-next aria-label="Next testimonials"><i aria-hidden="true"></i></button>
+          </div>
+        </div>
+        <div class="testimonials-viewport" aria-label="Customer testimonials">
+          <div class="testimonials-track">
+            <figure class="testimonial-card">
+              <div class="testimonial-card-body">
+                <div class="testimonial-card-logo">
+                  <img src="../assets/logo-circuit-electric.png" alt="Circuit Electric" />
+                </div>
+                <blockquote>“The results have exceeded our expectations, lowering costs and improving customer experience.”</blockquote>
+              </div>
+              <figcaption class="testimonial-card-footer">
+                <img class="testimonial-card-avatar" src="../assets/testimonial-felix.webp" alt="" width="40" height="40" />
+                <div class="testimonial-card-meta">
+                  <strong>Félix Normandin</strong>
+                  <span>Team Lead — Customer Experience</span>
+                </div>
+              </figcaption>
+            </figure>
+            <figure class="testimonial-card">
+              <div class="testimonial-card-body">
+                <div class="testimonial-card-logo">
+                  <img src="../assets/client-gutterglove.png" alt="Gutterglove" />
+                </div>
+                <blockquote>“We’re resolving more than 99% of customer chats without human involvement, something that wasn’t possible before Expertise AI.”</blockquote>
+              </div>
+              <figcaption class="testimonial-card-footer">
+                <img class="testimonial-card-avatar" src="../assets/testimonial-logan.webp" alt="" width="40" height="40" />
+                <div class="testimonial-card-meta">
+                  <strong>Logan Ollinger</strong>
+                  <span>Customer Experience Manager, Gutterglove</span>
+                </div>
+              </figcaption>
+            </figure>
+            <figure class="testimonial-card">
+              <div class="testimonial-card-body">
+                <div class="testimonial-card-logo">
+                  <img src="../assets/client-anchain.svg" alt="AnChain.AI" />
+                </div>
+                <blockquote>“We saw an 84% lift in chat-to-lead conversion rate. Almost overnight, the agent connected us with real prospects.”</blockquote>
+              </div>
+              <figcaption class="testimonial-card-footer">
+                <img class="testimonial-card-avatar" src="../assets/testimonial-victor.webp" alt="" width="40" height="40" />
+                <div class="testimonial-card-meta">
+                  <strong>Victor Fang</strong>
+                  <span>CEO, AnChain.AI</span>
+                </div>
+              </figcaption>
+            </figure>
+            <figure class="testimonial-card">
+              <div class="testimonial-card-body">
+                <div class="testimonial-card-logo">
+                  <img src="../assets/client-holistiplan.webp" alt="Holistiplan" />
+                </div>
+                <blockquote>“We captured so many leads that we otherwise wouldn’t have without the bot.”</blockquote>
+              </div>
+              <figcaption class="testimonial-card-footer">
+                <img class="testimonial-card-avatar" src="../assets/testimonial-renan.webp" alt="" width="40" height="40" />
+                <div class="testimonial-card-meta">
+                  <strong>Renan Ronchi</strong>
+                  <span>Lifecycle Marketing Manager, Holistiplan</span>
+                </div>
+              </figcaption>
+            </figure>
+            <figure class="testimonial-card">
+              <div class="testimonial-card-body">
+                <div class="testimonial-card-logo">
+                  <img src="../assets/client-401go.png" alt="401GO" />
+                </div>
+                <blockquote>“Expertise AI was actually better than the HubSpot chatbot, at a lower cost. It uncovered demand we couldn’t see.”</blockquote>
+              </div>
+              <figcaption class="testimonial-card-footer">
+                <img class="testimonial-card-avatar" src="../assets/testimonial-jared.webp" alt="" width="40" height="40" />
+                <div class="testimonial-card-meta">
+                  <strong>Jared Twitchell</strong>
+                  <span>VP of Digital Enablement, 401GO</span>
+                </div>
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="closing-cta-section" aria-labelledby="closing-cta-title">
+    <div class="section-container closing-cta-layout">
+      <div class="closing-cta-content">
+        <img class="closing-cta-watermark" src="../assets/icon-expertise.svg" alt="" aria-hidden="true" />
+        <h2 id="closing-cta-title">Find the first AI workflow worth <span>putting into production.</span></h2>
+        <p>Bring us the customer journey or service workflow you want to improve. We’ll help scope the outcome, systems, boundaries and deployment path.</p>
+        <a class="closing-cta-button" href="https://meetings.hubspot.com/nick-raja/expertise-ai" target="_blank" rel="noopener"><span>Book a demo</span><i aria-hidden="true"></i></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="section-container footer-container">
+      <div class="footer-layout">
+        <aside class="footer-rail">
+          <div class="footer-brand">
+          <a href="#" class="footer-logo" aria-label="Expertise.ai">
+            <img src="../assets/expertise-logo.svg" alt="Expertise.ai" class="footer-logo-img" />
+          </a>
+          <p class="footer-tagline">Automate conversations and drive revenue growth with AI that evolves with your business needs.</p>
+          <div class="footer-socials">
+            <a href="#" class="social-link" aria-label="LinkedIn">
+              <svg viewBox="0 0 20 20" width="20" height="20" fill="none">
+                <path d="M5.96 17.04H2.95V7.49h3.01v9.55zm-1.5-10.88c-.97 0-1.74-.79-1.74-1.74s.77-1.74 1.74-1.74 1.74.79 1.74 1.74-.78 1.74-1.74 1.74zm13.08 10.88h-3v-4.84c0-1.54-.67-2.01-1.52-2.01-.88 0-1.75.67-1.75 2.05v4.8H8.27V7.49h2.89v1.32h.04c.29-.59 1.31-1.59 2.86-1.59 1.68 0 3.49.99 3.49 3.9v5.92z" fill="white" fill-opacity="0.6"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link" aria-label="X (Twitter)">
+              <svg viewBox="0 0 20 20" width="20" height="20" fill="none">
+                <path d="M15.27 1.59h2.81L11.94 8.61l7.23 9.55h-5.66l-4.43-5.79-5.07 5.79H1.19l6.57-7.51L.83 1.59h5.8l4 5.29 4.64-5.29zm-.99 15.29h1.56L5.79 3.18H4.11L14.28 16.88z" fill="white" fill-opacity="0.6"/>
+              </svg>
+            </a>
+            <a href="#" class="social-link" aria-label="YouTube">
+              <svg viewBox="0 0 20 20" width="20" height="20" fill="none">
+                <path d="M19.58 5.19a2.5 2.5 0 0 0-1.76-1.76C16.25 3 10 3 10 3s-6.25 0-7.82.43A2.5 2.5 0 0 0 .42 5.19C0 6.75 0 10 0 10s0 3.25.42 4.81a2.5 2.5 0 0 0 1.76 1.76C3.75 17 10 17 10 17s6.25 0 7.82-.43a2.5 2.5 0 0 0 1.76-1.76C20 13.25 20 10 20 10s0-3.25-.42-4.81zM8 13V7l5.2 3L8 13z" fill="white" fill-opacity="0.6"/>
+              </svg>
+            </a>
+          </div>
+          </div>
+        </aside>
+        <div class="footer-inner">
+          <div class="footer-grid">
+            <!-- Resources -->
+        <div class="footer-col">
+          <h3 class="footer-col-heading">Resources</h3>
+          <ul class="footer-col-list">
+            <li><a href="#">Skills</a></li>
+            <li><a href="#">GTM Glossary</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Roadmap</a></li>
+            <li><a href="#">Changelog</a></li>
+            <li><a href="#">Free Tools</a></li>
+            <li><a href="#">Pipeline Calculator</a></li>
+            <li><a href="#">Docs</a></li>
+          </ul>
+        </div>
+        <!-- Product -->
+        <div class="footer-col">
+          <h3 class="footer-col-heading">Product</h3>
+          <ul class="footer-col-list">
+            <li><a href="#">Visitor Identification</a></li>
+            <li><a href="#">Voice AI</a></li>
+            <li><a href="#">Knowledge Gap</a></li>
+            <li><a href="#">Expertise Booking</a></li>
+            <li><a href="#">Playbook</a></li>
+            <li><a href="#">Active Engagement</a></li>
+            <li><a href="#">Analytics Dashboard</a></li>
+            <li><a href="#">Personalized Microsites</a></li>
+          </ul>
+        </div>
+        <!-- Free Tools -->
+        <div class="footer-col">
+          <h3 class="footer-col-heading">Free Tools</h3>
+          <ul class="footer-col-list">
+            <li><a href="#">AI Letter Generator</a></li>
+            <li><a href="#">Open Graph Checker</a></li>
+            <li><a href="#">UTM Builder</a></li>
+            <li><a href="#">FAQ Generator</a></li>
+            <li><a href="#">HubSpot Pricing Calculator</a></li>
+          </ul>
+        </div>
+        <!-- Company -->
+        <div class="footer-col">
+          <h3 class="footer-col-heading">Company</h3>
+          <ul class="footer-col-list">
+            <li><a href="#">Book a Demo</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Affiliate</a></li>
+            <li><a href="#">Terms</a></li>
+            <li><a href="#">Expertise Live</a></li>
+          </ul>
+        </div>
+        <!-- Trust -->
+        <div class="footer-col">
+          <h3 class="footer-col-heading">Trust</h3>
+          <ul class="footer-col-list">
+            <li><a href="#">Security</a></li>
+            <li><a href="#">Trust Center</a></li>
+            <li><a href="#">System Status</a></li>
+            <li><a href="#">Privacy</a></li>
+          </ul>
+        </div>
+        <!-- Alternatives -->
+        <div class="footer-col">
+          <h3 class="footer-col-heading">Alternatives</h3>
+          <ul class="footer-col-list">
+            <li><a href="#">All comparisons</a></li>
+            <li><a href="#">RB2B Alternative</a></li>
+            <li><a href="#">Warmly Alternative</a></li>
+            <li><a href="#">Leadfeeder Alternative</a></li>
+            <li><a href="#">HubSpot Alternative</a></li>
+            <li><a href="#">Qualified Alternative</a></li>
+            <li><a href="#">Drift Alternative</a></li>
+          </ul>
+        </div>
+      </div>
+        </div>
+      </div>
+      <div class="footer-bottom-layout">
+        <div class="footer-bottom-rail">
+          <p class="footer-copy">© 2025 Chatsimple Inc. All rights reserved.</p>
+        </div>
+        <div class="footer-bottom">
+          <div class="footer-legal">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

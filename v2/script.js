@@ -659,11 +659,11 @@ function initCaseStudiesShowcase() {
     });
     panel.querySelector("[data-case-logo]").src = data.caseLogo;
     panel.querySelector("[data-case-logo]").alt = data.caseLogoAlt;
-    panel.querySelector("[data-case-category]").textContent = data.caseCategory;
+    panel.querySelector("[data-case-category]").textContent =
+      (data.caseCategory || "").split(/\s*\/\s*/)[0].trim();
     panel.querySelector("[data-case-title]").textContent = data.caseTitle;
     panel.querySelector("[data-case-problem]").textContent = data.caseProblem;
     panel.querySelector("[data-case-solution]").textContent = data.caseSolution;
-    panel.querySelector("[data-case-company]").textContent = data.caseLogoAlt;
     panel.querySelector("[data-case-link]").href = data.caseHref;
     for (let number = 1; number <= 3; number += 1) {
       panel.querySelector('[data-case-metric-value="' + number + '"]').textContent =
@@ -860,13 +860,63 @@ function initTestimonialControls() {
 function initClientBentoMarquee() {
   const track = document.querySelector(".client-bento-track");
   const source = track?.querySelector(".client-bento");
-  if (!track || !source || track.children.length > 1) return;
+  const viewport = track?.closest(".client-bento-viewport");
+  if (!track || !source || !viewport || track.children.length > 1) return;
 
   const duplicate = source.cloneNode(true);
   duplicate.setAttribute("aria-hidden", "true");
   duplicate.querySelectorAll("a").forEach(link => { link.tabIndex = -1; });
   duplicate.querySelectorAll("img").forEach(image => { image.alt = ""; });
   track.append(duplicate);
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let cycleWidth = 0;
+  let distance = 0;
+  let speed = 1;
+  let previousTime = null;
+  let frame = null;
+
+  const measure = () => {
+    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+    cycleWidth = source.getBoundingClientRect().width + gap;
+    if (cycleWidth > 0) distance %= cycleWidth;
+  };
+  const paint = () => { track.style.transform = `translate3d(${-distance}px, 0, 0)`; };
+  const animate = now => {
+    frame = requestAnimationFrame(animate);
+    if (document.hidden || reducedMotion.matches || cycleWidth <= 0) {
+      previousTime = null;
+      return;
+    }
+    if (previousTime === null) { previousTime = now; return; }
+    const elapsed = Math.min(now - previousTime, 64);
+    previousTime = now;
+    const target = viewport.matches(":hover") || viewport.matches(":focus-within") ? 0 : 1;
+    const easingTime = target === 0 ? 470 : 260;
+    speed += (target - speed) * (1 - Math.exp(-elapsed / easingTime));
+    distance = (distance + (cycleWidth / 90000) * elapsed * speed) % cycleWidth;
+    paint();
+  };
+  const syncMotion = () => {
+    if (reducedMotion.matches) {
+      if (frame !== null) cancelAnimationFrame(frame);
+      frame = null;
+      distance = 0;
+      speed = 0;
+      previousTime = null;
+      paint();
+    } else if (frame === null) {
+      speed = 1;
+      previousTime = null;
+      frame = requestAnimationFrame(animate);
+    }
+  };
+
+  measure();
+  paint();
+  syncMotion();
+  window.addEventListener("resize", measure);
+  reducedMotion.addEventListener("change", syncMotion);
 }
 
 function initIndustryCardReveals() {
@@ -985,14 +1035,14 @@ function initIndustryCardReveals() {
 }
 
 const HERO_GRID_PHOTOS = [
-  "assets/industry-insurance.png",
-  "assets/industry-finance.png",
-  "assets/industry-manufacturing.png",
-  "assets/industry-retail.png",
-  "assets/industry-logistics.png",
-  "assets/industry-airlines.png",
-  "assets/industry-telecom.png",
-  "assets/industry-utilities.png"
+  "../assets/industry-insurance.png",
+  "../assets/industry-finance.png",
+  "../assets/industry-manufacturing.png",
+  "../assets/industry-retail.png",
+  "../assets/industry-logistics.png",
+  "../assets/industry-airlines.png",
+  "../assets/industry-telecom.png",
+  "../assets/industry-utilities.png"
 ];
 
 const HERO_GRID_BEAT = 1900;
@@ -1035,24 +1085,57 @@ function initHeroGrid() {
     return window.matchMedia("(max-width: 900px)").matches;
   }
 
-  // Snap hero-content height to an exact multiple of the cell size so the
-  // bottom edge of the grid lands on a full row (no clipped cells).
-  // On mobile the grid is a fixed-height band above the copy, so skip.
+  // Fit hero + logo carousel to one viewport, and snap hero height to an
+  // exact multiple of the grid cell so no cells are clipped at the edge.
   function snapContentHeight() {
     const content = grid.closest(".hero-content");
+    const hero = grid.closest(".hero");
+    const marquee = document.querySelector(".client-marquee-section");
+    const marqueeContent = document.querySelector(".client-marquee-content");
+    const nav = document.querySelector(".navbar");
     if (!content) return;
 
     cellSize = readCellSize();
     content.style.minHeight = "";
     content.style.height = "";
+    if (marqueeContent) {
+      marqueeContent.style.paddingTop = "";
+      marqueeContent.style.paddingBottom = "";
+    }
 
-    if (isStackedHeroGrid()) return;
+    const navH = nav ? nav.getBoundingClientRect().height : 0;
+    const viewport = window.innerHeight;
 
+    function absorbLeftover(leftover) {
+      if (!marqueeContent || leftover <= 0) return;
+      const styles = getComputedStyle(marqueeContent);
+      const basePt = parseFloat(styles.paddingTop) || 0;
+      const basePb = parseFloat(styles.paddingBottom) || 0;
+      const topExtra = Math.floor(leftover / 2);
+      const bottomExtra = leftover - topExtra;
+      marqueeContent.style.paddingTop = `${basePt + topExtra}px`;
+      marqueeContent.style.paddingBottom = `${basePb + bottomExtra}px`;
+    }
+
+    if (isStackedHeroGrid()) {
+      if (!marquee || !marqueeContent) return;
+      const heroH = (hero || content).getBoundingClientRect().height;
+      const marqueeH = marquee.getBoundingClientRect().height;
+      absorbLeftover(viewport - navH - heroH - marqueeH);
+      return;
+    }
+
+    const marqueeH = marquee ? marquee.getBoundingClientRect().height : 0;
+    const available = Math.max(cellSize, viewport - navH - marqueeH);
     const natural = content.getBoundingClientRect().height;
-    if (!natural) return;
+    const minHero = Math.max(cellSize, Math.ceil(natural / cellSize) * cellSize);
+    let heroH = Math.floor(available / cellSize) * cellSize;
+    if (heroH < minHero) heroH = minHero;
 
-    const snapped = Math.max(cellSize, Math.ceil(natural / cellSize) * cellSize);
-    content.style.minHeight = `${snapped}px`;
+    content.style.height = `${heroH}px`;
+    content.style.minHeight = `${heroH}px`;
+
+    if (heroH <= available) absorbLeftover(available - heroH);
   }
 
   function build() {
@@ -1064,6 +1147,12 @@ function initHeroGrid() {
     cellSize = readCellSize();
     cols = Math.ceil(width / cellSize) + 1;
     rows = Math.max(1, Math.round(height / cellSize));
+    // Prefer exact row count from the snapped content height to avoid a clipped final row.
+    const content = grid.closest(".hero-content");
+    if (content && !isStackedHeroGrid()) {
+      const snappedRows = Math.round(content.getBoundingClientRect().height / cellSize);
+      if (snappedRows > 0) rows = snappedRows;
+    }
     fullRows = rows;
 
     grid.textContent = "";
@@ -1248,6 +1337,17 @@ function initHeroGrid() {
   if (reducedMotion.matches) showStatic();
   else start();
 
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => {
+      stop();
+      beat = 0;
+      tileCursor = 0;
+      build();
+      if (reducedMotion.matches) showStatic();
+      else if (inViewport) start();
+    });
+  }
+
   // The observer only pauses the beat once the hero scrolls away.
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
@@ -1302,6 +1402,8 @@ function initAgentsCaseSwitchers() {
     const quoteText = card.querySelector("[data-agents-case-quote]");
     const citeText = card.querySelector("[data-agents-case-cite]");
     const avatarEl = card.querySelector("[data-agents-case-avatar]");
+    const authorEl = card.querySelector("[data-agents-case-author]");
+    const roleEl = card.querySelector("[data-agents-case-role]");
     let index = 0;
 
     function applyAvatar(source) {
@@ -1326,7 +1428,10 @@ function initAgentsCaseSwitchers() {
         logoEl.src = source.getAttribute("data-case-logo") || "";
         logoEl.alt = source.getAttribute("data-case-logo-alt") || "";
       }
-      if (categoryEl) categoryEl.textContent = source.getAttribute("data-case-category") || "";
+      if (categoryEl) {
+        const category = source.getAttribute("data-case-category") || "";
+        categoryEl.textContent = category.split(/\s*\/\s*/)[0].trim();
+      }
       if (titleEl) titleEl.textContent = source.getAttribute("data-case-title") || "";
 
       [1, 2, 3].forEach(number => {
@@ -1341,6 +1446,9 @@ function initAgentsCaseSwitchers() {
           quoteEl.hidden = false;
           if (quoteText) quoteText.textContent = quote;
           if (citeText) citeText.textContent = cite;
+          const comma = cite.indexOf(",");
+          if (authorEl) authorEl.textContent = comma < 0 ? cite : cite.slice(0, comma).trim();
+          if (roleEl) roleEl.textContent = comma < 0 ? "" : cite.slice(comma + 1).trim();
         } else {
           quoteEl.hidden = true;
         }
@@ -1348,18 +1456,21 @@ function initAgentsCaseSwitchers() {
       applyAvatar(source);
     }
 
-    function show(nextIndex) {
+    function show(nextIndex, direction) {
       index = (nextIndex + stories.length) % stories.length;
       applyCase(stories[index]);
 
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-      card.classList.remove("is-switching");
+      card.classList.remove("is-switching", "is-switching-from-left", "is-switching-from-right");
       void card.offsetWidth;
-      card.classList.add("is-switching");
+      card.classList.add(
+        "is-switching",
+        direction === "next" ? "is-switching-from-right" : "is-switching-from-left"
+      );
     }
 
-    if (prev) prev.addEventListener("click", () => show(index - 1));
-    if (next) next.addEventListener("click", () => show(index + 1));
+    if (prev) prev.addEventListener("click", () => show(index - 1, "prev"));
+    if (next) next.addEventListener("click", () => show(index + 1, "next"));
   });
 }
 
@@ -1375,7 +1486,10 @@ function initAgentsVoiceDemo() {
   const leadEl = caption && caption.querySelector("[data-voice-lead-el]");
   const inviteEl = caption && caption.querySelector("[data-voice-invite-el]");
   const startButton = card.querySelector("[data-voice-start]");
+  const phoneInput = card.querySelector("[data-voice-phone]");
   const form = card.querySelector("[data-voice-panel='form']");
+  const successPhone = card.querySelector("[data-voice-success-phone]");
+  const successLanguage = card.querySelector("[data-voice-success-language]");
   const panels = [...card.querySelectorAll("[data-voice-panel]")];
   const select = card.querySelector("[data-voice-select]");
   const selectTrigger = select && select.querySelector("[data-voice-select-trigger]");
@@ -1481,6 +1595,8 @@ function initAgentsVoiceDemo() {
     stopTyping();
     closeSelect();
     if (form) form.reset();
+    /* The number lives in the intro panel, outside the form, so clear it here. */
+    if (phoneInput) phoneInput.value = "";
     resetSelect();
     showPanel("intro");
     if (leadEl) leadEl.textContent = "";
@@ -1505,6 +1621,16 @@ function initAgentsVoiceDemo() {
     form.addEventListener("submit", event => {
       event.preventDefault();
       closeSelect();
+
+      if (successPhone && phoneInput) {
+        successPhone.textContent = phoneInput.value.trim() || phoneInput.placeholder;
+      }
+
+      if (successLanguage && selectLabel) {
+        const flag = selectFlag ? `${selectFlag.textContent} ` : "";
+        successLanguage.textContent = `${flag}${selectLabel.textContent}`;
+      }
+
       showPanel("success");
     });
   }
@@ -1544,34 +1670,55 @@ function initAgentsSkillsDemo() {
   if (!root) return null;
 
   const caption = root.querySelector("[data-skills-caption]");
-  const stackStage = root.querySelector('[data-skills-stage="stack"]');
-  const runStage = root.querySelector('[data-skills-stage="run"]');
-  const demoButton = root.querySelector("[data-skills-demo-btn]");
+  const views = [...root.querySelectorAll("[data-work-view]")];
+  const composer = root.querySelector("[data-work-composer]");
+  const typedEl = root.querySelector("[data-work-typed]");
+  const sendButton = root.querySelector("[data-work-send]");
+  const scroll = root.querySelector("[data-work-scroll]");
+  const status = root.querySelector("[data-work-status]");
+  const timerEl = root.querySelector("[data-work-timer]");
+  const reply = root.querySelector("[data-work-reply]");
+  const tools = [...root.querySelectorAll("[data-work-tool]")];
+  const report = root.querySelector("[data-work-report]");
+  const sharedBadge = root.querySelector("[data-work-shared]");
+  const saveButton = root.querySelector("[data-work-save]");
+  const overlay = root.querySelector("[data-work-overlay]");
+  const modal = root.querySelector("[data-work-modal]");
+  const modalPanels = [...root.querySelectorAll("[data-work-panel]")];
+  const promptEl = root.querySelector("[data-work-sent]");
+  const nameField = root.querySelector("[data-work-name-field]");
+  const nameEl = root.querySelector("[data-work-agent-name]");
+  const confirmSave = root.querySelector("[data-work-confirm-save]");
+  const openShareButton = root.querySelector("[data-work-open-share]");
+  const shareField = root.querySelector("[data-work-share-field]");
+  const shareTyped = root.querySelector("[data-work-share-typed]");
+  const shareChip = root.querySelector("[data-work-share-chip]");
+  const shareSubmit = root.querySelector("[data-work-share-submit]");
+  const toast = root.querySelector("[data-work-toast]");
   const scenes = [...root.querySelectorAll("[data-skills-scene]")];
-  const fills = {
-    stack: root.querySelector('[data-skills-progress="stack"]'),
-    run: root.querySelector('[data-skills-progress="run"]')
-  };
-  const steps = [...root.querySelectorAll("[data-skills-step]")];
-  const output = root.querySelector("[data-skills-output]");
-  const timerEl = root.querySelector("[data-skills-timer]");
-  const tools = [...root.querySelectorAll(".agents-skills-run-tools [data-skills-tool]")];
+
+  const order = ["describe", "run", "save", "share"];
   const captions = {
-    stack: "Convert your best employee’s workflow into skills",
-    run: "Everyone runs the same workflow"
+    describe: "Open the workspace and describe the job",
+    run: "Watch it work, then save it as an agent",
+    save: "Save the finished run as a company agent",
+    share: "Share the agent with the Sales team"
   };
-  const stepGap = 920;
-  const spinHold = 420;
-  const tickHold = 320;
-  const stackHold = 5000;
-  const pressHold = 480;
-  const stageExit = 720;
+  const holds = { describe: 9200, run: 13800, save: 11200, share: 10000 };
+  const fills = {};
+  order.forEach(key => {
+    fills[key] = root.querySelector(`[data-skills-progress="${key}"]`);
+  });
+
+  const promptText = promptEl ? promptEl.textContent.trim() : "";
+  const agentName = "Pipeline Hygiene Sweep";
+  const teamName = "Sales team";
+  const workedLabel = "Worked for 58s";
   let timeouts = [];
   let timerInterval = 0;
   let elapsed = 0;
   let running = false;
-  let userPaused = false;
-  let phase = "stack";
+  let phase = "describe";
 
   function prefersReducedMotion() {
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1586,19 +1733,7 @@ function initAgentsSkillsDemo() {
   function clearTimers() {
     timeouts.forEach(id => window.clearTimeout(id));
     timeouts = [];
-    if (timerInterval) {
-      window.clearInterval(timerInterval);
-      timerInterval = 0;
-    }
-  }
-
-  function setCaption(key) {
-    if (caption) caption.textContent = captions[key];
-  }
-
-  function runDuration() {
-    if (prefersReducedMotion()) return 2800;
-    return 620 + steps.length * stepGap + 280 + 4200;
+    stopTimer();
   }
 
   function setFill(key, mode, duration) {
@@ -1623,207 +1758,482 @@ function initAgentsSkillsDemo() {
     fill.style.transform = "scaleX(1)";
   }
 
-  function startProgress(key) {
-    if (key === "stack") {
-      setFill("stack", "play", prefersReducedMotion() ? 900 : stackHold);
-      setFill("run", "reset");
-    } else {
-      setFill("stack", "full");
-      setFill("run", "play", runDuration());
-    }
-  }
-
-  function syncScenes(key) {
+  function setPhase(key) {
+    phase = key;
+    if (caption) caption.textContent = captions[key];
     scenes.forEach(scene => {
       const on = scene.dataset.skillsScene === key;
       scene.classList.toggle("is-active", on);
       scene.setAttribute("aria-current", on ? "true" : "false");
     });
+    const active = order.indexOf(key);
+    order.forEach((step, index) => {
+      if (index < active) setFill(step, "full");
+      else if (index === active) setFill(step, "play", prefersReducedMotion() ? 700 : holds[step]);
+      else setFill(step, "reset");
+    });
   }
 
-  function showStage(key) {
-    phase = key;
-    if (stackStage) {
-      stackStage.hidden = key !== "stack";
-      stackStage.classList.toggle("is-active", key === "stack");
-      stackStage.classList.remove("is-exiting");
-    }
-    if (runStage) {
-      runStage.hidden = key !== "run";
-      runStage.classList.toggle("is-active", key === "run");
-      runStage.classList.remove("is-exiting");
-    }
-    syncScenes(key);
+  function showView(key) {
+    views.forEach(view => {
+      const on = view.dataset.workView === key;
+      view.hidden = !on;
+      view.classList.toggle("is-active", on);
+    });
   }
 
-  function setStepState(step, state) {
-    step.classList.toggle("is-on", Boolean(state));
-    step.classList.toggle("is-busy", state === "busy");
-    step.classList.toggle("is-checked", state === "checked");
-    step.classList.toggle("is-done", state === "done");
+  function revealEl(el) {
+    if (!el) return;
+    el.hidden = false;
+    void el.offsetWidth;
+    el.classList.add("is-in");
+  }
+
+  /* A visible press state so the viewer registers that a button was clicked. */
+  function tap(el, done) {
+    if (!el) {
+      if (done) done();
+      return;
+    }
+    el.classList.remove("is-glowing");
+    if (prefersReducedMotion()) {
+      if (done) done();
+      return;
+    }
+    el.classList.add("is-tapped");
+    later(() => {
+      el.classList.remove("is-tapped");
+      if (done) done();
+    }, 460);
+  }
+
+  function scrollRun() {
+    if (!scroll) return;
+    scroll.scrollTo({
+      top: scroll.scrollHeight,
+      behavior: prefersReducedMotion() ? "auto" : "smooth"
+    });
+  }
+
+  function typeText(el, text, speed, done) {
+    if (!el) {
+      if (done) done();
+      return;
+    }
+    const host = el.parentElement;
+    el.textContent = "";
+    if (host) host.classList.add("is-typing");
+    if (prefersReducedMotion()) {
+      el.textContent = text;
+      if (host) host.classList.remove("is-typing");
+      if (done) done();
+      return;
+    }
+    let index = 0;
+    function tick() {
+      index += 1;
+      el.textContent = text.slice(0, index);
+      if (index < text.length) {
+        later(tick, speed);
+        return;
+      }
+      if (host) host.classList.remove("is-typing");
+      if (done) done();
+    }
+    tick();
+  }
+
+  function startTimer() {
+    stopTimer();
+    elapsed = 0;
+    if (timerEl) timerEl.textContent = "Working for 0s";
+    if (prefersReducedMotion()) return;
+    timerInterval = window.setInterval(() => {
+      elapsed += 1;
+      if (timerEl) timerEl.textContent = `Working for ${elapsed}s`;
+    }, 1000);
+  }
+
+  function stopTimer() {
+    if (!timerInterval) return;
+    window.clearInterval(timerInterval);
+    timerInterval = 0;
+  }
+
+  function markToolDone(tool) {
+    tool.classList.add("is-done");
+    const state = tool.querySelector("[data-work-tool-state]");
+    if (state) state.textContent = "Done";
+  }
+
+  function setModalPanel(key, morph) {
+    if (!modal) return;
+    const from = morph ? modal.getBoundingClientRect().height : 0;
+    modalPanels.forEach(item => {
+      const on = item.dataset.workPanel === key;
+      item.classList.remove("is-active");
+      item.hidden = !on;
+      if (on) {
+        void item.offsetWidth;
+        item.classList.add("is-active");
+      }
+    });
+    if (!morph || prefersReducedMotion()) {
+      modal.style.height = "";
+      return;
+    }
+    /* Morph the shell between panels instead of snapping to the new height. */
+    const to = modal.getBoundingClientRect().height;
+    if (!from || Math.abs(to - from) < 2) return;
+    modal.style.height = `${from}px`;
+    void modal.offsetHeight;
+    modal.style.height = `${to}px`;
+    later(() => {
+      modal.style.height = "";
+    }, 540);
+  }
+
+  function openOverlay(key) {
+    if (!overlay) return;
+    setModalPanel(key, false);
+    overlay.hidden = false;
+    void overlay.offsetWidth;
+    overlay.classList.add("is-in");
+  }
+
+  function closeOverlay() {
+    if (!overlay) return;
+    overlay.classList.remove("is-in");
+    later(() => {
+      overlay.hidden = true;
+    }, 380);
+  }
+
+  function resetHome() {
+    if (typedEl) typedEl.textContent = "";
+    if (composer) composer.classList.remove("is-glowing");
+    const composerText = root.querySelector(".agents-work-composer-text");
+    if (composerText) composerText.classList.remove("is-typing");
+    if (sendButton) sendButton.classList.remove("is-ready", "is-tapped");
   }
 
   function resetRun() {
+    stopTimer();
     elapsed = 0;
-    if (timerEl) timerEl.textContent = "Worked for 0s";
-    steps.forEach(step => {
-      setStepState(step, "");
-      const label = step.querySelector("[data-skills-label]");
-      if (label && step.dataset.skillsDone) label.textContent = step.dataset.skillsDone;
+    if (timerEl) timerEl.textContent = "Working for 0s";
+    if (status) status.classList.remove("is-done");
+    if (reply) {
+      reply.hidden = true;
+      reply.classList.remove("is-in");
+    }
+    tools.forEach(tool => {
+      tool.hidden = true;
+      tool.classList.remove("is-in", "is-done");
+      const state = tool.querySelector("[data-work-tool-state]");
+      if (state) state.textContent = "Running";
     });
-    tools.forEach(tool => tool.classList.remove("is-live"));
-    if (output) output.classList.remove("is-on");
-    if (demoButton) demoButton.classList.remove("is-pressed", "is-clicking");
+    if (report) {
+      report.hidden = true;
+      report.classList.remove("is-in");
+    }
+    if (sharedBadge) sharedBadge.hidden = true;
+    if (saveButton) saveButton.classList.remove("is-glowing", "is-tapped");
+    if (scroll) scroll.scrollTop = 0;
+  }
+
+  function resetModals() {
+    if (overlay) {
+      overlay.hidden = true;
+      overlay.classList.remove("is-in");
+    }
+    if (modal) modal.style.height = "";
+    setModalPanel("save", false);
+    if (nameEl) nameEl.textContent = "";
+    if (nameField) nameField.classList.remove("is-typing", "is-filled");
+    if (confirmSave) confirmSave.classList.remove("is-glowing", "is-tapped");
+    if (openShareButton) openShareButton.classList.remove("is-glowing", "is-tapped");
+    if (shareTyped) shareTyped.textContent = "";
+    if (shareChip) shareChip.hidden = true;
+    if (shareField) shareField.classList.remove("is-typing", "is-filled");
+    if (shareSubmit) shareSubmit.classList.remove("is-glowing", "is-tapped");
+    if (toast) {
+      toast.hidden = true;
+      toast.classList.remove("is-in");
+    }
   }
 
   function reset() {
     running = false;
-    userPaused = false;
+    clearTimers();
+    resetHome();
+    resetRun();
+    resetModals();
+    showView("home");
+    setPhase("describe");
+    order.forEach(step => setFill(step, "reset"));
+  }
+
+  /* Everything the run view shows once the agent has finished working. */
+  function fillRun() {
+    stopTimer();
+    showView("run");
+    if (status) status.classList.add("is-done");
+    if (timerEl) timerEl.textContent = workedLabel;
+    revealEl(reply);
+    tools.forEach(tool => {
+      revealEl(tool);
+      markToolDone(tool);
+    });
+    revealEl(report);
+    if (saveButton) saveButton.classList.remove("is-glowing");
+    later(scrollRun, 40);
+  }
+
+  /* Step 1 — Jane types the job into the workspace composer and sends it. */
+  function playDescribe() {
+    clearTimers();
+    resetHome();
+    resetRun();
+    resetModals();
+    showView("home");
+    setPhase("describe");
+
+    if (prefersReducedMotion()) {
+      if (typedEl) typedEl.textContent = promptText;
+      if (sendButton) sendButton.classList.add("is-ready");
+      later(goRun, 1200);
+      return;
+    }
+
+    if (composer) composer.classList.add("is-glowing");
+    later(() => {
+      if (composer) composer.classList.remove("is-glowing");
+      typeText(typedEl, promptText, 17, () => {
+        if (sendButton) sendButton.classList.add("is-ready");
+      });
+    }, 1600);
+    later(() => tap(sendButton, goRun), holds.describe - 900);
+  }
+
+  function goRun() {
+    if (!running) return;
+    setFill("describe", "full");
+    playRun();
+  }
+
+  /* Step 2 — the agent works through the connected tools and reports back. */
+  function playRun() {
     clearTimers();
     resetRun();
-    setFill("stack", "reset");
-    setFill("run", "reset");
-    root.removeAttribute("data-phase");
-    showStage("stack");
-    setCaption("stack");
-  }
-
-  function playStack() {
-    resetRun();
-    showStage("stack");
-    setCaption("stack");
-    root.removeAttribute("data-phase");
-    void root.offsetWidth;
-    root.dataset.phase = "stack";
-    startProgress("stack");
-  }
-
-  function revealStep(step) {
-    const label = step.querySelector("[data-skills-label]");
-    const pending = step.dataset.skillsPending;
-    const done = step.dataset.skillsDone;
-    const toolKey = step.dataset.skillsTool;
-    const tool = toolKey && root.querySelector(`.agents-skills-run-tools [data-skills-tool="${toolKey}"]`);
+    resetModals();
+    showView("run");
+    setPhase("run");
 
     if (prefersReducedMotion()) {
-      if (done && label) label.textContent = done;
-      setStepState(step, "done");
-      if (tool) tool.classList.add("is-live");
+      fillRun();
+      later(goSave, 1600);
       return;
     }
 
-    if (pending && label) label.textContent = pending;
-    setStepState(step, "busy");
+    startTimer();
+    later(() => revealEl(reply), 520);
 
-    later(() => {
-      if (done && label) label.textContent = done;
-      setStepState(step, "checked");
-    }, spinHold);
-
-    later(() => {
-      setStepState(step, "done");
-      if (tool) tool.classList.add("is-live");
-    }, spinHold + tickHold);
-  }
-
-  function queueLoop(delay) {
-    later(() => {
-      if (!running || userPaused) return;
-      playStack();
-      later(pressInstall, prefersReducedMotion() ? 1400 : stackHold);
-    }, delay);
-  }
-
-  function playRun() {
-    resetRun();
-    showStage("run");
-    setCaption("run");
-    root.dataset.phase = "run";
-    startProgress("run");
-
-    if (prefersReducedMotion()) {
-      steps.forEach(step => revealStep(step));
-      if (output) output.classList.add("is-on");
-      if (timerEl) timerEl.textContent = "Worked for 10s";
-      queueLoop(2800);
-      return;
-    }
-
-    later(() => {
-      timerInterval = window.setInterval(() => {
-        elapsed += 1;
-        if (timerEl) timerEl.textContent = `Worked for ${elapsed}s`;
-      }, 1000);
-    }, 280);
-
-    steps.forEach((step, index) => {
-      later(() => revealStep(step), 620 + index * stepGap);
+    const toolStart = 1250;
+    const toolGap = 1250;
+    tools.forEach((tool, index) => {
+      later(() => {
+        revealEl(tool);
+        scrollRun();
+      }, toolStart + index * toolGap);
+      later(() => markToolDone(tool), toolStart + index * toolGap + 880);
     });
 
-    const outputAt = 620 + steps.length * stepGap + 280;
+    const finishAt = toolStart + tools.length * toolGap + 320;
     later(() => {
-      if (timerInterval) {
-        window.clearInterval(timerInterval);
-        timerInterval = 0;
-      }
-      if (output) output.classList.add("is-on");
-    }, outputAt);
-
-    queueLoop(outputAt + 4200);
+      stopTimer();
+      if (status) status.classList.add("is-done");
+      if (timerEl) timerEl.textContent = workedLabel;
+      revealEl(report);
+      later(scrollRun, 120);
+    }, finishAt);
+    later(() => {
+      if (saveButton) saveButton.classList.add("is-glowing");
+    }, finishAt + 620);
+    later(() => tap(saveButton, goSave), holds.run - 1000);
   }
 
-  function transitionToRun() {
-    if (prefersReducedMotion() || !stackStage) {
-      playRun();
+  /* Step 3 — the run is saved as an agent the whole company can reuse. */
+  function goSave() {
+    if (!running) return;
+    setFill("run", "full");
+    playSave();
+  }
+
+  function playSave() {
+    clearTimers();
+    fillRun();
+    resetModals();
+    setPhase("save");
+    openOverlay("save");
+
+    if (prefersReducedMotion()) {
+      if (nameEl) nameEl.textContent = agentName;
+      setModalPanel("saved", false);
+      later(goShare, 1600);
       return;
     }
 
-    stackStage.classList.add("is-exiting");
     later(() => {
-      if (!running) return;
-      playRun();
-    }, stageExit);
+      typeText(nameEl, agentName, 34, () => {
+        if (nameField) nameField.classList.add("is-filled");
+        later(() => {
+          if (confirmSave) confirmSave.classList.add("is-glowing");
+        }, 320);
+      });
+    }, 640);
+
+    later(() => tap(confirmSave, () => setModalPanel("saved", true)), 4300);
+    later(() => {
+      if (openShareButton) openShareButton.classList.add("is-glowing");
+    }, 5600);
+    later(() => tap(openShareButton, goShare), holds.save - 1100);
   }
 
-  function pressInstall() {
-    if (phase !== "stack" || !running) return;
-    setFill("stack", "full");
-    if (demoButton) {
-      demoButton.classList.remove("is-pressed", "is-clicking");
-      void demoButton.offsetWidth;
-      demoButton.classList.add("is-pressed");
-      if (!prefersReducedMotion()) demoButton.classList.add("is-clicking");
+  /* Step 4 — the agent is shared with a team and everyone gets it at once. */
+  function goShare() {
+    if (!running) return;
+    setFill("save", "full");
+    playShare();
+  }
+
+  function playShare() {
+    clearTimers();
+    fillRun();
+    setPhase("share");
+    if (toast) {
+      toast.hidden = true;
+      toast.classList.remove("is-in");
     }
+    if (sharedBadge) sharedBadge.hidden = true;
+    if (shareTyped) shareTyped.textContent = "";
+    if (shareChip) shareChip.hidden = true;
+    if (shareField) shareField.classList.remove("is-filled");
+    if (shareSubmit) shareSubmit.classList.remove("is-glowing", "is-tapped");
+
+    if (overlay && overlay.hidden) openOverlay("share");
+    else setModalPanel("share", true);
+
+    if (prefersReducedMotion()) {
+      if (shareChip) shareChip.hidden = false;
+      if (sharedBadge) sharedBadge.hidden = false;
+      revealEl(toast);
+      later(playDescribe, 2200);
+      return;
+    }
+
     later(() => {
-      if (demoButton) demoButton.classList.remove("is-pressed");
-    }, prefersReducedMotion() ? 0 : pressHold);
+      typeText(shareTyped, teamName, 58, () => {
+        later(() => {
+          if (shareTyped) shareTyped.textContent = "";
+          if (shareChip) shareChip.hidden = false;
+          if (shareField) shareField.classList.add("is-filled");
+          if (shareSubmit) shareSubmit.classList.add("is-glowing");
+        }, 420);
+      });
+    }, 900);
+
     later(() => {
-      if (demoButton) demoButton.classList.remove("is-clicking");
-    }, prefersReducedMotion() ? 0 : 780);
-    later(() => {
-      if (!running || phase !== "stack") return;
-      transitionToRun();
-    }, prefersReducedMotion() ? 0 : pressHold);
+      tap(shareSubmit, () => {
+        closeOverlay();
+        later(() => {
+          if (sharedBadge) sharedBadge.hidden = false;
+          revealEl(toast);
+          scrollRun();
+        }, 420);
+      });
+    }, 4600);
+
+    later(playDescribe, holds.share);
   }
 
   function start() {
     reset();
     running = true;
-    playStack();
-    later(pressInstall, prefersReducedMotion() ? 900 : stackHold);
+    root.dataset.phase = "app";
+    playDescribe();
   }
 
-  if (demoButton) {
-    demoButton.addEventListener("click", () => {
-      userPaused = false;
-      running = true;
-      clearTimers();
-      if (phase !== "stack") {
-        playStack();
-        later(pressInstall, prefersReducedMotion() ? 200 : 900);
+  function jumpTo(key) {
+    running = true;
+    clearTimers();
+    if (key === "describe") {
+      playDescribe();
+      return;
+    }
+    if (key === "run") {
+      playRun();
+      return;
+    }
+    if (key === "save") {
+      playSave();
+      return;
+    }
+    playShare();
+  }
+
+  if (sendButton) {
+    sendButton.addEventListener("click", () => {
+      if (!running) {
+        running = true;
+        playDescribe();
         return;
       }
-      pressInstall();
+      if (phase !== "describe") return;
+      clearTimers();
+      tap(sendButton, goRun);
+    });
+  }
+
+  if (saveButton) {
+    saveButton.addEventListener("click", () => {
+      if (phase === "save" || phase === "share") return;
+      running = true;
+      clearTimers();
+      tap(saveButton, goSave);
+    });
+  }
+
+  if (confirmSave) {
+    confirmSave.addEventListener("click", () => {
+      if (phase !== "save") return;
+      clearTimers();
+      tap(confirmSave, () => setModalPanel("saved", true));
+      later(() => {
+        if (openShareButton) openShareButton.classList.add("is-glowing");
+      }, 900);
+    });
+  }
+
+  if (openShareButton) {
+    openShareButton.addEventListener("click", () => {
+      if (phase !== "save") return;
+      clearTimers();
+      tap(openShareButton, goShare);
+    });
+  }
+
+  if (shareSubmit) {
+    shareSubmit.addEventListener("click", () => {
+      if (phase !== "share") return;
+      clearTimers();
+      tap(shareSubmit, () => {
+        closeOverlay();
+        later(() => {
+          if (sharedBadge) sharedBadge.hidden = false;
+          revealEl(toast);
+        }, 420);
+      });
+      later(playDescribe, 4200);
     });
   }
 
@@ -1831,16 +2241,7 @@ function initAgentsSkillsDemo() {
     scene.addEventListener("click", () => {
       const key = scene.dataset.skillsScene;
       if (!key || key === phase) return;
-      userPaused = false;
-      running = true;
-      clearTimers();
-      if (key === "run") {
-        if (phase === "stack") pressInstall();
-        else playRun();
-        return;
-      }
-      playStack();
-      later(pressInstall, prefersReducedMotion() ? 900 : stackHold);
+      jumpTo(key);
     });
   });
 
@@ -1852,33 +2253,43 @@ function initAgentsChatDemo() {
   if (!root) return null;
 
   const caption = root.querySelector("[data-chat-caption]");
-  const welcomeStage = root.querySelector('[data-chat-stage="welcome"]');
-  const dialogStage = root.querySelector('[data-chat-stage="dialog"]');
+  const promptStage = root.querySelector('[data-chat-stage="prompt"]');
+  const conversationStage = root.querySelector('[data-chat-stage="conversation"]');
   const welcomeShell = root.querySelector("[data-chat-welcome]");
   const composer = root.querySelector("[data-chat-composer]");
-  const typed = root.querySelector("[data-chat-typed]");
   const send = root.querySelector("[data-chat-send]");
-  const suggestions = root.querySelector("[data-chat-suggestions]");
+  const panel = root.querySelector("[data-chat-panel]");
+  const thread = root.querySelector("[data-chat-thread]");
+  const site = root.querySelector("[data-chat-site]");
   const lines = [...root.querySelectorAll("[data-chat-line]")];
+  const chipGroups = [...root.querySelectorAll("[data-chat-chips]")];
+  const sitePanels = [...root.querySelectorAll("[data-site-panel]")];
+  const nameInput = root.querySelector('[data-site-input="name"]');
+  const emailInput = root.querySelector('[data-site-input="email"]');
+  const submitButton = root.querySelector("[data-site-submit]");
   const scenes = [...root.querySelectorAll("[data-chat-scene]")];
-  const fills = {
-    welcome: root.querySelector('[data-chat-progress="welcome"]'),
-    dialog: root.querySelector('[data-chat-progress="dialog"]')
-  };
+
+  const order = ["prompt", "chat", "microsite", "booking", "confirmed"];
   const captions = {
-    welcome: "Meet buyers the moment they show intent",
-    dialog: "Qualify the deal, then book the next step"
+    prompt: "Meet buyers the moment they show intent",
+    chat: "Qualify intent with a guided conversation",
+    microsite: "Generate a personalized page for every buyer",
+    booking: "Turn the right plan into a booked demo",
+    confirmed: "Hand sales a confirmed, qualified meeting"
   };
-  const lineOrder = ["u1", "k1", "u2", "k2"];
-  const visitorLine = "We need to finance six refrigerated trailers, roughly $250K. What rates could we expect?";
-  const placeholder = "Ask our AI Assistant ...";
-  const welcomeHold = 7200;
-  const dialogHold = 11200;
-  const stageExit = 640;
+  const holds = { prompt: 5000, chat: 12600, microsite: 5600, booking: 4600, confirmed: 7000 };
+  const fills = {};
+  order.forEach(key => {
+    fills[key] = root.querySelector(`[data-chat-progress="${key}"]`);
+  });
+
+  const visitorName = "Daniel Reyes";
+  const visitorEmail = "daniel@northwindfreight.com";
+  const stageExit = 620;
   let timeouts = [];
   let running = false;
   let userPaused = false;
-  let phase = "welcome";
+  let phase = "prompt";
 
   function prefersReducedMotion() {
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1893,10 +2304,6 @@ function initAgentsChatDemo() {
   function clearTimers() {
     timeouts.forEach(id => window.clearTimeout(id));
     timeouts = [];
-  }
-
-  function setCaption(key) {
-    if (caption) caption.textContent = captions[key];
   }
 
   function setFill(key, mode, duration) {
@@ -1921,58 +2328,33 @@ function initAgentsChatDemo() {
     fill.style.transform = "scaleX(1)";
   }
 
-  function startProgress(key) {
-    if (key === "welcome") {
-      setFill("welcome", "play", prefersReducedMotion() ? 900 : welcomeHold);
-      setFill("dialog", "reset");
-    } else {
-      setFill("welcome", "full");
-      setFill("dialog", "play", prefersReducedMotion() ? 1600 : dialogHold);
-    }
-  }
-
-  function syncScenes(key) {
+  function setPhase(key) {
+    phase = key;
+    if (caption) caption.textContent = captions[key];
     scenes.forEach(scene => {
       const on = scene.dataset.chatScene === key;
       scene.classList.toggle("is-active", on);
       scene.setAttribute("aria-current", on ? "true" : "false");
     });
+    const active = order.indexOf(key);
+    order.forEach((step, index) => {
+      if (index < active) setFill(step, "full");
+      else if (index === active) setFill(step, "play", prefersReducedMotion() ? 700 : holds[step]);
+      else setFill(step, "reset");
+    });
   }
 
   function showStage(key) {
-    phase = key;
-    if (welcomeStage) {
-      welcomeStage.hidden = key !== "welcome";
-      welcomeStage.classList.toggle("is-active", key === "welcome");
-      welcomeStage.classList.remove("is-exiting");
+    if (promptStage) {
+      promptStage.hidden = key !== "prompt";
+      promptStage.classList.toggle("is-active", key === "prompt");
+      promptStage.classList.remove("is-exiting");
     }
-    if (dialogStage) {
-      dialogStage.hidden = key !== "dialog";
-      dialogStage.classList.toggle("is-active", key === "dialog");
-      dialogStage.classList.remove("is-exiting");
+    if (conversationStage) {
+      conversationStage.hidden = key === "prompt";
+      conversationStage.classList.toggle("is-active", key !== "prompt");
+      conversationStage.classList.remove("is-exiting");
     }
-    syncScenes(key);
-  }
-
-  function typeInto(el, text, speed, done) {
-    if (!el) {
-      if (done) done();
-      return;
-    }
-    el.textContent = "";
-    if (prefersReducedMotion()) {
-      el.textContent = text;
-      if (done) done();
-      return;
-    }
-    let index = 0;
-    function tick() {
-      index += 1;
-      el.textContent = text.slice(0, index);
-      if (index < text.length) later(tick, speed);
-      else if (done) done();
-    }
-    tick();
   }
 
   function revealEl(el) {
@@ -1982,40 +2364,39 @@ function initAgentsChatDemo() {
     el.classList.add("is-in");
   }
 
-  function resetWelcome() {
-    if (welcomeShell) {
-      welcomeShell.hidden = true;
-      welcomeShell.classList.remove("is-in");
-    }
-    if (composer) {
-      composer.hidden = true;
-      composer.classList.remove("is-live", "is-in");
-    }
-    if (typed) typed.textContent = placeholder;
-    if (send) send.classList.remove("is-ready", "is-pressed");
+  function groupOf(name) {
+    return chipGroups.find(group => group.dataset.chatChips === name) || null;
   }
 
-  function resetDialog() {
-    lines.forEach(line => {
-      line.classList.remove("is-in");
-      line.hidden = true;
+  function chipOf(name) {
+    return root.querySelector(`[data-chat-chip="${name}"]`);
+  }
+
+  /* A visible press state so the viewer registers that a button was clicked. */
+  function tap(el, done) {
+    if (!el) {
+      if (done) done();
+      return;
+    }
+    if (prefersReducedMotion()) {
+      el.classList.add("is-chosen");
+      if (done) done();
+      return;
+    }
+    el.classList.add("is-tapped");
+    later(() => {
+      el.classList.remove("is-tapped");
+      el.classList.add("is-chosen");
+      if (done) done();
+    }, 520);
+  }
+
+  function scrollThread() {
+    if (!thread) return;
+    thread.scrollTo({
+      top: thread.scrollHeight,
+      behavior: prefersReducedMotion() ? "auto" : "smooth"
     });
-    if (suggestions) {
-      suggestions.hidden = true;
-      suggestions.classList.remove("is-in");
-    }
-  }
-
-  function reset() {
-    running = false;
-    userPaused = false;
-    clearTimers();
-    resetWelcome();
-    resetDialog();
-    setFill("welcome", "reset");
-    setFill("dialog", "reset");
-    showStage("welcome");
-    setCaption("welcome");
   }
 
   function revealLine(id) {
@@ -2024,135 +2405,345 @@ function initAgentsChatDemo() {
     line.hidden = false;
     void line.offsetWidth;
     line.classList.add("is-in");
+    scrollThread();
   }
 
-  function playWelcome() {
-    resetWelcome();
-    resetDialog();
-    showStage("welcome");
-    setCaption("welcome");
-    startProgress("welcome");
+  function setSitePanel(key) {
+    sitePanels.forEach(item => {
+      const on = item.dataset.sitePanel === key;
+      item.hidden = !on;
+      item.classList.remove("is-active");
+      if (on) {
+        void item.offsetWidth;
+        item.classList.add("is-active");
+      }
+    });
+  }
+
+  function openSite(panelKey) {
+    if (panel) panel.classList.add("is-split");
+    if (site) {
+      site.hidden = false;
+      void site.offsetWidth;
+      site.classList.add("is-in");
+    }
+    setSitePanel(panelKey);
+  }
+
+  function typeValue(el, text, speed, done) {
+    if (!el) {
+      if (done) done();
+      return;
+    }
+    el.value = "";
+    el.classList.add("is-typing");
+    if (prefersReducedMotion()) {
+      el.value = text;
+      el.classList.remove("is-typing");
+      if (done) done();
+      return;
+    }
+    let index = 0;
+    function tick() {
+      index += 1;
+      el.value = text.slice(0, index);
+      if (index < text.length) {
+        later(tick, speed);
+        return;
+      }
+      el.classList.remove("is-typing");
+      if (done) done();
+    }
+    tick();
+  }
+
+  function resetPrompt() {
+    if (welcomeShell) {
+      welcomeShell.hidden = true;
+      welcomeShell.classList.remove("is-in");
+    }
+    if (composer) {
+      composer.hidden = true;
+      composer.classList.remove("is-in");
+    }
+    if (send) send.classList.remove("is-pressed");
+  }
+
+  function resetThread() {
+    lines.forEach(line => {
+      line.classList.remove("is-in");
+      line.hidden = true;
+    });
+    chipGroups.forEach(group => {
+      group.hidden = true;
+      group.classList.remove("is-in", "is-used");
+      [...group.children].forEach(chip => chip.classList.remove("is-tapped", "is-chosen"));
+    });
+    if (thread) thread.scrollTop = 0;
+  }
+
+  function resetSite() {
+    if (panel) panel.classList.remove("is-split");
+    if (site) {
+      site.hidden = true;
+      site.classList.remove("is-in");
+    }
+    sitePanels.forEach(item => {
+      item.hidden = item.dataset.sitePanel !== "pricing";
+      item.classList.toggle("is-active", item.dataset.sitePanel === "pricing");
+    });
+    if (nameInput) {
+      nameInput.value = "";
+      nameInput.classList.remove("is-typing");
+    }
+    if (emailInput) {
+      emailInput.value = "";
+      emailInput.classList.remove("is-typing");
+    }
+    if (submitButton) submitButton.classList.remove("is-tapped", "is-chosen");
+  }
+
+  function reset() {
+    running = false;
+    userPaused = false;
+    clearTimers();
+    resetPrompt();
+    resetThread();
+    resetSite();
+    showStage("prompt");
+    setPhase("prompt");
+    order.forEach(step => setFill(step, "reset"));
+  }
+
+  /* Step 1 — the composer arrives first, then Kate opens with a suggestion. */
+  function playPrompt() {
+    clearTimers();
+    resetPrompt();
+    resetThread();
+    resetSite();
+    showStage("prompt");
+    setPhase("prompt");
 
     if (prefersReducedMotion()) {
-      revealEl(welcomeShell);
       revealEl(composer);
-      if (composer) composer.classList.add("is-live");
-      if (typed) typed.textContent = visitorLine;
-      if (send) send.classList.add("is-ready");
-      later(transitionToDialog, 1200);
-      return;
-    }
-
-    later(() => {
       revealEl(welcomeShell);
-      later(() => {
-        revealEl(composer);
-        later(() => {
-          if (composer) composer.classList.add("is-live");
-          typeInto(typed, visitorLine, 16, () => {
-            if (send) send.classList.add("is-ready");
-            later(pressSend, 480);
-          });
-        }, 2800);
-      }, 900);
-    }, 280);
-  }
-
-  function pressSend() {
-    if (phase !== "welcome" || !running) return;
-    setFill("welcome", "full");
-    if (send) send.classList.add("is-pressed");
-    later(() => {
-      if (send) send.classList.remove("is-pressed");
-      if (!running || phase !== "welcome") return;
-      transitionToDialog();
-    }, prefersReducedMotion() ? 0 : 360);
-  }
-
-  function transitionToDialog() {
-    if (prefersReducedMotion() || !welcomeStage) {
-      playDialog();
+      revealEl(groupOf("welcome"));
+      later(goChat, 900);
       return;
     }
-    welcomeStage.classList.add("is-exiting");
+
+    later(() => revealEl(composer), 260);
+    later(() => revealEl(welcomeShell), 1250);
+    later(() => revealEl(groupOf("welcome")), 2350);
+    later(() => {
+      tap(chipOf("show-me"), goChat);
+    }, holds.prompt - 600);
+  }
+
+  function goChat() {
+    if (!running) return;
+    setFill("prompt", "full");
+    if (prefersReducedMotion() || !promptStage) {
+      playChat();
+      return;
+    }
+    promptStage.classList.add("is-exiting");
     later(() => {
       if (!running) return;
-      playDialog();
+      playChat();
     }, stageExit);
   }
 
-  function playDialog() {
-    resetDialog();
-    showStage("dialog");
-    setCaption("dialog");
-    startProgress("dialog");
+  /* Step 2 — the chat window opens and the guided qualification plays out. */
+  function playChat() {
+    resetThread();
+    resetSite();
+    showStage("conversation");
+    setPhase("chat");
 
     if (prefersReducedMotion()) {
-      lineOrder.forEach(id => revealLine(id));
-      if (suggestions) {
-        suggestions.hidden = false;
-        suggestions.classList.add("is-in");
-      }
-      queueLoop(1600);
+      fillThread();
+      later(goMicrosite, 1400);
       return;
     }
 
-    const beats = [
-      { id: "u1", at: 320 },
-      { id: "k1", at: 1860 },
-      { id: "u2", at: 3960 },
-      { id: "k2", at: 5660 }
-    ];
-    beats.forEach(beat => {
-      later(() => revealLine(beat.id), beat.at);
-    });
-
+    later(() => revealLine("u1"), 420);
+    later(() => revealLine("k1"), 1750);
     later(() => {
-      if (suggestions) {
-        suggestions.hidden = false;
-        suggestions.classList.add("is-in");
-      }
-    }, 6860);
-
-    queueLoop(dialogHold);
+      revealEl(groupOf("seats"));
+      scrollThread();
+    }, 3250);
+    later(() => {
+      tap(chipOf("seats-4"), () => {
+        const seats = groupOf("seats");
+        if (seats) {
+          seats.classList.add("is-used");
+          later(() => {
+            seats.hidden = true;
+          }, 420);
+        }
+        later(() => revealLine("u2"), 380);
+      });
+    }, 4900);
+    later(() => revealLine("k2"), 7100);
+    later(() => revealLine("k3"), 8900);
+    later(() => {
+      revealEl(groupOf("cta"));
+      scrollThread();
+    }, 10300);
+    later(goMicrosite, holds.chat);
   }
 
-  function queueLoop(delay) {
+  function fillThread() {
+    lines.forEach(line => {
+      line.hidden = false;
+      line.classList.add("is-in");
+    });
+    const seats = groupOf("seats");
+    if (seats) seats.hidden = true;
+    const cta = groupOf("cta");
+    if (cta) {
+      cta.hidden = false;
+      cta.classList.add("is-in");
+    }
+    scrollThread();
+  }
+
+  /* Step 3 — the panel splits and a microsite is generated beside the chat. */
+  function goMicrosite() {
+    if (!running || phase === "microsite") return;
+    playMicrosite();
+  }
+
+  function playMicrosite() {
+    showStage("conversation");
+    fillThread();
+    setPhase("microsite");
+    openSite("pricing");
+    /* The window resizes while the split opens, so settle the scroll after it. */
+    later(scrollThread, 820);
+    later(goBooking, holds.microsite);
+  }
+
+  /* Step 4 — tapping "Book a demo" swaps the microsite for a booking page. */
+  function goBooking() {
+    if (!running) return;
+    playBooking();
+  }
+
+  function playBooking() {
+    showStage("conversation");
+    fillThread();
+    setPhase("booking");
+    if (panel) panel.classList.add("is-split");
+    if (site) {
+      site.hidden = false;
+      site.classList.add("is-in");
+    }
+    later(scrollThread, 60);
+    later(() => tap(chipOf("book"), () => setSitePanel("booking")), 420);
+    later(goConfirmed, holds.booking);
+  }
+
+  /* Step 5 — the form fills itself, submits, and the booking is confirmed. */
+  function goConfirmed() {
+    if (!running) return;
+    playConfirmed();
+  }
+
+  function playConfirmed() {
+    showStage("conversation");
+    fillThread();
+    setPhase("confirmed");
+    if (panel) panel.classList.add("is-split");
+    if (site) {
+      site.hidden = false;
+      site.classList.add("is-in");
+    }
+    const bookChip = chipOf("book");
+    if (bookChip) bookChip.classList.add("is-chosen");
+    setSitePanel("booking");
+    later(scrollThread, 60);
+
+    if (prefersReducedMotion()) {
+      if (nameInput) nameInput.value = visitorName;
+      if (emailInput) emailInput.value = visitorEmail;
+      setSitePanel("confirmed");
+      later(playPrompt, 1600);
+      return;
+    }
+
     later(() => {
-      if (!running || userPaused) return;
-      playWelcome();
-    }, delay);
+      typeValue(nameInput, visitorName, 46, () => {
+        later(() => {
+          typeValue(emailInput, visitorEmail, 32, () => {
+            later(() => tap(submitButton, () => setSitePanel("confirmed")), 420);
+          });
+        }, 260);
+      });
+    }, 500);
+
+    later(playPrompt, holds.confirmed);
   }
 
   function start() {
     reset();
     running = true;
-    playWelcome();
+    playPrompt();
+  }
+
+  function jumpTo(key) {
+    userPaused = false;
+    running = true;
+    clearTimers();
+    if (key === "prompt") {
+      playPrompt();
+      return;
+    }
+    if (key === "chat") {
+      playChat();
+      return;
+    }
+    resetSite();
+    if (key === "microsite") {
+      playMicrosite();
+      return;
+    }
+    if (key === "booking") {
+      playBooking();
+      return;
+    }
+    playConfirmed();
   }
 
   if (send) {
     send.addEventListener("click", () => {
       if (!running) {
         running = true;
-        playWelcome();
+        playPrompt();
         return;
       }
-      if (phase === "welcome") pressSend();
+      if (phase === "prompt") {
+        clearTimers();
+        tap(chipOf("show-me"), goChat);
+      }
     });
   }
+
+  const welcomeChips = [...root.querySelectorAll('[data-chat-chips="welcome"] [data-chat-chip]')];
+  welcomeChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      if (phase !== "prompt") return;
+      clearTimers();
+      tap(chip, goChat);
+    });
+  });
 
   scenes.forEach(scene => {
     scene.addEventListener("click", () => {
       const key = scene.dataset.chatScene;
       if (!key || key === phase) return;
-      userPaused = false;
-      running = true;
-      clearTimers();
-      if (key === "dialog") {
-        playDialog();
-        return;
-      }
-      playWelcome();
+      jumpTo(key);
     });
   });
 
@@ -2519,6 +3110,102 @@ function initUsageProcess(root) {
   return sync;
 }
 
+function initDeploymentAltUsage() {
+  const card = document.querySelector(".deployment-alt-card--usage");
+  const count = card?.querySelector("[data-alt-usage-count]");
+  if (!card || !count) return;
+  const initial = 284650;
+  const formatter = new Intl.NumberFormat("en-US");
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let frame = null;
+  let startedAt = null;
+
+  const stop = () => {
+    if (frame !== null) cancelAnimationFrame(frame);
+    frame = null;
+    startedAt = null;
+    count.textContent = formatter.format(initial);
+  };
+  const tick = now => {
+    if (document.hidden || reducedMotion.matches || !card.matches(":hover")) {
+      stop();
+      return;
+    }
+    if (startedAt === null) startedAt = now;
+    count.textContent = formatter.format(initial + Math.floor((now - startedAt) * .09));
+    frame = requestAnimationFrame(tick);
+  };
+  const start = () => {
+    if (frame === null && !document.hidden && !reducedMotion.matches) frame = requestAnimationFrame(tick);
+  };
+  card.addEventListener("mouseenter", start);
+  card.addEventListener("mouseleave", stop);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) stop(); });
+  reducedMotion.addEventListener("change", () => { if (reducedMotion.matches) stop(); });
+}
+
+function initDeploymentAltDropdowns() {
+  const dropdowns = [...document.querySelectorAll(".deployment-alt-card--private [data-alt-dropdown]")];
+  if (!dropdowns.length) return;
+
+  const close = (dropdown, returnFocus = false) => {
+    const trigger = dropdown.querySelector("[data-alt-dropdown-trigger]");
+    const menu = dropdown.querySelector("[data-alt-dropdown-menu]");
+    dropdown.classList.remove("is-open");
+    trigger.setAttribute("aria-expanded", "false");
+    menu.hidden = true;
+    if (returnFocus) trigger.focus();
+  };
+  const open = dropdown => {
+    dropdowns.forEach(other => { if (other !== dropdown) close(other); });
+    const trigger = dropdown.querySelector("[data-alt-dropdown-trigger]");
+    const menu = dropdown.querySelector("[data-alt-dropdown-menu]");
+    menu.hidden = false;
+    trigger.setAttribute("aria-expanded", "true");
+    dropdown.classList.add("is-open");
+  };
+
+  dropdowns.forEach(dropdown => {
+    const trigger = dropdown.querySelector("[data-alt-dropdown-trigger]");
+    const menu = dropdown.querySelector("[data-alt-dropdown-menu]");
+    const value = dropdown.querySelector("[data-alt-dropdown-value]");
+    const options = [...dropdown.querySelectorAll("[data-alt-dropdown-option]")];
+
+    trigger.addEventListener("click", () => {
+      if (dropdown.classList.contains("is-open")) close(dropdown);
+      else open(dropdown);
+    });
+    trigger.addEventListener("keydown", event => {
+      if (event.key !== "ArrowDown") return;
+      event.preventDefault();
+      open(dropdown);
+      options[0]?.focus();
+    });
+    menu.addEventListener("keydown", event => {
+      if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+      event.preventDefault();
+      const index = options.indexOf(document.activeElement);
+      const direction = event.key === "ArrowDown" ? 1 : -1;
+      options[(index + direction + options.length) % options.length]?.focus();
+    });
+    options.forEach(option => option.addEventListener("click", () => {
+      value.textContent = option.textContent.trim();
+      options.forEach(item => item.setAttribute("aria-pressed", item === option ? "true" : "false"));
+      close(dropdown, true);
+    }));
+  });
+
+  document.addEventListener("pointerdown", event => {
+    if (dropdowns.some(dropdown => dropdown.contains(event.target))) return;
+    dropdowns.forEach(dropdown => { if (dropdown.classList.contains("is-open")) close(dropdown); });
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key !== "Escape") return;
+    const active = dropdowns.find(dropdown => dropdown.classList.contains("is-open"));
+    if (active) close(active, true);
+  });
+}
+
 function initPlatformRotation(section, items, activate) {
   const controls = section.querySelector(".platform-rotation");
   if (!controls) return () => {};
@@ -2614,7 +3301,7 @@ function initPlatformAccordion() {
 
   roots.forEach((root) => {
     const section = root.closest(".platform-section") || root;
-    const items = [...root.querySelectorAll(".platform-item")];
+    const items = [...root.querySelectorAll(".platform-item, .platform-card")];
     const images = [...section.querySelectorAll("[data-platform-image]")];
     const processes = images.filter((node) =>
       node.matches(".usage-process, .deployment-process, .private-process")
@@ -2644,6 +3331,9 @@ function initPlatformAccordion() {
       items.forEach((entry) => {
         const open = entry === item;
         entry.classList.toggle("is-open", open);
+        if (entry.matches(".platform-card")) {
+          entry.setAttribute("aria-pressed", open ? "true" : "false");
+        }
         const trigger = entry.querySelector(".platform-item-trigger");
         if (trigger) trigger.setAttribute("aria-expanded", open ? "true" : "false");
       });
@@ -2662,6 +3352,10 @@ function initPlatformAccordion() {
     };
 
     items.forEach((item) => {
+      if (item.matches(".platform-card")) {
+        item.addEventListener("click", () => activate(item));
+        return;
+      }
       const trigger = item.querySelector(".platform-item-trigger");
       if (trigger) {
         trigger.addEventListener("click", () => activate(item));
@@ -2690,6 +3384,7 @@ function initAgentsV2Tabs() {
 
   const tabs = [...section.querySelectorAll("[data-agent-v2-tab]")];
   const panes = [...section.querySelectorAll("[data-agent-v2-pane]")];
+  const visualFrames = [...section.querySelectorAll("[data-agent-v2-visual]")];
   if (!tabs.length || !panes.length) return;
 
   let activeTab = tabs.find((tab) => tab.getAttribute("aria-selected") === "true") || tabs[0];
@@ -2697,6 +3392,36 @@ function initAgentsV2Tabs() {
 
   function prefersReducedMotion() {
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function visualKeyFor(tabKey) {
+    if (tabKey === "support") return "voice";
+    if (tabKey === "workspace") return "skills";
+    return "chat";
+  }
+
+  function setActiveVisual(key, animate) {
+    const nextFrame = visualFrames.find((frame) => frame.dataset.agentV2Visual === key);
+    if (!nextFrame) return;
+
+    visualFrames.forEach((frame) => {
+      const active = frame === nextFrame;
+      frame.hidden = !active;
+      frame.classList.toggle("is-active", active);
+      frame.classList.remove("is-entering");
+    });
+
+    if (key === "voice") agentsVoiceDemo && agentsVoiceDemo.startIntro();
+    else if (agentsVoiceDemo) agentsVoiceDemo.reset();
+    if (key === "skills") agentsSkillsDemo && agentsSkillsDemo.start();
+    else if (agentsSkillsDemo) agentsSkillsDemo.reset();
+    if (key === "chat") agentsChatDemo && agentsChatDemo.start();
+    else if (agentsChatDemo) agentsChatDemo.reset();
+
+    if (animate && !prefersReducedMotion()) {
+      void nextFrame.offsetWidth;
+      nextFrame.classList.add("is-entering");
+    }
   }
 
   function activatePane(pane, animate) {
@@ -2727,6 +3452,7 @@ function initAgentsV2Tabs() {
     });
     activeTab = tab;
     activatePane(nextPane, true);
+    setActiveVisual(visualKeyFor(tab.dataset.agentV2Tab), true);
   }
 
   tabs.forEach((tab) => {
@@ -2744,6 +3470,47 @@ function initAgentsV2Tabs() {
       tabs[next].focus();
     });
   });
+
+  // Mobile: opaque rail background only while the tabs are stuck under the navbar.
+  const rail = section.querySelector(".agents-v2-tabs-rail");
+  const stage = section.querySelector(".agents-v2-stage");
+  if (rail && stage) {
+    const stickyMq = window.matchMedia("(max-width: 600px)");
+    let sentinel = stage.querySelector(".agents-v2-tabs-sentinel");
+    if (!sentinel) {
+      sentinel = document.createElement("div");
+      sentinel.className = "agents-v2-tabs-sentinel";
+      sentinel.setAttribute("aria-hidden", "true");
+      stage.insertBefore(sentinel, rail);
+    }
+
+    let stickyObserver;
+    function navOffset() {
+      const raw = getComputedStyle(document.documentElement).getPropertyValue("--nav-h");
+      const parsed = parseFloat(raw);
+      return Number.isFinite(parsed) ? parsed : 56;
+    }
+
+    function syncStickyObserver() {
+      if (stickyObserver) {
+        stickyObserver.disconnect();
+        stickyObserver = undefined;
+      }
+      rail.classList.remove("is-stuck");
+      if (!stickyMq.matches) return;
+
+      stickyObserver = new IntersectionObserver(
+        ([entry]) => {
+          rail.classList.toggle("is-stuck", stickyMq.matches && !entry.isIntersecting);
+        },
+        { rootMargin: `-${navOffset()}px 0px 0px 0px`, threshold: 0 }
+      );
+      stickyObserver.observe(sentinel);
+    }
+
+    syncStickyObserver();
+    stickyMq.addEventListener("change", syncStickyObserver);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -2771,4 +3538,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initAgentsCaseSwitchers();
   initHeroGrid();
   initPlatformAccordion();
+  initDeploymentAltUsage();
+  initDeploymentAltDropdowns();
 });
