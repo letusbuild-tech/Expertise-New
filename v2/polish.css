@@ -254,6 +254,10 @@
   gap: var(--v2-heading-gap);
   text-align: center;
 }
+.page-v2 .agents-v2-eyebrow {
+  margin: 0;
+  color: var(--v2-secondary-inverse);
+}
 .page-v2 .agents-v2-intro h2 { flex: none; width: 100%; }
 .page-v2 .agents-v2-intro > p {
   flex: none;

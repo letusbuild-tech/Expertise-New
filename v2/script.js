@@ -1702,7 +1702,7 @@ function initAgentsSkillsDemo() {
     describe: "Open the workspace and describe the job",
     run: "Watch it work, then save it as an agent",
     save: "Save the finished run as a company agent",
-    share: "Share the agent with the Sales team"
+    share: "Everyone in the company runs the same workflow"
   };
   const holds = { describe: 9200, run: 13800, save: 11200, share: 10000 };
   const fills = {};
