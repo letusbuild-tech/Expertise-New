@@ -1728,7 +1728,7 @@ function initAgentsSkillsDemo() {
     save: "Save the finished run as a company agent",
     share: "Everyone in the company runs the same workflow"
   };
-  const holds = { describe: 9200, run: 13800, save: 11200, share: 10000 };
+  const holds = { describe: 7600, run: 11600, save: 9800, share: 8000 };
   const fills = {};
   order.forEach(key => {
     fills[key] = root.querySelector(`[data-skills-progress="${key}"]`);
@@ -2122,10 +2122,10 @@ function initAgentsSkillsDemo() {
       });
     }, 640);
 
-    later(() => tap(confirmSave, () => setModalPanel("saved", true)), 4300);
+    later(() => tap(confirmSave, () => setModalPanel("saved", true)), 3600);
     later(() => {
       if (openShareButton) openShareButton.classList.add("is-glowing");
-    }, 5600);
+    }, 4900);
     later(() => tap(openShareButton, goShare), holds.save - 1100);
   }
 
@@ -2308,7 +2308,7 @@ function initAgentsChatDemo() {
     booking: "Turn the right plan into a booked demo",
     confirmed: "Hand sales a confirmed, qualified meeting"
   };
-  const holds = { prompt: 5000, chat: 12600, microsite: 5600, booking: 4600, confirmed: 7000 };
+  const holds = { prompt: 4400, chat: 11600, microsite: 4200, booking: 3200, confirmed: 5600 };
   const fills = {};
   order.forEach(key => {
     fills[key] = root.querySelector(`[data-chat-progress="${key}"]`);
