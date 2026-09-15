@@ -1665,10 +1665,34 @@ function initAgentsVoiceDemo() {
   return { startIntro, reset };
 }
 
+function createAgentsDemoCursor(root) {
+  const cursor = document.createElement("img");
+  cursor.className = "agents-demo-cursor";
+  cursor.src = "../assets/mac-cursor-6.png";
+  cursor.alt = "";
+  cursor.setAttribute("aria-hidden", "true");
+  root.appendChild(cursor);
+
+  return {
+    moveTo(target) {
+      const rootRect = root.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      cursor.classList.remove("is-visible", "is-pressed");
+      cursor.style.left = `${targetRect.left - rootRect.left + targetRect.width / 2 - 3}px`;
+      cursor.style.top = `${targetRect.top - rootRect.top + targetRect.height / 2 - 2}px`;
+      void cursor.offsetWidth;
+      cursor.classList.add("is-visible");
+    },
+    press() { cursor.classList.add("is-pressed"); },
+    hide() { cursor.classList.remove("is-visible", "is-pressed"); }
+  };
+}
+
 function initAgentsSkillsDemo() {
   const root = document.querySelector("[data-skills-demo]");
   if (!root) return null;
 
+  const demoCursor = createAgentsDemoCursor(root);
   const caption = root.querySelector("[data-skills-caption]");
   const views = [...root.querySelectorAll("[data-work-view]")];
   const composer = root.querySelector("[data-work-composer]");
@@ -1734,6 +1758,7 @@ function initAgentsSkillsDemo() {
     timeouts.forEach(id => window.clearTimeout(id));
     timeouts = [];
     stopTimer();
+    demoCursor.hide();
   }
 
   function setFill(key, mode, duration) {
@@ -1800,11 +1825,16 @@ function initAgentsSkillsDemo() {
       if (done) done();
       return;
     }
-    el.classList.add("is-tapped");
+    demoCursor.moveTo(el);
     later(() => {
-      el.classList.remove("is-tapped");
-      if (done) done();
-    }, 460);
+      demoCursor.press();
+      el.classList.add("is-tapped");
+      later(() => {
+        el.classList.remove("is-tapped");
+        demoCursor.hide();
+        if (done) done();
+      }, 460);
+    }, 420);
   }
 
   function scrollRun() {
@@ -2252,6 +2282,7 @@ function initAgentsChatDemo() {
   const root = document.querySelector("[data-chat-demo]");
   if (!root) return null;
 
+  const demoCursor = createAgentsDemoCursor(root);
   const caption = root.querySelector("[data-chat-caption]");
   const promptStage = root.querySelector('[data-chat-stage="prompt"]');
   const conversationStage = root.querySelector('[data-chat-stage="conversation"]');
@@ -2304,6 +2335,7 @@ function initAgentsChatDemo() {
   function clearTimers() {
     timeouts.forEach(id => window.clearTimeout(id));
     timeouts = [];
+    demoCursor.hide();
   }
 
   function setFill(key, mode, duration) {
@@ -2383,12 +2415,17 @@ function initAgentsChatDemo() {
       if (done) done();
       return;
     }
-    el.classList.add("is-tapped");
+    demoCursor.moveTo(el);
     later(() => {
-      el.classList.remove("is-tapped");
-      el.classList.add("is-chosen");
-      if (done) done();
-    }, 520);
+      demoCursor.press();
+      el.classList.add("is-tapped");
+      later(() => {
+        el.classList.remove("is-tapped");
+        el.classList.add("is-chosen");
+        demoCursor.hide();
+        if (done) done();
+      }, 520);
+    }, 420);
   }
 
   function scrollThread() {
@@ -2537,7 +2574,7 @@ function initAgentsChatDemo() {
     later(() => revealEl(groupOf("welcome")), 2350);
     later(() => {
       tap(chipOf("show-me"), goChat);
-    }, holds.prompt - 600);
+    }, holds.prompt - 1000);
   }
 
   function goChat() {

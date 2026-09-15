@@ -264,6 +264,29 @@
   width: 100%;
   max-width: 760px;
 }
+.page-v2 :is(.agents-chat, .agents-skills) { position: relative; }
+.page-v2 .agents-demo-cursor {
+  position: absolute;
+  z-index: 40;
+  width: 30px;
+  height: auto;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(0, 36px, 0) scale(1);
+  transform-origin: 3px 2px;
+  transition: transform 420ms cubic-bezier(.2, .8, .2, 1), opacity 160ms ease;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .24));
+}
+.page-v2 .agents-demo-cursor.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+.page-v2 .agents-demo-cursor.is-visible.is-pressed {
+  transform: translate3d(0, 0, 0) scale(.82);
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-v2 .agents-demo-cursor { display: none; }
+}
 .page-v2 .agents-v2-stage {
   gap: var(--space-group);
   padding: 0;
