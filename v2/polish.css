@@ -410,12 +410,19 @@
 
 /* The related story reads as a compact editorial testimonial. */
 .page-v2 .agents-v2-story-card {
+  --agents-story-inset: 18px;
   gap: 0;
-  padding: 18px;
+  padding: var(--agents-story-inset);
   background: #fff;
 }
-.page-v2 .agents-v2-story-head { gap: 16px; margin-bottom: 15px; }
-.page-v2 .agents-v2-story-head img { max-width: 112px; max-height: 27px; }
+.page-v2 .agents-v2-story-head { gap: 16px; min-height: 36px; margin-bottom: 12px; }
+.page-v2 .agents-v2-story-head img {
+  flex-shrink: 0;
+  width: auto;
+  height: 27px;
+  max-width: 220px;
+  max-height: none;
+}
 .page-v2 .agents-v2-story-kicker [data-agents-case-category] {
   color: #777d77;
   font-size: 10px;
@@ -423,7 +430,8 @@
   letter-spacing: .075em;
 }
 .page-v2 .agents-v2-story-card h3 {
-  margin: 0 0 16px;
+  min-height: 52px;
+  margin: 0 0 12px;
   color: var(--green-deep);
   font-size: clamp(17px, 1.28vw, 19px);
   font-weight: 500;
@@ -433,7 +441,9 @@
 .page-v2 .agents-v2-story-quote {
   display: flex;
   align-items: center;
+  margin: 0;
   padding: 15px 16px 13px;
+  border-top: 0;
   border-radius: 5px;
   background: #f4f7f5;
   border-left: 0;
@@ -462,9 +472,9 @@
   min-width: 0;
 }
 .page-v2 .agents-v2-story-avatar {
-  flex: 0 0 34px;
-  width: 34px;
-  height: 34px;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
   border: 1px solid #e1e9e5;
 }
 .page-v2 .agents-v2-story-author-copy { display: grid; gap: 1px; min-width: 0; }
@@ -556,9 +566,9 @@
   display: block;
 }
 .page-v2 .agents-v2-story-card {
-  height: 220px;
-  min-height: 220px;
-  max-height: 220px;
+  height: 260px;
+  min-height: 260px;
+  max-height: 260px;
   box-sizing: border-box;
   overflow: visible;
   border: var(--v2-stroke) dashed var(--outline-light-subtle);
@@ -568,9 +578,10 @@
   content: none;
 }
 .page-v2 .agents-v2-story-card h3[data-agents-case-title] {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  display: grid;
+  align-items: center;
+  height: 52px;
+  max-height: 52px;
   overflow: hidden;
 }
 .page-v2 .agents-v2-story-card .agents-v2-story-quote {
@@ -771,7 +782,6 @@
     0 0 0 1px rgba(28, 78, 65, .2), 0 25px 48px rgba(34, 78, 66, .18);
 }
 .page-v2 .deployment-alt-card--forward .deployment-alt-glass { place-self: center; }
-.page-v2 .deployment-alt-card--forward:hover .deployment-alt-glass { transform: none; }
 .page-v2 :is(.deployment-alt-token, .deployment-alt-workflow-ui, .deployment-alt-private-ui) {
   width: 100%;
   max-width: none;
@@ -858,6 +868,8 @@
   background: var(--surface-mint);
 }
 .page-v2 .deployment-alt-team-icon { display: grid; place-items: center; flex: none; width: 29px; height: 29px; border: 2px solid #fff; border-radius: 50%; background: var(--green-deep); color: #fff; font-size: var(--deployment-ui-body); font-weight: var(--weight-semibold); }
+.page-v2 .deployment-alt-team-icon img { display: block; width: 11px; height: 11px; filter: invert(1); }
+.page-v2 .deployment-alt-team-icon svg { display: block; width: 15px; height: 15px; }
 .page-v2 .deployment-alt-team-icon + .deployment-alt-team-icon { margin-left: -7px; background: #aec8bd; color: var(--green-deep); }
 .page-v2 .deployment-alt-workflow-team strong { margin-left: 10px; color: var(--green-deep); font-size: var(--deployment-ui-title); font-weight: var(--weight-semibold); line-height: var(--leading-label); }
 .page-v2 .deployment-alt-private-group {
@@ -1443,21 +1455,26 @@
     font-size: var(--text-label-sm);
   }
   .page-v2 .agents-v2-story-card {
+    --agents-story-inset: 14px;
     height: auto;
     min-height: 0;
     max-height: none;
-    padding: 14px;
+    padding: var(--agents-story-inset);
   }
   .page-v2 .agents-v2-story-head {
     gap: 10px;
+    min-height: 26px;
     margin-bottom: 10px;
   }
   .page-v2 .agents-v2-story-head img {
-    max-width: 96px;
-    max-height: 22px;
+    height: 20px;
+    max-width: 150px;
   }
   .page-v2 .agents-v2-story-card h3,
   .page-v2 .agents-v2-story-card h3[data-agents-case-title] {
+    height: auto;
+    max-height: none;
+    min-height: 0;
     margin: 0 0 10px;
     font-size: 15px;
     line-height: 1.3;
@@ -1473,9 +1490,9 @@
   }
   .page-v2 .agents-v2-story-quote-copy { gap: 8px; }
   .page-v2 .agents-v2-story-avatar {
-    flex-basis: 28px;
-    width: 28px;
-    height: 28px;
+    flex-basis: 26px;
+    width: 26px;
+    height: 26px;
   }
   .page-v2 .platform-card { padding: var(--space-group); }
   .page-v2 .case-studies-highlight { padding: var(--space-group); }
