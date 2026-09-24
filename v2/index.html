@@ -322,7 +322,7 @@
                   <h3 class="agents-v2-pane-title">Sales Agent</h3>
                   <p class="agents-v2-pane-body">Captures demand while intent is high and turns it into qualified pipeline for your sales team.</p>
                 </div>
-                <div class="sales-feature-groups" data-agent-features data-rotate-count="3">
+                <div class="sales-feature-groups" data-agent-features data-rotate-count="6">
                   <section class="sales-feature-group" aria-labelledby="sales-features-prospects">
                     <h4 id="sales-features-prospects">With prospects</h4>
                     <div class="sales-feature-list">
@@ -356,7 +356,7 @@
                     <h4 id="sales-features-behind">Behind the scenes</h4>
                     <div class="sales-feature-list">
                       <div class="sales-feature-item">
-                        <button type="button" class="sales-feature-trigger" data-sales-feature aria-expanded="false" aria-controls="sales-feature-crm">
+                        <button type="button" class="sales-feature-trigger" data-sales-feature data-chat-sequence="crm" aria-expanded="false" aria-controls="sales-feature-crm">
                           <svg class="sales-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
                           <span>Keeps CRM up to date</span>
                           <svg class="sales-feature-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -364,7 +364,7 @@
                         <div class="sales-feature-panel" id="sales-feature-crm" hidden><p>Creates contacts, updates opportunities, and adds useful sales context.</p></div>
                       </div>
                       <div class="sales-feature-item">
-                        <button type="button" class="sales-feature-trigger" data-sales-feature aria-expanded="false" aria-controls="sales-feature-follow-up">
+                        <button type="button" class="sales-feature-trigger" data-sales-feature data-chat-sequence="followup" aria-expanded="false" aria-controls="sales-feature-follow-up">
                           <svg class="sales-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></svg>
                           <span>Handles follow-up</span>
                           <svg class="sales-feature-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -372,7 +372,7 @@
                         <div class="sales-feature-panel" id="sales-feature-follow-up" hidden><p>Prepares emails and next steps based on conversations and account activity.</p></div>
                       </div>
                       <div class="sales-feature-item">
-                        <button type="button" class="sales-feature-trigger" data-sales-feature aria-expanded="false" aria-controls="sales-feature-stalled">
+                        <button type="button" class="sales-feature-trigger" data-sales-feature data-chat-sequence="stalled" aria-expanded="false" aria-controls="sales-feature-stalled">
                           <svg class="sales-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 7v4l3 2"/></svg>
                           <span>Identifies stalled opportunities</span>
                           <svg class="sales-feature-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
@@ -671,7 +671,81 @@
                   <div class="agents-chat-input agents-chat-input--docked" aria-hidden="true"><img class="agents-chat-input-search" src="../assets/agent-chat-search.svg" alt="" width="18" height="18" /><span>Ask our AI Assistant …</span><img class="agents-chat-input-mic" src="../assets/agent-chat-mic.svg" alt="" width="19" height="19" /><span class="agents-chat-input-send"><svg viewBox="0 0 10 10" width="10" height="10" fill="none" aria-hidden="true"><path d="M5 1.5v6.2M7.1 3.5 5 1.5 2.9 3.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
                   </div>
                 </div>
-                <div class="agents-skills-progress agents-skills-progress--three" role="tablist" aria-label="Sales agent capabilities"><button class="is-active" type="button" role="tab" data-chat-sequence-nav="qualify" aria-label="Engage and qualify website visitors" aria-current="true"><span class="agents-skills-progress-track"><i data-chat-progress="qualify"></i></span></button><button type="button" role="tab" data-chat-sequence-nav="personalize" aria-label="Personalize the buying experience" aria-current="false"><span class="agents-skills-progress-track"><i data-chat-progress="personalize"></i></span></button><button type="button" role="tab" data-chat-sequence-nav="book" aria-label="Book the next step" aria-current="false"><span class="agents-skills-progress-track"><i data-chat-progress="book"></i></span></button></div>
+                <div class="agents-chat-stage agents-v2-scene sales-ops-stage" data-chat-stage="operations" hidden>
+                  <div class="agents-v2-scene-scale">
+                    <div class="sales-ops-glass">
+                      <section class="sales-ops-view" data-sales-ops-view="crm" aria-label="Keep CRM up to date">
+                        <div class="sales-ops-activity-card">
+                          <div class="sales-ops-task" data-sales-ops-task hidden><div class="sales-ops-task-body"><span class="sales-ops-task-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M8 3.5V7M16 3.5V7M3.5 10h17"/></svg></span><span><strong>Meeting booked</strong></span><span class="sales-ops-task-state" aria-hidden="true"></span></div></div>
+                          <div class="sales-ops-task" data-sales-ops-task hidden><div class="sales-ops-task-body"><span class="sales-ops-task-icon" aria-hidden="true"><img src="../assets/skills/logo-salesforce.png" alt="" /></span><span><strong>Contact created in Salesforce</strong></span><span class="sales-ops-task-state" aria-hidden="true"></span></div></div>
+                          <div class="sales-ops-task" data-sales-ops-task hidden><div class="sales-ops-task-body"><span class="sales-ops-task-icon sales-ops-task-icon--photo" aria-hidden="true"><img src="../assets/agent-eric.png" alt="" /></span><span><strong>Opportunity assigned to Eric Chen</strong></span><span class="sales-ops-task-state" aria-hidden="true"></span></div></div>
+                          <div class="sales-ops-task" data-sales-ops-task hidden><div class="sales-ops-task-body"><span class="sales-ops-task-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3.5h7.5L19 8v12.5a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1v-16a1 1 0 0 1 1-1z"/><path d="M14 3.5V8h5M8.5 13h7M8.5 16.5h5"/></svg></span><span><strong>Conversation summary added</strong></span><span class="sales-ops-task-state" aria-hidden="true"></span></div></div>
+                          <div class="sales-ops-task" data-sales-ops-task hidden><div class="sales-ops-task-body"><span class="sales-ops-task-icon" aria-hidden="true"><img src="../assets/skills/logo-gmail.png" alt="" /></span><span><strong>Follow-up email drafted</strong></span><span class="sales-ops-task-state" aria-hidden="true"></span></div></div>
+                        </div>
+                      </section>
+
+                      <section class="sales-ops-view sales-ops-email" data-sales-ops-view="followup" aria-label="Handle follow-up" hidden>
+                        <article class="sales-ops-email-contact">
+                          <header>
+                            <span class="sales-ops-email-mark" aria-hidden="true">D</span>
+                            <strong>Daniel Reyes</strong>
+                            <span class="sales-ops-email-company">Northwind Freight <svg viewBox="0 0 12 12" width="10" height="10" fill="none" aria-hidden="true"><path d="M4.5 2.5 8 6 4.5 9.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+                            <svg class="sales-ops-email-chevron" viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><path d="M4 10l4-4 4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                          </header>
+                          <ul>
+                            <li><span aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none"><rect x="1.5" y="3.5" width="13" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="m2 4.5 6 4.2 6-4.2" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg></span>daniel@northwindfreight.com</li>
+                            <li><span aria-hidden="true">in</span>Daniel Reyes</li>
+                            <li><span aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none"><path d="M3.2 2.8h2.1l1 2.4-1.3 1a8.2 8.2 0 0 0 3.8 3.8l1-1.3 2.4 1v2.1A1.2 1.2 0 0 1 11 13 9.2 9.2 0 0 1 3 5a1.2 1.2 0 0 1 1.2-2.2Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></span>+1 829 824 6712</li>
+                          </ul>
+                        </article>
+                        <article class="sales-ops-email-draft">
+                          <div class="sales-ops-email-sheet">
+                            <p>Hi <strong>Daniel</strong>,<br /><span data-sales-ops-email-typed></span><i class="sales-ops-type-caret" aria-hidden="true"></i></p>
+                          </div>
+                          <footer>
+                            <span class="sales-ops-email-rewrite"><svg viewBox="0 0 16 16" width="12" height="12" fill="none" aria-hidden="true"><path d="M3 8a5 5 0 0 1 8.2-3.8L13 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 3v3h-3M13 8a5 5 0 0 1-8.2 3.8L3 10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 13v-3h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Rewrite</span>
+                            <button type="button" class="sales-ops-email-send" data-sales-ops-email-cta>Send Email <svg viewBox="0 0 16 16" width="12" height="12" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                          </footer>
+                        </article>
+                      </section>
+
+                      <section class="sales-ops-view sales-ops-alerts" data-sales-ops-view="stalled" aria-label="Identify stalled opportunities" hidden>
+                        <div class="sales-ops-alert-wrapper">
+                          <div class="sales-ops-alert-panel">
+                            <div class="sales-ops-notification" data-sales-ops-notification hidden><span class="sales-ops-bell" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span><span><strong>3 potential deals need attention</strong></span><i aria-hidden="true"></i></div>
+                            <div class="sales-ops-deals">
+                              <div class="sales-ops-deals-head" aria-hidden="true"><span>Contact</span><span>Opportunity</span><span>Actions</span></div>
+                              <article data-sales-ops-deal hidden>
+                                <div class="sales-ops-deal-who">
+                                  <div class="sales-ops-deal-profile">
+                                    <span class="sales-ops-email-mark" aria-hidden="true">D</span>
+                                    <span class="sales-ops-deal-id"><strong>Daniel Reyes</strong><small>Northwind Freight</small></span>
+                                  </div>
+                                  <p>Quote went out 2 days ago, and no next step is scheduled.</p>
+                                </div>
+                                <em class="is-high">High</em>
+                                <div class="sales-ops-deal-actions">
+                                  <button type="button" data-sales-ops-alert-cta hidden>Review</button>
+                                </div>
+                              </article>
+                              <article class="is-skeleton" data-sales-ops-deal hidden>
+                                <div class="sales-ops-deal-who"><span class="sales-ops-skel"></span><span class="sales-ops-skel is-short"></span></div>
+                                <span class="sales-ops-skel sales-ops-skel--level"></span>
+                                <div class="sales-ops-deal-actions" aria-hidden="true"><span class="sales-ops-skel sales-ops-skel--action"></span></div>
+                              </article>
+                              <article class="is-skeleton" data-sales-ops-deal hidden>
+                                <div class="sales-ops-deal-who"><span class="sales-ops-skel"></span><span class="sales-ops-skel is-short"></span></div>
+                                <span class="sales-ops-skel sales-ops-skel--level"></span>
+                                <div class="sales-ops-deal-actions" aria-hidden="true"><span class="sales-ops-skel sales-ops-skel--action"></span></div>
+                              </article>
+                            </div>
+                          </div>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+                <div class="agents-skills-progress agents-skills-progress--six" role="tablist" aria-label="Sales agent capabilities"><button class="is-active" type="button" role="tab" data-chat-sequence-nav="qualify" aria-label="Engage and qualify website visitors" aria-current="true"><span class="agents-skills-progress-track"><i data-chat-progress="qualify"></i></span></button><button type="button" role="tab" data-chat-sequence-nav="personalize" aria-label="Personalize the buying experience" aria-current="false"><span class="agents-skills-progress-track"><i data-chat-progress="personalize"></i></span></button><button type="button" role="tab" data-chat-sequence-nav="book" aria-label="Book the next step" aria-current="false"><span class="agents-skills-progress-track"><i data-chat-progress="book"></i></span></button><button type="button" role="tab" data-chat-sequence-nav="crm" aria-label="Keep CRM up to date" aria-current="false"><span class="agents-skills-progress-track"><i data-chat-progress="crm"></i></span></button><button type="button" role="tab" data-chat-sequence-nav="followup" aria-label="Handle follow-up" aria-current="false"><span class="agents-skills-progress-track"><i data-chat-progress="followup"></i></span></button><button type="button" role="tab" data-chat-sequence-nav="stalled" aria-label="Identify stalled opportunities" aria-current="false"><span class="agents-skills-progress-track"><i data-chat-progress="stalled"></i></span></button></div>
               </div>
             </div>
 
@@ -734,19 +808,19 @@
 
             <div class="agents-v2-visual-frame agents-visual-frame" data-agent-v2-visual="skills" hidden>
               <div class="agents-skills" data-skills-demo>
-                <p class="agents-skills-caption" data-skills-caption>Open the workspace and describe the job</p>
+                <p class="agents-skills-caption" data-skills-caption>Describe the work. Build the agent.</p>
                 <div class="agents-skills-stage agents-v2-scene is-active" data-skills-stage="app">
                   <div class="agents-v2-scene-scale">
-                  <div class="agents-skills-run-glass">
-                    <div class="agents-work-app" data-work-app>
-                      <header class="agents-work-bar">
-                        <img class="agents-work-logo" src="../assets/expertise-logo.svg" alt="Expertise AI" />
-                        <nav class="agents-work-nav" aria-hidden="true"><span>Agents</span><span>Tasks</span><span>Knowledge</span></nav>
-                        <span class="agents-work-avatar" aria-hidden="true">J</span>
-                      </header>
-
-                      <div class="agents-work-views">
-                        <section class="agents-work-view agents-work-home is-active" data-work-view="home">
+                    <div class="agents-skills-run-glass">
+                      <div class="agents-work-app custom-demo-app" data-work-app>
+                        <header class="agents-work-bar">
+                          <img class="agents-work-logo" src="../assets/expertise-logo.svg" alt="Expertise AI" />
+                          <nav class="agents-work-nav" aria-hidden="true"><span>Agents</span><span>Tasks</span><span>Knowledge</span></nav>
+                          <span class="agents-work-avatar" aria-hidden="true">J</span>
+                        </header>
+                        <div class="custom-demo-project"><span class="custom-demo-kicker">Your agents /</span><strong>Pipeline Hygiene Sweep</strong><span class="custom-demo-step" data-custom-step>01 / 06</span></div>
+                        <div class="custom-demo-views agents-work-views">
+                          <section class="agents-work-view agents-work-home is-active" data-work-view="home" data-custom-view="process" aria-label="Turn a process into an agent">
                           <p class="agents-work-hello"><strong>Good morning, Jane.</strong><span>What should we work on?</span></p>
                           <div class="agents-work-composer" data-work-composer>
                             <p class="agents-work-composer-text"><span data-work-typed></span><i class="agents-work-caret" aria-hidden="true"></i></p>
@@ -766,8 +840,81 @@
                             </div>
                           </div>
                         </section>
-
-                        <section class="agents-work-view agents-work-run" data-work-view="run" hidden>
+                          <section class="agents-work-view agents-work-run" data-work-view="run" data-custom-view="systems" aria-label="Connect your systems" hidden>
+                          <div class="agents-work-scroll" data-work-scroll>
+                            <p class="agents-work-sent" data-work-sent>Check my open Salesforce deals for stale stages or no activity in two weeks. Clean up the CRM and draft follow-ups for anyone who’s gone quiet.</p>
+                            <div class="agents-work-trace">
+                              <p class="agents-work-status" data-work-status><span class="agents-work-spinner" aria-hidden="true"></span><span data-work-timer>Working for 0s</span></p>
+                              <p class="agents-work-reply" data-work-reply hidden><span class="agents-work-check" aria-hidden="true"><svg viewBox="0 0 16 16" width="12" height="12" fill="none"><path d="m3.5 8.4 3 3 6-6.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>I’ll connect your tools so the agent can review deals, use account context, and prepare follow-ups.</p>
+                              <ul class="agents-work-tools">
+                                <li data-work-tool hidden><img src="../assets/skills/logo-salesforce.png" alt="" /><span>Connect Salesforce for open deals</span><em data-work-tool-state>Running</em></li>
+                                <li data-work-tool hidden><img src="../assets/skills/logo-hubspot.png" alt="" /><span>Connect HubSpot for customer context</span><em data-work-tool-state>Running</em></li>
+                                <li data-work-tool hidden><img src="../assets/skills/logo-sheets.png" alt="" /><span>Connect Sheets for account details</span><em data-work-tool-state>Running</em></li>
+                                <li data-work-tool hidden><img src="../assets/skills/logo-gmail.png" alt="" /><span>Connect Gmail for follow-up drafts</span><em data-work-tool-state>Running</em></li>
+                              </ul>
+                            </div>
+                            <article class="agents-work-report" data-work-report hidden>
+                              <header class="agents-work-report-head">
+                                <span class="agents-work-report-copy"><strong>Task complete. 42 contacts reviewed.</strong><span>7 CRM updates prepared · 2 follow-ups drafted</span></span>
+                                <span class="agents-work-shared" data-work-shared hidden><svg viewBox="0 0 16 16" width="11" height="11" fill="none" aria-hidden="true"><path d="m3.5 8.4 3 3 6-6.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Shared with Sales team</span>
+                              </header>
+                              <p class="agents-work-summary">I found seven contacts that need CRM updates and prepared follow-ups for two quiet opportunities. Nothing has been sent.</p>
+                              <div class="agents-work-contact-table" role="table" aria-label="Contacts with draft follow-ups">
+                                <div class="agents-work-contact-row agents-work-contact-head" role="row"><span role="columnheader">Contact</span><span role="columnheader">Account</span><span role="columnheader">Draft follow-up</span></div>
+                                <div class="agents-work-contact-row" role="row"><strong role="cell">Ava Patel</strong><span role="cell">Northwind Freight</span><span role="cell">Re-engage after 18 days quiet</span></div>
+                                <div class="agents-work-contact-row" role="row"><strong role="cell">Marcus Lee</strong><span role="cell">Brightline Labs</span><span role="cell">Confirm next step and timeline</span></div>
+                              </div>
+                              <div class="agents-work-review-row"><span>2 drafts are ready for your approval</span><button class="agents-work-save agents-work-review" type="button" data-work-review>Review 2 drafts</button></div>
+                            </article>
+                          </div>
+                        </section>
+                          <section class="custom-demo-view" data-custom-view="knowledge" hidden aria-label="Use company knowledge">
+                            <header class="custom-demo-heading"><h3>Use company knowledge</h3><p>Add the playbooks and guidance your team works from.</p></header>
+                            <div class="custom-demo-list">
+<div class="custom-demo-row" data-custom-row><span class="custom-demo-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></span><span class="custom-demo-row-copy"><strong>Sales playbook.pdf</strong><small>Deal stages · qualification criteria</small></span><span class="custom-demo-status" data-custom-status data-initial="Ready">Ready</span></div>
+<div class="custom-demo-row" data-custom-row><span class="custom-demo-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg></span><span class="custom-demo-row-copy"><strong>Follow-up guidelines</strong><small>Tone · timing · approved messaging</small></span><span class="custom-demo-status" data-custom-status data-initial="Ready">Ready</span></div>
+</div><button type="button" class="agents-work-primary custom-demo-action" data-custom-action="knowledge">Use these sources<span aria-hidden="true">↗</span></button>
+<div class="custom-demo-result" data-custom-result="knowledge" hidden><div class="custom-demo-result-label">Answer grounded in your knowledge</div><h4>When should this deal be flagged?</h4><p>Flag opportunities with no activity for 14 days. Draft a helpful check-in using your team’s approved tone.</p><div class="custom-demo-citations"><span>↗ Sales playbook · p. 12</span><span>↗ Follow-up guidelines</span></div></div>
+<p class="custom-demo-footnote">Company context is available every time the agent runs.</p>
+                          </section>
+                          <section class="custom-demo-view" data-custom-view="controls" hidden aria-label="Add approvals and controls">
+                            <header class="custom-demo-heading"><h3>Add approvals and controls</h3><p>Decide what the agent can do and what needs a person.</p></header>
+                            <div class="custom-demo-list">
+<div class="custom-demo-row" data-custom-row><span class="custom-demo-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg></span><span class="custom-demo-row-copy"><strong>Read & summarize deals</strong><small>Agent can complete automatically</small></span><span class="custom-demo-status" data-custom-status data-initial="Allowed">Allowed</span></div>
+<div class="custom-demo-row" data-custom-row><span class="custom-demo-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 3 5 5L8 21H3v-5zM14 5l5 5"/></svg></span><span class="custom-demo-row-copy"><strong>Update CRM records</strong><small>Review proposed changes first</small></span><span class="custom-demo-status" data-custom-status data-initial="Review">Review</span></div>
+<div class="custom-demo-row" data-custom-row><span class="custom-demo-icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg></span><span class="custom-demo-row-copy"><strong>Send customer emails</strong><small>A person approves before sending</small></span><span class="custom-demo-status" data-custom-status data-initial="Review">Review</span></div>
+</div><div class="custom-demo-callout"><strong>Assigned reviewer</strong><p>Jane Miller · Sales Operations</p></div><button type="button" class="agents-work-primary custom-demo-action" data-custom-action="controls">Apply controls<span aria-hidden="true">↗</span></button>
+<div class="custom-demo-result" data-custom-result="controls" hidden><strong>✓ Approval rules saved</strong><p>Drafts and CRM changes wait for Jane’s review. Nothing is sent automatically.</p></div>
+                          </section>
+                          <section class="agents-work-view agents-work-home custom-run-home" data-custom-view="run" hidden aria-label="Run work when you need it">
+                            <p class="agents-work-hello"><strong>Good morning, Jane.</strong><span>What should we work on?</span></p>
+                            <div class="agents-work-composer" data-custom-run-composer>
+                              <p class="agents-work-composer-text"><span data-custom-run-typed></span><i class="agents-work-caret" aria-hidden="true"></i></p>
+                              <div class="custom-run-agent-menu" data-custom-run-menu hidden>
+                                <span class="custom-run-menu-label">Saved agents</span>
+                                <button type="button" class="custom-run-agent" data-custom-run-agent>
+                                  <span class="custom-run-agent-mark" aria-hidden="true"><img src="../assets/skills/logo-expertise.svg" alt="" /></span>
+                                  <span><strong>Pipeline Hygiene Sweep</strong><small>Review deals, update CRM, draft follow-ups</small></span>
+                                  <em>Agent</em>
+                                </button>
+                                <button type="button" class="custom-run-agent" tabindex="-1" aria-hidden="true">
+                                  <span class="custom-run-agent-mark" aria-hidden="true"><img src="../assets/skills/logo-expertise.svg" alt="" /></span>
+                                  <span><strong>Account Research Brief</strong><small>Summarize account context before meetings</small></span>
+                                  <em>Agent</em>
+                                </button>
+                              </div>
+                              <div class="agents-work-composer-foot">
+                                <span class="agents-work-plus" aria-hidden="true">+</span>
+                                <span class="agents-work-model" aria-hidden="true">Max</span>
+                                <button class="agents-work-send custom-run-button" type="button" data-custom-run-send aria-label="Run workflow"><span>Run</span><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+                              </div>
+                              <div class="agents-work-connect">
+                                <span>Available agents</span>
+                                <ul><li><img src="../assets/skills/logo-expertise.svg" alt="" />Pipeline Hygiene Sweep</li><li><img src="../assets/skills/logo-expertise.svg" alt="" />Account Research Brief</li></ul>
+                              </div>
+                            </div>
+                          </section>
+                          <section class="agents-work-view agents-work-run" data-work-view="run" data-custom-view="share" aria-label="Share agents" hidden>
                           <div class="agents-work-scroll" data-work-scroll>
                             <p class="agents-work-sent" data-work-sent>Check my open Salesforce deals for stale stages or no activity in two weeks. Clean up the CRM and draft follow-ups for anyone who’s gone quiet.</p>
                             <div class="agents-work-trace">
@@ -776,17 +923,17 @@
                               <ul class="agents-work-tools">
                                 <li data-work-tool hidden><img src="../assets/skills/logo-salesforce.png" alt="" /><span>Pulled 42 open deals from Salesforce</span><em data-work-tool-state>Running</em></li>
                                 <li data-work-tool hidden><img src="../assets/skills/logo-hubspot.png" alt="" /><span>Checked stage, last activity and next steps</span><em data-work-tool-state>Running</em></li>
-                                <li data-work-tool hidden><img src="../assets/skills/logo-salesforce.png" alt="" /><span>Updated 7 deal records in Salesforce</span><em data-work-tool-state>Running</em></li>
+                                <li data-work-tool hidden><img src="../assets/skills/logo-salesforce.png" alt="" /><span>Prepared 7 deal updates for review</span><em data-work-tool-state>Running</em></li>
                                 <li data-work-tool hidden><img src="../assets/skills/logo-gmail.png" alt="" /><span>Drafted 2 follow-up emails in Gmail</span><em data-work-tool-state>Running</em></li>
                               </ul>
                             </div>
                             <article class="agents-work-report" data-work-report hidden>
                               <header class="agents-work-report-head">
-                                <span class="agents-work-report-copy"><strong>Done. CRM cleaned up, follow-ups drafted.</strong><span>42 open deals checked</span></span>
+                                <span class="agents-work-report-copy"><strong>Done. CRM updates and follow-ups ready for review.</strong><span>42 open deals checked</span></span>
                                 <span class="agents-work-shared" data-work-shared hidden><svg viewBox="0 0 16 16" width="11" height="11" fill="none" aria-hidden="true"><path d="m3.5 8.4 3 3 6-6.4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Shared with Sales team</span>
                               </header>
                               <div class="agents-work-stats">
-                                <div><strong>7</strong><span>records updated</span></div>
+                                <div><strong>7</strong><span>updates to review</span></div>
                                 <div><strong>2</strong><span>follow-ups drafted</span></div>
                               </div>
                               <ul class="agents-work-findings">
@@ -800,8 +947,7 @@
                             <button class="agents-work-save" type="button" data-work-save><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>Save as agent</button>
                           </div>
                         </section>
-                      </div>
-
+                        </div>
                       <div class="agents-work-overlay" data-work-overlay hidden>
                         <div class="agents-work-modal" data-work-modal>
                           <div class="agents-work-modal-inner">
@@ -895,11 +1041,18 @@
                         <span class="agents-work-toast-mark" aria-hidden="true"><svg viewBox="0 0 16 16" width="13" height="13" fill="none"><path d="m3.5 8.4 3 3 6-6.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
                         <span class="agents-work-toast-copy"><strong>Shared with Sales team</strong><span>12 people can run Pipeline Hygiene Sweep in one click.</span></span>
                       </div>
+                      </div>
                     </div>
                   </div>
-                  </div>
                 </div>
-                <div class="agents-skills-progress agents-skills-progress--four" role="tablist" aria-label="Workspace visual scenes"><button class="is-active" type="button" role="tab" data-skills-scene="describe" aria-label="Open the workspace" aria-current="true"><span class="agents-skills-progress-track"><i data-skills-progress="describe"></i></span></button><button type="button" role="tab" data-skills-scene="run" aria-label="Watch it work" aria-current="false"><span class="agents-skills-progress-track"><i data-skills-progress="run"></i></span></button><button type="button" role="tab" data-skills-scene="save" aria-label="Save as agent" aria-current="false"><span class="agents-skills-progress-track"><i data-skills-progress="save"></i></span></button><button type="button" role="tab" data-skills-scene="share" aria-label="Share with the company" aria-current="false"><span class="agents-skills-progress-track"><i data-skills-progress="share"></i></span></button></div>
+                <div class="agents-skills-progress custom-demo-progress" role="group" aria-label="Custom agent workflow steps">
+                  <button class="is-active" type="button" data-skills-scene="process" aria-label="Turn a process into an agent" aria-current="step"><span class="agents-skills-progress-track"><i data-skills-progress="process"></i></span></button>
+                  <button type="button" data-skills-scene="systems" aria-label="Connect your systems" aria-current="false"><span class="agents-skills-progress-track"><i data-skills-progress="systems"></i></span></button>
+                  <button type="button" data-skills-scene="knowledge" aria-label="Use company knowledge" aria-current="false"><span class="agents-skills-progress-track"><i data-skills-progress="knowledge"></i></span></button>
+                  <button type="button" data-skills-scene="controls" aria-label="Add approvals and controls" aria-current="false"><span class="agents-skills-progress-track"><i data-skills-progress="controls"></i></span></button>
+                  <button type="button" data-skills-scene="run" aria-label="Run work when you need it" aria-current="false"><span class="agents-skills-progress-track"><i data-skills-progress="run"></i></span></button>
+                  <button type="button" data-skills-scene="share" aria-label="Share agents" aria-current="false"><span class="agents-skills-progress-track"><i data-skills-progress="share"></i></span></button>
+                </div>
               </div>
             </div>
           </div>

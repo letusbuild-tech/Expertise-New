@@ -1692,590 +1692,385 @@ function initAgentsSkillsDemo() {
   const root = document.querySelector("[data-skills-demo]");
   if (!root) return null;
 
-  const demoCursor = createAgentsDemoCursor(root);
+  const cursor = createAgentsDemoCursor(root);
+  const views = [...root.querySelectorAll("[data-custom-view]")];
+  const nav = [...root.querySelectorAll("[data-skills-scene]")];
   const caption = root.querySelector("[data-skills-caption]");
-  const views = [...root.querySelectorAll("[data-work-view]")];
-  const composer = root.querySelector("[data-work-composer]");
-  const typedEl = root.querySelector("[data-work-typed]");
-  const sendButton = root.querySelector("[data-work-send]");
-  const scroll = root.querySelector("[data-work-scroll]");
-  const status = root.querySelector("[data-work-status]");
-  const timerEl = root.querySelector("[data-work-timer]");
-  const reply = root.querySelector("[data-work-reply]");
-  const tools = [...root.querySelectorAll("[data-work-tool]")];
-  const report = root.querySelector("[data-work-report]");
-  const sharedBadge = root.querySelector("[data-work-shared]");
-  const saveButton = root.querySelector("[data-work-save]");
-  const overlay = root.querySelector("[data-work-overlay]");
-  const modal = root.querySelector("[data-work-modal]");
-  const modalPanels = [...root.querySelectorAll("[data-work-panel]")];
-  const promptEl = root.querySelector("[data-work-sent]");
-  const nameField = root.querySelector("[data-work-name-field]");
-  const nameEl = root.querySelector("[data-work-agent-name]");
-  const confirmSave = root.querySelector("[data-work-confirm-save]");
-  const openShareButton = root.querySelector("[data-work-open-share]");
-  const shareField = root.querySelector("[data-work-share-field]");
-  const shareTyped = root.querySelector("[data-work-share-typed]");
-  const shareChip = root.querySelector("[data-work-share-chip]");
-  const shareSubmit = root.querySelector("[data-work-share-submit]");
-  const toast = root.querySelector("[data-work-toast]");
-  const scenes = [...root.querySelectorAll("[data-skills-scene]")];
-
-  const order = ["describe", "run", "save", "share"];
-  const captions = {
-    describe: "Open the workspace and describe the job",
-    run: "Watch it work, then save it as an agent",
-    save: "Save the finished run as a company agent",
-    share: "Everyone in the company runs the same workflow"
+  const stepLabel = root.querySelector("[data-custom-step]");
+  const prompt = "Review our open deals each week. Flag stale opportunities, suggest CRM updates, and draft follow-ups for my approval.";
+  const config = {
+    process: { caption: "Open the workspace and describe the job", lead: 6700, hold: 80 },
+    systems: { caption: "Connect the tools, then turn context into work", lead: 0, hold: 10180 },
+    knowledge: { caption: "Give every decision the right context.", lead: 1400, hold: 3800 },
+    controls: { caption: "Your rules. Your team stays in control.", lead: 1900, hold: 3400 },
+    run: { caption: "Call a saved agent from the workspace", lead: 0, hold: 5280 },
+    share: { caption: "Everyone in the company runs the same workflow", lead: 4600, hold: 2580 }
   };
-  const holds = { describe: 7600, run: 11600, save: 9800, share: 8000 };
-  const fills = {};
-  order.forEach(key => {
-    fills[key] = root.querySelector(`[data-skills-progress="${key}"]`);
-  });
-
-  const promptText = promptEl ? promptEl.textContent.trim() : "";
-  const agentName = "Pipeline Hygiene Sweep";
-  const teamName = "Sales team";
-  const workedLabel = "Worked for 58s";
-  let timeouts = [];
-  let timerInterval = 0;
-  let elapsed = 0;
+  const keys = Object.keys(config);
+  const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let timers = [];
+  let phase = "process";
   let running = false;
-  let phase = "describe";
+  let acted = false;
+  let completed = false;
 
-  function prefersReducedMotion() {
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  }
-
-  function later(fn, ms) {
-    const id = window.setTimeout(fn, ms);
-    timeouts.push(id);
+  function later(fn, delay) {
+    const id = window.setTimeout(fn, delay);
+    timers.push(id);
     return id;
   }
 
   function clearTimers() {
-    timeouts.forEach(id => window.clearTimeout(id));
-    timeouts = [];
-    stopTimer();
-    demoCursor.hide();
-  }
-
-  function setFill(key, mode, duration) {
-    const fill = fills[key];
-    if (!fill) return;
-    fill.style.transition = "none";
-    if (mode === "reset") {
-      fill.style.transform = "scaleX(0)";
-      return;
-    }
-    if (mode === "full") {
-      fill.style.transform = "scaleX(1)";
-      return;
-    }
-    fill.style.transform = "scaleX(0)";
-    void fill.offsetWidth;
-    if (prefersReducedMotion()) {
-      fill.style.transform = "scaleX(1)";
-      return;
-    }
-    fill.style.transition = `transform ${duration}ms linear`;
-    fill.style.transform = "scaleX(1)";
-  }
-
-  function setPhase(key) {
-    phase = key;
-    if (caption) caption.textContent = captions[key];
-    scenes.forEach(scene => {
-      const on = scene.dataset.skillsScene === key;
-      scene.classList.toggle("is-active", on);
-      scene.setAttribute("aria-current", on ? "true" : "false");
-    });
-    const active = order.indexOf(key);
-    order.forEach((step, index) => {
-      if (index < active) setFill(step, "full");
-      else if (index === active) setFill(step, "play", prefersReducedMotion() ? 700 : holds[step]);
-      else setFill(step, "reset");
-    });
-  }
-
-  function showView(key) {
-    views.forEach(view => {
-      const on = view.dataset.workView === key;
-      view.hidden = !on;
-      view.classList.toggle("is-active", on);
-    });
-  }
-
-  function revealEl(el) {
-    if (!el) return;
-    el.hidden = false;
-    void el.offsetWidth;
-    el.classList.add("is-in");
-  }
-
-  /* A visible press state so the viewer registers that a button was clicked. */
-  function tap(el, done) {
-    if (!el) {
-      if (done) done();
-      return;
-    }
-    el.classList.remove("is-glowing");
-    if (prefersReducedMotion()) {
-      if (done) done();
-      return;
-    }
-    demoCursor.moveTo(el);
-    later(() => {
-      demoCursor.press();
-      el.classList.add("is-tapped");
-      later(() => {
-        el.classList.remove("is-tapped");
-        demoCursor.hide();
-        if (done) done();
-      }, 460);
-    }, 420);
-  }
-
-  function scrollRun() {
-    if (!scroll) return;
-    scroll.scrollTo({
-      top: scroll.scrollHeight,
-      behavior: prefersReducedMotion() ? "auto" : "smooth"
-    });
-  }
-
-  function typeText(el, text, speed, done) {
-    if (!el) {
-      if (done) done();
-      return;
-    }
-    const host = el.parentElement;
-    el.textContent = "";
-    if (host) host.classList.add("is-typing");
-    if (prefersReducedMotion()) {
-      el.textContent = text;
-      if (host) host.classList.remove("is-typing");
-      if (done) done();
-      return;
-    }
-    let index = 0;
-    function tick() {
-      index += 1;
-      el.textContent = text.slice(0, index);
-      if (index < text.length) {
-        later(tick, speed);
-        return;
-      }
-      if (host) host.classList.remove("is-typing");
-      if (done) done();
-    }
-    tick();
-  }
-
-  function startTimer() {
-    stopTimer();
-    elapsed = 0;
-    if (timerEl) timerEl.textContent = "Working for 0s";
-    if (prefersReducedMotion()) return;
-    timerInterval = window.setInterval(() => {
-      elapsed += 1;
-      if (timerEl) timerEl.textContent = `Working for ${elapsed}s`;
-    }, 1000);
-  }
-
-  function stopTimer() {
-    if (!timerInterval) return;
-    window.clearInterval(timerInterval);
-    timerInterval = 0;
-  }
-
-  function markToolDone(tool) {
-    tool.classList.add("is-done");
-    const state = tool.querySelector("[data-work-tool-state]");
-    if (state) state.textContent = "Done";
-  }
-
-  function setModalPanel(key, morph) {
-    if (!modal) return;
-    const from = morph ? modal.getBoundingClientRect().height : 0;
-    modalPanels.forEach(item => {
-      const on = item.dataset.workPanel === key;
-      item.classList.remove("is-active");
-      item.hidden = !on;
-      if (on) {
-        void item.offsetWidth;
-        item.classList.add("is-active");
-      }
-    });
-    if (!morph || prefersReducedMotion()) {
-      modal.style.height = "";
-      return;
-    }
-    /* Morph the shell between panels instead of snapping to the new height. */
-    const to = modal.getBoundingClientRect().height;
-    if (!from || Math.abs(to - from) < 2) return;
-    modal.style.height = `${from}px`;
-    void modal.offsetHeight;
-    modal.style.height = `${to}px`;
-    later(() => {
-      modal.style.height = "";
-    }, 540);
-  }
-
-  function openOverlay(key) {
-    if (!overlay) return;
-    setModalPanel(key, false);
-    overlay.hidden = false;
-    void overlay.offsetWidth;
-    overlay.classList.add("is-in");
-  }
-
-  function closeOverlay() {
-    if (!overlay) return;
-    overlay.classList.remove("is-in");
-    later(() => {
-      overlay.hidden = true;
-    }, 380);
-  }
-
-  function resetHome() {
-    if (typedEl) typedEl.textContent = "";
-    if (composer) composer.classList.remove("is-glowing");
-    const composerText = root.querySelector(".agents-work-composer-text");
-    if (composerText) composerText.classList.remove("is-typing");
-    if (sendButton) sendButton.classList.remove("is-ready", "is-tapped");
-  }
-
-  function resetRun() {
-    stopTimer();
-    elapsed = 0;
-    if (timerEl) timerEl.textContent = "Working for 0s";
-    if (status) status.classList.remove("is-done");
-    if (reply) {
-      reply.hidden = true;
-      reply.classList.remove("is-in");
-    }
-    tools.forEach(tool => {
-      tool.hidden = true;
-      tool.classList.remove("is-in", "is-done");
-      const state = tool.querySelector("[data-work-tool-state]");
-      if (state) state.textContent = "Running";
-    });
-    if (report) {
-      report.hidden = true;
-      report.classList.remove("is-in");
-    }
-    if (sharedBadge) sharedBadge.hidden = true;
-    if (saveButton) saveButton.classList.remove("is-glowing", "is-tapped");
-    if (scroll) scroll.scrollTop = 0;
-  }
-
-  function resetModals() {
-    if (overlay) {
-      overlay.hidden = true;
-      overlay.classList.remove("is-in");
-    }
-    if (modal) modal.style.height = "";
-    setModalPanel("save", false);
-    if (nameEl) nameEl.textContent = "";
-    if (nameField) nameField.classList.remove("is-typing", "is-filled");
-    if (confirmSave) confirmSave.classList.remove("is-glowing", "is-tapped");
-    if (openShareButton) openShareButton.classList.remove("is-glowing", "is-tapped");
-    if (shareTyped) shareTyped.textContent = "";
-    if (shareChip) shareChip.hidden = true;
-    if (shareField) shareField.classList.remove("is-typing", "is-filled");
-    if (shareSubmit) shareSubmit.classList.remove("is-glowing", "is-tapped");
-    if (toast) {
-      toast.hidden = true;
-      toast.classList.remove("is-in");
-    }
+    timers.forEach(window.clearTimeout);
+    timers = [];
+    cursor.hide();
   }
 
   function reset() {
+    clearTimers();
     running = false;
-    clearTimers();
-    resetHome();
-    resetRun();
-    resetModals();
-    showView("home");
-    setPhase("describe");
-    order.forEach(step => setFill(step, "reset"));
+    completed = false;
+    root.querySelectorAll(".is-tapped, .is-typing").forEach(el => el.classList.remove("is-tapped", "is-typing"));
+    const overlay = root.querySelector("[data-work-overlay]");
+    overlay.hidden = true;
+    overlay.classList.remove("is-in");
+    const toast = root.querySelector("[data-work-toast]");
+    toast.hidden = true;
+    toast.classList.remove("is-in");
   }
 
-  /* Everything the run view shows once the agent has finished working. */
-  function fillRun() {
-    stopTimer();
-    showView("run");
-    if (status) status.classList.add("is-done");
-    if (timerEl) timerEl.textContent = workedLabel;
-    revealEl(reply);
-    tools.forEach(tool => {
-      revealEl(tool);
-      markToolDone(tool);
-    });
-    revealEl(report);
-    if (saveButton) saveButton.classList.remove("is-glowing");
-    later(scrollRun, 40);
-  }
-
-  /* Step 1 — Jane types the job into the workspace composer and sends it. */
-  function playDescribe() {
-    clearTimers();
-    resetHome();
-    resetRun();
-    resetModals();
-    showView("home");
-    setPhase("describe");
-
-    if (prefersReducedMotion()) {
-      if (typedEl) typedEl.textContent = promptText;
-      if (sendButton) sendButton.classList.add("is-ready");
-      later(goRun, 1200);
-      return;
-    }
-
-    if (composer) composer.classList.add("is-glowing");
-    later(() => {
-      if (composer) composer.classList.remove("is-glowing");
-      typeText(typedEl, promptText, 17, () => {
-        if (sendButton) sendButton.classList.add("is-ready");
-      });
-    }, 1600);
-    later(() => tap(sendButton, goRun), holds.describe - 900);
-  }
-
-  function goRun() {
+  function finish() {
     if (!running) return;
-    setFill("describe", "full");
-    playRun();
+    completed = true;
+    window.dispatchEvent(new CustomEvent("agents-skills-sequence-complete", { detail: { key: phase } }));
   }
 
-  /* Step 2 — the agent works through the connected tools and reports back. */
-  function playRun() {
-    clearTimers();
-    resetRun();
-    resetModals();
-    showView("run");
-    setPhase("run");
+  function reveal(el) {
+    if (!el) return;
+    el.hidden = false;
+    el.classList.add("is-in");
+  }
 
-    if (prefersReducedMotion()) {
-      fillRun();
-      later(goSave, 1600);
+  function type(el, text, delay) {
+    if (!el) return;
+    if (motion.matches) {
+      el.textContent = text;
       return;
     }
+    el.parentElement.classList.add("is-typing");
+    [...text].forEach((_, index) => later(() => {
+      el.textContent = text.slice(0, index + 1);
+      if (index === text.length - 1) el.parentElement.classList.remove("is-typing");
+    }, index * delay));
+  }
 
-    startTimer();
-    later(() => revealEl(reply), 520);
-
-    const toolStart = 1250;
-    const toolGap = 1250;
-    tools.forEach((tool, index) => {
+  function performAction() {
+    if (!running || acted) return;
+    acted = true;
+    if (phase === "process") {
+      root.querySelector("[data-work-typed]").textContent = root.querySelector("[data-work-sent]").textContent;
+      return;
+    }
+    if (phase === "share") {
+      const overlay = root.querySelector("[data-work-overlay]");
+      overlay.classList.remove("is-in");
       later(() => {
-        revealEl(tool);
-        scrollRun();
-      }, toolStart + index * toolGap);
-      later(() => markToolDone(tool), toolStart + index * toolGap + 880);
-    });
-
-    const finishAt = toolStart + tools.length * toolGap + 320;
-    later(() => {
-      stopTimer();
-      if (status) status.classList.add("is-done");
-      if (timerEl) timerEl.textContent = workedLabel;
-      revealEl(report);
-      later(scrollRun, 120);
-    }, finishAt);
-    later(() => {
-      if (saveButton) saveButton.classList.add("is-glowing");
-    }, finishAt + 620);
-    later(() => tap(saveButton, goSave), holds.run - 1000);
-  }
-
-  /* Step 3 — the run is saved as an agent the whole company can reuse. */
-  function goSave() {
-    if (!running) return;
-    setFill("run", "full");
-    playSave();
-  }
-
-  function playSave() {
-    clearTimers();
-    fillRun();
-    resetModals();
-    setPhase("save");
-    openOverlay("save");
-
-    if (prefersReducedMotion()) {
-      if (nameEl) nameEl.textContent = agentName;
-      setModalPanel("saved", false);
-      later(goShare, 1600);
+        overlay.hidden = true;
+        reveal(root.querySelector("[data-work-toast]"));
+        root.querySelector('[data-custom-view="share"] [data-work-shared]').hidden = false;
+      }, motion.matches ? 0 : 380);
       return;
     }
-
-    later(() => {
-      typeText(nameEl, agentName, 34, () => {
-        if (nameField) nameField.classList.add("is-filled");
-        later(() => {
-          if (confirmSave) confirmSave.classList.add("is-glowing");
-        }, 320);
+    if (phase === "run") return;
+    const view = views.find(item => item.dataset.customView === phase);
+    const button = view.querySelector("[data-custom-action]");
+    const result = view.querySelector("[data-custom-result]");
+    const rows = [...view.querySelectorAll("[data-custom-row]")];
+    const showResult = () => {
+      reveal(result);
+      view.classList.add("is-complete");
+      button.textContent = {process: "Agent draft ready", systems: "Tools connected", knowledge: "Sources attached", controls: "Controls saved", run: "Run complete", share: "Shared with Sales team"}[phase];
+      button.classList.add("is-complete");
+    };
+    if (phase === "process") view.querySelector("[data-custom-typed]").textContent = prompt;
+    if (phase === "share") view.querySelector("[data-custom-share-typed]").textContent = "Sales team · 12 people";
+    if (["systems", "knowledge", "run"].includes(phase)) {
+      rows.forEach((row, index) => {
+        const state = row.querySelector("[data-custom-status]");
+        const update = () => {
+          row.classList.add("is-done");
+          state.classList.add("is-done");
+          state.textContent = phase === "systems" ? "Connected" : phase === "knowledge" ? "In use" : "Done";
+        };
+        if (motion.matches) update();
+        else {
+          later(() => { row.classList.add("is-working"); state.textContent = phase === "systems" ? "Connecting…" : phase === "knowledge" ? "Reading…" : "Working…"; }, index * 700);
+          later(() => { row.classList.remove("is-working"); update(); }, index * 700 + 520);
+        }
       });
-    }, 640);
-
-    later(() => tap(confirmSave, () => setModalPanel("saved", true)), 3600);
-    later(() => {
-      if (openShareButton) openShareButton.classList.add("is-glowing");
-    }, 4900);
-    later(() => tap(openShareButton, goShare), holds.save - 1100);
+      if (motion.matches) showResult();
+      else later(showResult, rows.length * 700 + 100);
+    } else showResult();
   }
 
-  /* Step 4 — the agent is shared with a team and everyone gets it at once. */
-  function goShare() {
-    if (!running) return;
-    setFill("save", "full");
-    playShare();
+  function tapAction() {
+    if (!running || acted) return;
+    const button = phase === "process" ? root.querySelector("[data-work-send]")
+      : phase === "share" ? root.querySelector("[data-work-share-submit]")
+      : root.querySelector('[data-custom-action="' + phase + '"]');
+    if (motion.matches) return performAction();
+    cursor.moveTo(button);
+    later(() => {
+      if (acted) return;
+      cursor.press();
+      button.classList.add("is-tapped");
+      later(() => {
+        button.classList.remove("is-tapped");
+        cursor.hide();
+        performAction();
+      }, 400);
+    }, 420);
   }
 
-  function playShare() {
-    clearTimers();
-    fillRun();
-    setPhase("share");
-    if (toast) {
-      toast.hidden = true;
-      toast.classList.remove("is-in");
-    }
-    if (sharedBadge) sharedBadge.hidden = true;
-    if (shareTyped) shareTyped.textContent = "";
-    if (shareChip) shareChip.hidden = true;
-    if (shareField) shareField.classList.remove("is-filled");
-    if (shareSubmit) shareSubmit.classList.remove("is-glowing", "is-tapped");
-
-    if (overlay && overlay.hidden) openOverlay("share");
-    else setModalPanel("share", true);
-
-    if (prefersReducedMotion()) {
-      if (shareChip) shareChip.hidden = false;
-      if (sharedBadge) sharedBadge.hidden = false;
-      revealEl(toast);
-      later(playDescribe, 2200);
-      return;
-    }
-
-    later(() => {
-      typeText(shareTyped, teamName, 58, () => {
-        later(() => {
-          if (shareTyped) shareTyped.textContent = "";
-          if (shareChip) shareChip.hidden = false;
-          if (shareField) shareField.classList.add("is-filled");
-          if (shareSubmit) shareSubmit.classList.add("is-glowing");
-        }, 420);
-      });
-    }, 900);
-
-    later(() => {
-      tap(shareSubmit, () => {
-        closeOverlay();
-        later(() => {
-          if (sharedBadge) sharedBadge.hidden = false;
-          revealEl(toast);
-          scrollRun();
-        }, 420);
-      });
-    }, 4600);
-
-    later(playDescribe, holds.share);
-  }
-
-  function start() {
+  function playSequence(key = "process") {
+    if (!config[key]) return;
     reset();
+    phase = key;
     running = true;
-    root.dataset.phase = "app";
-    playDescribe();
-  }
-
-  function jumpTo(key) {
-    running = true;
-    clearTimers();
-    if (key === "describe") {
-      playDescribe();
+    acted = false;
+    const spec = config[key];
+    root.dataset.phase = key;
+    caption.textContent = spec.caption;
+    stepLabel.textContent = String(keys.indexOf(key) + 1).padStart(2, "0") + " / 06";
+    views.forEach(view => {
+      const active = view.dataset.customView === key;
+      view.hidden = !active;
+      view.classList.toggle("is-active", active);
+      view.classList.remove("is-complete");
+      view.scrollTop = 0;
+      view.querySelectorAll("[data-custom-result]").forEach(el => { el.hidden = true; el.classList.remove("is-in"); });
+      view.querySelectorAll("[data-custom-status][data-initial]").forEach(el => {
+        el.textContent = el.dataset.initial;
+        el.classList.remove("is-done");
+      });
+      view.querySelectorAll("[data-custom-row]").forEach(el => el.classList.remove("is-working", "is-done"));
+      view.querySelectorAll("[data-custom-typed], [data-custom-share-typed]").forEach(el => { el.textContent = ""; });
+      view.querySelectorAll("[data-custom-action]").forEach(el => {
+        el.innerHTML = el.dataset.original;
+        el.classList.remove("is-complete");
+      });
+    });
+    const total = spec.lead + 820 + spec.hold;
+    nav.forEach((button, index) => {
+      const active = button.dataset.skillsScene === key;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-current", active ? "step" : "false");
+      const fill = button.querySelector("i");
+      fill.style.transition = "none";
+      fill.style.transform = index < keys.indexOf(key) ? "scaleX(1)" : "scaleX(0)";
+      if (active) {
+        void fill.offsetWidth;
+        fill.style.transition = motion.matches ? "none" : "transform " + total + "ms linear";
+        fill.style.transform = "scaleX(1)";
+      }
+    });
+    if (["process", "systems", "run", "share"].includes(key)) prepareOriginalScene(key);
+    if (["systems", "run"].includes(key)) {
+      if (key === "systems" && !motion.matches) later(finish, total);
       return;
     }
+    if (motion.matches) performAction();
+    else {
+      later(tapAction, spec.lead);
+      later(finish, total);
+    }
+  }
+
+  function prepareOriginalScene(key) {
+    const view = views.find(item => item.dataset.customView === key);
+    if (key === "process") {
+      const composer = view.querySelector("[data-work-composer]");
+      const typed = view.querySelector("[data-work-typed]");
+      const send = view.querySelector("[data-work-send]");
+      typed.textContent = "";
+      send.classList.remove("is-ready");
+      composer.classList.add("is-glowing");
+      const originalPrompt = root.querySelector("[data-work-sent]").textContent.trim();
+      const begin = () => {
+        composer.classList.remove("is-glowing");
+        type(typed, originalPrompt, 17);
+        if (motion.matches) send.classList.add("is-ready");
+        else later(() => send.classList.add("is-ready"), originalPrompt.length * 17);
+      };
+      if (motion.matches) begin(); else later(begin, 1600);
+      return;
+    }
+
     if (key === "run") {
-      playRun();
-      return;
-    }
-    if (key === "save") {
-      playSave();
-      return;
-    }
-    playShare();
-  }
+      const composer = view.querySelector("[data-custom-run-composer]");
+      const typed = view.querySelector("[data-custom-run-typed]");
+      const menu = view.querySelector("[data-custom-run-menu]");
+      const agent = view.querySelector("[data-custom-run-agent]");
+      const send = view.querySelector("[data-custom-run-send]");
+      const beforeAgent = "Run this week's pipeline review with /";
+      const completePrompt = "Run this week's pipeline review with /Pipeline Hygiene Sweep";
+      typed.textContent = "";
+      menu.hidden = true;
+      menu.classList.remove("is-in");
+      agent.classList.remove("is-selected", "is-tapped");
+      send.classList.remove("is-ready", "is-tapped");
+      composer.classList.add("is-glowing");
 
-  if (sendButton) {
-    sendButton.addEventListener("click", () => {
-      if (!running) {
-        running = true;
-        playDescribe();
+      const chooseAgent = () => {
+        menu.hidden = true;
+        menu.classList.remove("is-in");
+        agent.classList.add("is-selected");
+        typed.innerHTML = 'Run this week\'s pipeline review with <span class="custom-run-token">/Pipeline Hygiene Sweep</span>';
+        send.classList.add("is-ready");
+      };
+      const submit = () => {
+        if (acted) return;
+        acted = true;
+        send.classList.add("is-tapped");
+        later(() => {
+          send.classList.remove("is-tapped");
+          cursor.hide();
+          composer.classList.remove("is-glowing");
+          finish();
+        }, motion.matches ? 0 : 360);
+      };
+      view._selectRunAgent = chooseAgent;
+      view._submitRun = submit;
+
+      if (motion.matches) {
+        typed.textContent = completePrompt;
+        chooseAgent();
+        submit();
         return;
       }
-      if (phase !== "describe") return;
-      clearTimers();
-      tap(sendButton, goRun);
+      later(() => type(typed, beforeAgent, 34), 700);
+      later(() => reveal(menu), 700 + beforeAgent.length * 34 + 120);
+      later(() => cursor.moveTo(agent), 2700);
+      later(() => { cursor.press(); agent.classList.add("is-tapped"); }, 3120);
+      later(() => { cursor.hide(); agent.classList.remove("is-tapped"); chooseAgent(); }, 3470);
+      later(() => cursor.moveTo(send), 4300);
+      later(() => { cursor.press(); submit(); }, 4720);
+      return;
+    }
+
+    const trace = view.querySelector("[data-work-status]");
+    const timer = view.querySelector("[data-work-timer]");
+    const reply = view.querySelector("[data-work-reply]");
+    const tools = [...view.querySelectorAll("[data-work-tool]")];
+    const report = view.querySelector("[data-work-report]");
+    const scroll = view.querySelector("[data-work-scroll]");
+    const scrollDown = () => scroll.scrollTo({ top: scroll.scrollHeight, behavior: motion.matches ? "instant" : "smooth" });
+    trace.classList.toggle("is-done", key === "share");
+    timer.textContent = key === "share" ? "Worked for 58s" : "Connecting your tools";
+    [reply, report, ...tools].forEach(el => { el.hidden = true; el.classList.remove("is-in", "is-done"); });
+    view.querySelector("[data-work-shared]").hidden = true;
+    tools.forEach(tool => { tool.querySelector("[data-work-tool-state]").textContent = key === "systems" ? "Connecting" : "Done"; });
+    scroll.scrollTop = 0;
+
+    if (key === "systems") {
+      const done = tool => {
+        tool.classList.add("is-done");
+        tool.querySelector("[data-work-tool-state]").textContent = "Connected";
+      };
+      const complete = () => {
+        trace.classList.add("is-done");
+        timer.textContent = "Worked for 58s";
+        reveal(report);
+        scrollDown();
+      };
+      const processTask = () => {
+        trace.classList.remove("is-done");
+        timer.textContent = "Processing the requested task";
+        scrollDown();
+      };
+      if (motion.matches) {
+        reveal(reply);
+        tools.forEach(tool => { reveal(tool); done(tool); });
+        processTask();
+        complete();
+      } else {
+        later(() => reveal(reply), 520);
+        tools.forEach((tool, index) => {
+          later(() => { reveal(tool); scrollDown(); }, 1250 + index * 1250);
+          later(() => done(tool), 2130 + index * 1250);
+        });
+        later(processTask, 6650);
+        later(complete, 8050);
+      }
+      return;
+    }
+
+    // Reuse the original completed-run backdrop and the original share modal.
+    [reply, report, ...tools].forEach(reveal);
+    tools.forEach(tool => tool.classList.add("is-done"));
+    scroll.scrollTo({ top: scroll.scrollHeight, behavior: "instant" });
+    const overlay = root.querySelector("[data-work-overlay]");
+    const modal = root.querySelector("[data-work-modal]");
+    modal.style.height = "";
+    root.querySelectorAll("[data-work-panel]").forEach(panel => {
+      panel.hidden = panel.dataset.workPanel !== "share";
+      panel.classList.toggle("is-active", !panel.hidden);
     });
+    const typed = root.querySelector("[data-work-share-typed]");
+    const chip = root.querySelector("[data-work-share-chip]");
+    const field = root.querySelector("[data-work-share-field]");
+    typed.textContent = "";
+    chip.hidden = true;
+    field.classList.remove("is-filled");
+    reveal(overlay);
+    const selectTeam = () => { typed.textContent = ""; chip.hidden = false; field.classList.add("is-filled"); };
+    if (motion.matches) selectTeam();
+    else {
+      later(() => type(typed, "Sales team", 58), 900);
+      later(selectTeam, 1850);
+    }
   }
 
-  if (saveButton) {
-    saveButton.addEventListener("click", () => {
-      if (phase === "save" || phase === "share") return;
-      running = true;
-      clearTimers();
-      tap(saveButton, goSave);
-    });
-  }
-
-  if (confirmSave) {
-    confirmSave.addEventListener("click", () => {
-      if (phase !== "save") return;
-      clearTimers();
-      tap(confirmSave, () => setModalPanel("saved", true));
-      later(() => {
-        if (openShareButton) openShareButton.classList.add("is-glowing");
-      }, 900);
-    });
-  }
-
-  if (openShareButton) {
-    openShareButton.addEventListener("click", () => {
-      if (phase !== "save") return;
-      clearTimers();
-      tap(openShareButton, goShare);
-    });
-  }
-
-  if (shareSubmit) {
-    shareSubmit.addEventListener("click", () => {
-      if (phase !== "share") return;
-      clearTimers();
-      tap(shareSubmit, () => {
-        closeOverlay();
-        later(() => {
-          if (sharedBadge) sharedBadge.hidden = false;
-          revealEl(toast);
-        }, 420);
-      });
-      later(playDescribe, 4200);
-    });
-  }
-
-  scenes.forEach(scene => {
-    scene.addEventListener("click", () => {
-      const key = scene.dataset.skillsScene;
-      if (!key || key === phase) return;
-      jumpTo(key);
-    });
+  root.querySelectorAll("[data-custom-action]").forEach(button => {
+    button.dataset.original = button.innerHTML;
+    button.addEventListener("click", performAction);
   });
+  root.querySelector("[data-work-send]").addEventListener("click", () => {
+    if (phase !== "process" || acted) return;
+    clearTimers();
+    performAction();
+    if (!motion.matches) later(finish, 900);
+  });
+  root.querySelector("[data-work-share-submit]").addEventListener("click", () => {
+    if (phase !== "share" || acted) return;
+    clearTimers();
+    performAction();
+    if (!motion.matches) later(finish, 2500);
+  });
+  root.querySelector("[data-custom-run-agent]").addEventListener("click", () => {
+    if (phase !== "run" || acted) return;
+    clearTimers();
+    views.find(item => item.dataset.customView === "run")._selectRunAgent?.();
+  });
+  root.querySelector("[data-custom-run-send]").addEventListener("click", () => {
+    if (phase !== "run" || acted) return;
+    clearTimers();
+    views.find(item => item.dataset.customView === "run")._submitRun?.();
+  });
+  nav.forEach(button => button.addEventListener("click", () => {
+    window.dispatchEvent(new CustomEvent("agents-skills-sequence-select", { detail: { key: button.dataset.skillsScene } }));
+  }));
 
-  return { start, reset };
+  function start() {
+    const active = document.querySelector('#agent-v2-pane-workspace [aria-expanded="true"]');
+    playSequence(active?.getAttribute("aria-controls")?.replace("custom-feature-", "") || "process");
+  }
+
+  function resume() {
+    if (completed && running && !motion.matches) finish();
+  }
+
+  return { start, reset, playSequence, resume };
 }
 
 function initAgentsChatDemo() {
@@ -2286,6 +2081,8 @@ function initAgentsChatDemo() {
   const caption = root.querySelector("[data-chat-caption]");
   const promptStage = root.querySelector('[data-chat-stage="prompt"]');
   const conversationStage = root.querySelector('[data-chat-stage="conversation"]');
+  const operationsStage = root.querySelector('[data-chat-stage="operations"]');
+  const operationsViews = [...root.querySelectorAll("[data-sales-ops-view]")];
   const welcomeShell = root.querySelector("[data-chat-welcome]");
   const composer = root.querySelector("[data-chat-composer]");
   const send = root.querySelector("[data-chat-send]");
@@ -2300,19 +2097,25 @@ function initAgentsChatDemo() {
   const submitButton = root.querySelector("[data-site-submit]");
   const sequenceNav = [...root.querySelectorAll("[data-chat-sequence-nav]")];
 
-  const sequences = ["qualify", "personalize", "book"];
+  const sequences = ["qualify", "personalize", "book", "crm", "followup", "stalled"];
   const captions = {
     prompt: "Meet buyers the moment they show intent",
     chat: "Qualify intent with a guided conversation",
     microsite: "Generate a personalized page for every buyer",
     booking: "Turn the right plan into a booked demo",
-    confirmed: "Hand sales a confirmed, qualified meeting"
+    confirmed: "Hand sales a confirmed, qualified meeting",
+    crm: "Turn every conversation into clean CRM context",
+    followup: "Prepare the follow-up while intent is still fresh",
+    stalled: "Bring quiet opportunities back into focus"
   };
   const holds = { prompt: 4400, chat: 11600, microsite: 4200, booking: 3200, confirmed: 5600 };
   const sequenceDurations = {
     qualify: (holds.prompt + 620 + holds.chat) / 1.25,
     personalize: holds.microsite,
-    book: holds.booking + holds.confirmed
+    book: holds.booking + holds.confirmed,
+    crm: 4200,
+    followup: 5200,
+    stalled: 5900
   };
   const fills = {};
   sequences.forEach(key => {
@@ -2400,9 +2203,15 @@ function initAgentsChatDemo() {
       promptStage.classList.remove("is-exiting");
     }
     if (conversationStage) {
-      conversationStage.hidden = key === "prompt";
-      conversationStage.classList.toggle("is-active", key !== "prompt");
+      const active = key !== "prompt" && key !== "operations";
+      conversationStage.hidden = !active;
+      conversationStage.classList.toggle("is-active", active);
       conversationStage.classList.remove("is-exiting");
+    }
+    if (operationsStage) {
+      const active = key === "operations";
+      operationsStage.hidden = !active;
+      operationsStage.classList.toggle("is-active", active);
     }
   }
 
@@ -2558,6 +2367,115 @@ function initAgentsChatDemo() {
     if (submitButton) submitButton.classList.remove("is-tapped", "is-chosen");
   }
 
+  function resetOperations() {
+    operationsViews.forEach(view => {
+      view.hidden = true;
+      view.classList.remove("is-entering");
+    });
+    root.querySelectorAll("[data-sales-ops-task]").forEach(task => {
+      task.hidden = true;
+      task.classList.remove("is-in", "is-out", "is-working", "is-done");
+    });
+    root.querySelectorAll("[data-sales-ops-reveal]").forEach(item => item.classList.remove("is-in"));
+    const emailTyped = root.querySelector("[data-sales-ops-email-typed]");
+    if (emailTyped) emailTyped.textContent = "";
+    root.querySelector(".sales-ops-type-caret")?.classList.remove("is-typing");
+    root.querySelector("[data-sales-ops-email-cta]")?.classList.remove("is-ready", "is-tapped");
+    const notification = root.querySelector("[data-sales-ops-notification]");
+    if (notification) { notification.hidden = true; notification.classList.remove("is-in"); }
+    root.querySelectorAll("[data-sales-ops-deal]").forEach(deal => { deal.hidden = true; deal.classList.remove("is-in"); });
+    const alertCta = root.querySelector("[data-sales-ops-alert-cta]");
+    if (alertCta) { alertCta.hidden = true; alertCta.classList.remove("is-in"); }
+  }
+
+  function showOperationsView(key) {
+    showStage("operations");
+    operationsViews.forEach(view => {
+      const active = view.dataset.salesOpsView === key;
+      view.hidden = !active;
+      view.classList.toggle("is-entering", active);
+    });
+    setPhase(key);
+  }
+
+  function playCrmOperations() {
+    showOperationsView("crm");
+    const tasks = [...root.querySelectorAll('[data-sales-ops-view="crm"] [data-sales-ops-task]')];
+    const completeTask = (task) => {
+      task.classList.remove("is-working");
+      task.classList.add("is-done");
+    };
+    if (prefersReducedMotion()) {
+      tasks.forEach(task => {
+        task.hidden = false;
+        task.classList.add("is-in");
+        completeTask(task);
+      });
+      later(() => finishSequence("crm"), 1000);
+      return;
+    }
+    tasks.forEach((task, index) => {
+      const start = 220 + index * 340;
+      later(() => {
+        task.hidden = false;
+        void task.offsetWidth;
+        task.classList.add("is-in", "is-working");
+      }, start);
+      later(() => completeTask(task), start + 780);
+    });
+    later(() => finishSequence("crm"), sequenceDurations.crm);
+  }
+
+  function playFollowupOperations() {
+    showOperationsView("followup");
+    const typed = root.querySelector("[data-sales-ops-email-typed]");
+    const caret = root.querySelector(".sales-ops-type-caret");
+    const cta = root.querySelector("[data-sales-ops-email-cta]");
+    const emailText = "\nKate passed along your notes on how Northwind handles inbound freight quotes. Happy to help you get those replies out faster without the CRM falling behind the inbox.\n\nEnterprise fits a team your size. I’ll walk you through a setup for Northwind on Thursday, Sep 17 at 2:30 PM ET, including how the agent can answer visitors while your team is on a quote. If there’s anything you’d like me to cover, just reply and I’ll bring it.\n\nBest,\nEric Chen\nExpertise AI";
+    if (prefersReducedMotion()) {
+      typed.textContent = emailText;
+      cta?.classList.add("is-ready");
+      later(() => finishSequence("followup"), 1000);
+      return;
+    }
+    later(() => {
+      caret?.classList.add("is-typing");
+      [...emailText].forEach((_, index) => later(() => {
+        typed.textContent = emailText.slice(0, index + 1);
+        if (index === emailText.length - 1) caret?.classList.remove("is-typing");
+      }, index * 4));
+    }, 380);
+    later(() => cta?.classList.add("is-ready"), 2600);
+    later(() => {
+      demoCursor.moveTo(cta);
+      later(() => { demoCursor.press(); cta?.classList.add("is-tapped"); }, 360);
+      later(() => { demoCursor.hide(); cta?.classList.remove("is-tapped"); }, 720);
+    }, 3400);
+    later(() => finishSequence("followup"), sequenceDurations.followup);
+  }
+
+  function playStalledOperations() {
+    showOperationsView("stalled");
+    const notification = root.querySelector("[data-sales-ops-notification]");
+    const deals = [...root.querySelectorAll("[data-sales-ops-deal]")];
+    const cta = root.querySelector("[data-sales-ops-alert-cta]");
+    const revealNotification = () => { notification.hidden = false; notification.classList.add("is-in"); };
+    const revealDeal = deal => { deal.hidden = false; deal.classList.add("is-in"); };
+    const revealCta = () => { cta.hidden = false; cta.classList.add("is-in"); };
+    revealNotification();
+    if (prefersReducedMotion()) {
+      deals.forEach(revealDeal);
+      revealCta();
+      later(() => finishSequence("stalled"), 1000);
+      return;
+    }
+    deals.forEach((deal, index) => later(() => {
+      revealDeal(deal);
+      if (index === 0) revealCta();
+    }, 700 + index * 320));
+    later(() => finishSequence("stalled"), sequenceDurations.stalled);
+  }
+
   function reset() {
     running = false;
     userPaused = false;
@@ -2565,6 +2483,7 @@ function initAgentsChatDemo() {
     resetPrompt();
     resetThread();
     resetSite();
+    resetOperations();
     showStage("prompt");
     setPhase("prompt");
     sequences.forEach(step => setFill(step, "reset"));
@@ -2755,6 +2674,18 @@ function initAgentsChatDemo() {
     running = true;
     playbackRate = key === "qualify" ? 1.25 : 1;
     setSequence(key);
+    if (key === "crm") {
+      playCrmOperations();
+      return;
+    }
+    if (key === "followup") {
+      playFollowupOperations();
+      return;
+    }
+    if (key === "stalled") {
+      playStalledOperations();
+      return;
+    }
     if (key === "personalize") {
       playMicrosite();
       return;
@@ -3441,6 +3372,11 @@ function initAgentFeatureAccordions() {
     const triggers = [...root.querySelectorAll("[data-agent-feature], [data-sales-feature]")];
     const pane = root.closest("[data-agent-v2-pane]");
     if (!triggers.length) return;
+    if (pane?.dataset.agentV2Pane === "workspace") {
+      triggers.forEach(trigger => {
+        trigger.dataset.skillsSequence = trigger.getAttribute("aria-controls").replace("custom-feature-", "");
+      });
+    }
 
     const requestedRotationCount = Number.parseInt(root.dataset.rotateCount || "", 10);
     const rotationCount = Number.isFinite(requestedRotationCount)
@@ -3466,6 +3402,8 @@ function initAgentFeatureAccordions() {
 
       const sequence = triggers[activeIndex]?.dataset.chatSequence;
       if (sequence && paneIsActive()) agentsChatDemo?.playSequence(sequence);
+      const skillsSequence = triggers[activeIndex]?.dataset.skillsSequence;
+      if (skillsSequence && paneIsActive()) agentsSkillsDemo?.playSequence(skillsSequence);
     }
 
     function stopRotation() {
@@ -3476,6 +3414,10 @@ function initAgentFeatureAccordions() {
     function startRotation({ restartSequence = false } = {}) {
       stopRotation();
       if (paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (triggers[activeIndex]?.dataset.skillsSequence) {
+        if (restartSequence && paneIsActive()) agentsSkillsDemo?.resume();
+        return;
+      }
       const sequence = triggers[activeIndex]?.dataset.chatSequence;
       if (sequence) {
         if (restartSequence && paneIsActive()) agentsChatDemo?.playSequence(sequence);
@@ -3529,6 +3471,24 @@ function initAgentFeatureAccordions() {
       if (targetIndex < 0) return;
       setActive(targetIndex);
       startRotation();
+    });
+
+    window.addEventListener("agents-skills-sequence-complete", event => {
+      if (paused || document.hidden || !paneIsActive()) return;
+      if (triggers[activeIndex]?.dataset.skillsSequence !== event.detail?.key) return;
+      setActive((activeIndex + 1) % rotationCount);
+      startRotation();
+    });
+    window.addEventListener("agents-skills-sequence-select", event => {
+      const index = triggers.findIndex(trigger => trigger.dataset.skillsSequence === event.detail?.key);
+      if (index < 0 || !paneIsActive()) return;
+      setActive(index);
+      startRotation();
+    });
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden && !paused && paneIsActive() && triggers[activeIndex]?.dataset.skillsSequence) {
+        agentsSkillsDemo?.resume();
+      }
     });
 
     setActive(activeIndex);
