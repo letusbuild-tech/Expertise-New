@@ -2298,9 +2298,9 @@ function initAgentsChatDemo() {
   const nameInput = root.querySelector('[data-site-input="name"]');
   const emailInput = root.querySelector('[data-site-input="email"]');
   const submitButton = root.querySelector("[data-site-submit]");
-  const scenes = [...root.querySelectorAll("[data-chat-scene]")];
+  const sequenceNav = [...root.querySelectorAll("[data-chat-sequence-nav]")];
 
-  const order = ["prompt", "chat", "microsite", "booking", "confirmed"];
+  const sequences = ["qualify", "personalize", "book"];
   const captions = {
     prompt: "Meet buyers the moment they show intent",
     chat: "Qualify intent with a guided conversation",
@@ -2309,8 +2309,13 @@ function initAgentsChatDemo() {
     confirmed: "Hand sales a confirmed, qualified meeting"
   };
   const holds = { prompt: 4400, chat: 11600, microsite: 4200, booking: 3200, confirmed: 5600 };
+  const sequenceDurations = {
+    qualify: (holds.prompt + 620 + holds.chat) / 1.25,
+    personalize: holds.microsite,
+    book: holds.booking + holds.confirmed
+  };
   const fills = {};
-  order.forEach(key => {
+  sequences.forEach(key => {
     fills[key] = root.querySelector(`[data-chat-progress="${key}"]`);
   });
 
@@ -2321,13 +2326,15 @@ function initAgentsChatDemo() {
   let running = false;
   let userPaused = false;
   let phase = "prompt";
+  let activeSequence = "qualify";
+  let playbackRate = 1;
 
   function prefersReducedMotion() {
     return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   }
 
   function later(fn, ms) {
-    const id = window.setTimeout(fn, ms);
+    const id = window.setTimeout(fn, ms / playbackRate);
     timeouts.push(id);
     return id;
   }
@@ -2360,20 +2367,30 @@ function initAgentsChatDemo() {
     fill.style.transform = "scaleX(1)";
   }
 
+  function setSequence(key) {
+    activeSequence = key;
+    sequenceNav.forEach(item => {
+      const on = item.dataset.chatSequenceNav === key;
+      item.classList.toggle("is-active", on);
+      item.setAttribute("aria-current", on ? "true" : "false");
+    });
+    const active = sequences.indexOf(key);
+    sequences.forEach((step, index) => {
+      if (index < active) setFill(step, "full");
+      else if (index === active) setFill(step, "play", prefersReducedMotion() ? 700 : sequenceDurations[step]);
+      else setFill(step, "reset");
+    });
+  }
+
   function setPhase(key) {
     phase = key;
     if (caption) caption.textContent = captions[key];
-    scenes.forEach(scene => {
-      const on = scene.dataset.chatScene === key;
-      scene.classList.toggle("is-active", on);
-      scene.setAttribute("aria-current", on ? "true" : "false");
-    });
-    const active = order.indexOf(key);
-    order.forEach((step, index) => {
-      if (index < active) setFill(step, "full");
-      else if (index === active) setFill(step, "play", prefersReducedMotion() ? 700 : holds[step]);
-      else setFill(step, "reset");
-    });
+  }
+
+  function finishSequence(key) {
+    if (!running || activeSequence !== key) return;
+    setFill(key, "full");
+    window.dispatchEvent(new CustomEvent("agents-chat-sequence-complete", { detail: { key } }));
   }
 
   function showStage(key) {
@@ -2520,14 +2537,15 @@ function initAgentsChatDemo() {
   }
 
   function resetSite() {
-    if (panel) panel.classList.remove("is-split");
+    if (panel) panel.classList.remove("is-split", "is-instant-split");
     if (site) {
       site.hidden = true;
-      site.classList.remove("is-in");
+      site.classList.remove("is-in", "is-instant");
     }
     sitePanels.forEach(item => {
       item.hidden = item.dataset.sitePanel !== "pricing";
       item.classList.toggle("is-active", item.dataset.sitePanel === "pricing");
+      item.classList.remove("is-static-entry");
     });
     if (nameInput) {
       nameInput.value = "";
@@ -2549,7 +2567,7 @@ function initAgentsChatDemo() {
     resetSite();
     showStage("prompt");
     setPhase("prompt");
-    order.forEach(step => setFill(step, "reset"));
+    sequences.forEach(step => setFill(step, "reset"));
   }
 
   /* Step 1 — the composer arrives first, then Kate opens with a suggestion. */
@@ -2579,7 +2597,6 @@ function initAgentsChatDemo() {
 
   function goChat() {
     if (!running) return;
-    setFill("prompt", "full");
     if (prefersReducedMotion() || !promptStage) {
       playChat();
       return;
@@ -2600,7 +2617,7 @@ function initAgentsChatDemo() {
 
     if (prefersReducedMotion()) {
       fillThread();
-      later(goMicrosite, 1400);
+      later(() => finishSequence("qualify"), 1400);
       return;
     }
 
@@ -2628,7 +2645,7 @@ function initAgentsChatDemo() {
       revealEl(groupOf("cta"));
       scrollThread();
     }, 10300);
-    later(goMicrosite, holds.chat);
+    later(() => finishSequence("qualify"), holds.chat);
   }
 
   function fillThread() {
@@ -2659,7 +2676,7 @@ function initAgentsChatDemo() {
     openSite("pricing");
     /* The window resizes while the split opens, so settle the scroll after it. */
     later(scrollThread, 820);
-    later(goBooking, holds.microsite);
+    later(() => finishSequence("personalize"), holds.microsite);
   }
 
   /* Step 4 — tapping "Book a demo" swaps the microsite for a booking page. */
@@ -2672,13 +2689,23 @@ function initAgentsChatDemo() {
     showStage("conversation");
     fillThread();
     setPhase("booking");
-    if (panel) panel.classList.add("is-split");
+    if (panel) panel.classList.add("is-split", "is-instant-split");
     if (site) {
       site.hidden = false;
-      site.classList.add("is-in");
+      site.classList.add("is-in", "is-instant");
     }
+    const pricingPanel = sitePanels.find(item => item.dataset.sitePanel === "pricing");
+    if (pricingPanel) pricingPanel.classList.add("is-static-entry");
+    /* Commit the complete scene-2 end state without replaying its split or
+       microsite entrances, then restore transitions for the scripted click. */
+    if (panel) void panel.offsetWidth;
+    if (site) void site.offsetWidth;
+    panel?.classList.remove("is-instant-split");
+    site?.classList.remove("is-instant");
     later(scrollThread, 60);
-    later(() => tap(chipOf("book"), () => setSitePanel("booking")), 420);
+    later(() => tap(chipOf("book"), () => {
+      setSitePanel("booking");
+    }), 520);
     later(goConfirmed, holds.booking);
   }
 
@@ -2706,7 +2733,7 @@ function initAgentsChatDemo() {
       if (nameInput) nameInput.value = visitorName;
       if (emailInput) emailInput.value = visitorEmail;
       setSitePanel("confirmed");
-      later(playPrompt, 1600);
+      later(() => finishSequence("book"), 1600);
       return;
     }
 
@@ -2720,37 +2747,28 @@ function initAgentsChatDemo() {
       });
     }, 500);
 
-    later(playPrompt, holds.confirmed);
+    later(() => finishSequence("book"), holds.confirmed);
   }
 
-  function start() {
+  function playSequence(key = "qualify") {
     reset();
     running = true;
-    playPrompt();
-  }
-
-  function jumpTo(key) {
-    userPaused = false;
-    running = true;
-    clearTimers();
-    if (key === "prompt") {
-      playPrompt();
-      return;
-    }
-    if (key === "chat") {
-      playChat();
-      return;
-    }
-    resetSite();
-    if (key === "microsite") {
+    playbackRate = key === "qualify" ? 1.25 : 1;
+    setSequence(key);
+    if (key === "personalize") {
       playMicrosite();
       return;
     }
-    if (key === "booking") {
+    if (key === "book") {
       playBooking();
       return;
     }
-    playConfirmed();
+    playPrompt();
+  }
+
+  function start() {
+    const activeTrigger = document.querySelector('#agent-v2-pane-sales [data-chat-sequence][aria-expanded="true"]');
+    playSequence(activeTrigger?.dataset.chatSequence || "qualify");
   }
 
   if (send) {
@@ -2776,15 +2794,15 @@ function initAgentsChatDemo() {
     });
   });
 
-  scenes.forEach(scene => {
-    scene.addEventListener("click", () => {
-      const key = scene.dataset.chatScene;
-      if (!key || key === phase) return;
-      jumpTo(key);
+  sequenceNav.forEach(item => {
+    item.addEventListener("click", () => {
+      const key = item.dataset.chatSequenceNav;
+      if (!key) return;
+      window.dispatchEvent(new CustomEvent("agents-chat-sequence-select", { detail: { key } }));
     });
   });
 
-  return { start, reset };
+  return { start, reset, playSequence };
 }
 
 function initAgentsTabs() {
@@ -3415,6 +3433,109 @@ function initPlatformAccordion() {
   });
 }
 
+function initAgentFeatureAccordions() {
+  const roots = [...document.querySelectorAll("[data-agent-features]")];
+  if (!roots.length) return;
+
+  roots.forEach((root) => {
+    const triggers = [...root.querySelectorAll("[data-agent-feature], [data-sales-feature]")];
+    const pane = root.closest("[data-agent-v2-pane]");
+    if (!triggers.length) return;
+
+    const requestedRotationCount = Number.parseInt(root.dataset.rotateCount || "", 10);
+    const rotationCount = Number.isFinite(requestedRotationCount)
+      ? Math.min(Math.max(requestedRotationCount, 1), triggers.length)
+      : triggers.length;
+    let activeIndex = Math.max(0, triggers.findIndex((trigger) => trigger.getAttribute("aria-expanded") === "true"));
+    let rotationTimer;
+    let paused = false;
+
+    function paneIsActive() {
+      return !pane || pane.classList.contains("is-active");
+    }
+
+    function setActive(index) {
+      activeIndex = (index + triggers.length) % triggers.length;
+      triggers.forEach((trigger, triggerIndex) => {
+        const open = triggerIndex === activeIndex;
+        const panel = document.getElementById(trigger.getAttribute("aria-controls"));
+        trigger.setAttribute("aria-expanded", open ? "true" : "false");
+        trigger.closest(".sales-feature-item")?.classList.toggle("is-open", open);
+        if (panel) panel.hidden = !open;
+      });
+
+      const sequence = triggers[activeIndex]?.dataset.chatSequence;
+      if (sequence && paneIsActive()) agentsChatDemo?.playSequence(sequence);
+    }
+
+    function stopRotation() {
+      window.clearTimeout(rotationTimer);
+      rotationTimer = undefined;
+    }
+
+    function startRotation({ restartSequence = false } = {}) {
+      stopRotation();
+      if (paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const sequence = triggers[activeIndex]?.dataset.chatSequence;
+      if (sequence) {
+        if (restartSequence && paneIsActive()) agentsChatDemo?.playSequence(sequence);
+        return;
+      }
+      rotationTimer = window.setTimeout(() => {
+        if (document.hidden || !paneIsActive()) {
+          startRotation();
+          return;
+        }
+        setActive((activeIndex + 1) % rotationCount);
+        startRotation();
+      }, 4200);
+    }
+
+    triggers.forEach((trigger, index) => {
+      trigger.addEventListener("click", () => {
+        setActive(index);
+        startRotation();
+      });
+    });
+
+    root.addEventListener("pointerenter", () => {
+      paused = true;
+      stopRotation();
+    });
+    root.addEventListener("pointerleave", () => {
+      paused = false;
+      startRotation({ restartSequence: true });
+    });
+    root.addEventListener("focusin", () => {
+      paused = true;
+      stopRotation();
+    });
+    root.addEventListener("focusout", (event) => {
+      if (root.contains(event.relatedTarget)) return;
+      paused = false;
+      startRotation({ restartSequence: true });
+    });
+
+    window.addEventListener("agents-chat-sequence-complete", (event) => {
+      const activeTrigger = triggers[activeIndex];
+      if (paused || document.hidden || !paneIsActive()) return;
+      if (!activeTrigger?.dataset.chatSequence || activeTrigger.dataset.chatSequence !== event.detail?.key) return;
+      setActive((activeIndex + 1) % rotationCount);
+      startRotation();
+    });
+
+    window.addEventListener("agents-chat-sequence-select", (event) => {
+      const targetIndex = triggers.findIndex((trigger) => trigger.dataset.chatSequence === event.detail?.key);
+      if (targetIndex < 0) return;
+      setActive(targetIndex);
+      startRotation();
+    });
+
+    setActive(activeIndex);
+    startRotation();
+  });
+}
+
 function initAgentsV2Tabs() {
   const section = document.querySelector(".agents-section--v2");
   if (!section) return;
@@ -3508,11 +3629,12 @@ function initAgentsV2Tabs() {
     });
   });
 
-  // Mobile: opaque rail background only while the tabs are stuck under the navbar.
+  // Let the tab rail replace (rather than stack below) the global navbar while
+  // this section is active. The navbar returns at either edge of the section.
   const rail = section.querySelector(".agents-v2-tabs-rail");
   const stage = section.querySelector(".agents-v2-stage");
+  const navbar = document.querySelector(".navbar");
   if (rail && stage) {
-    const stickyMq = window.matchMedia("(max-width: 600px)");
     let sentinel = stage.querySelector(".agents-v2-tabs-sentinel");
     if (!sentinel) {
       sentinel = document.createElement("div");
@@ -3521,32 +3643,31 @@ function initAgentsV2Tabs() {
       stage.insertBefore(sentinel, rail);
     }
 
-    let stickyObserver;
     function navOffset() {
       const raw = getComputedStyle(document.documentElement).getPropertyValue("--nav-h");
       const parsed = parseFloat(raw);
       return Number.isFinite(parsed) ? parsed : 56;
     }
 
-    function syncStickyObserver() {
-      if (stickyObserver) {
-        stickyObserver.disconnect();
-        stickyObserver = undefined;
-      }
-      rail.classList.remove("is-stuck");
-      if (!stickyMq.matches) return;
-
-      stickyObserver = new IntersectionObserver(
-        ([entry]) => {
-          rail.classList.toggle("is-stuck", stickyMq.matches && !entry.isIntersecting);
-        },
-        { rootMargin: `-${navOffset()}px 0px 0px 0px`, threshold: 0 }
-      );
-      stickyObserver.observe(sentinel);
+    let stickyRaf = 0;
+    function syncStickyState() {
+      stickyRaf = 0;
+      const sectionRect = section.getBoundingClientRect();
+      const sentinelRect = sentinel.getBoundingClientRect();
+      const offset = navOffset();
+      const shouldStick = sentinelRect.top <= offset && sectionRect.bottom > rail.offsetHeight;
+      rail.classList.toggle("is-stuck", shouldStick);
+      if (navbar) navbar.classList.toggle("is-displaced-by-agent-tabs", shouldStick);
     }
 
-    syncStickyObserver();
-    stickyMq.addEventListener("change", syncStickyObserver);
+    function queueStickySync() {
+      if (stickyRaf) return;
+      stickyRaf = window.requestAnimationFrame(syncStickyState);
+    }
+
+    window.addEventListener("scroll", queueStickySync, { passive: true });
+    window.addEventListener("resize", queueStickySync);
+    syncStickyState();
   }
 }
 
@@ -3570,8 +3691,8 @@ document.addEventListener("DOMContentLoaded", () => {
   agentsSkillsDemo = initAgentsSkillsDemo();
   agentsChatDemo = initAgentsChatDemo();
   initAgentsTabs();
+  initAgentFeatureAccordions();
   initAgentsV2Tabs();
-  if (agentsChatDemo) agentsChatDemo.start();
   initAgentsCaseSwitchers();
   initHeroGrid();
   initPlatformAccordion();
