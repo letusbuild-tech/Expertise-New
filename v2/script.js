@@ -1479,7 +1479,8 @@ let agentsSkillsDemo;
 let agentsChatDemo;
 
 function initAgentsVoiceDemo() {
-  const card = document.querySelector("[data-voice-card]");
+  const card = document.querySelector(".agents-section--v2:not(.agents-section--v2-alt) [data-voice-card]")
+    || document.querySelector("[data-voice-card]");
   if (!card) return null;
 
   const caption = card.querySelector("[data-voice-caption]");
@@ -1689,7 +1690,8 @@ function createAgentsDemoCursor(root) {
 }
 
 function initAgentsSkillsDemo() {
-  const root = document.querySelector("[data-skills-demo]");
+  const root = document.querySelector(".agents-section--v2:not(.agents-section--v2-alt) [data-skills-demo]")
+    || document.querySelector("[data-skills-demo]");
   if (!root) return null;
 
   const cursor = createAgentsDemoCursor(root);
@@ -2074,7 +2076,8 @@ function initAgentsSkillsDemo() {
 }
 
 function initAgentsChatDemo() {
-  const root = document.querySelector("[data-chat-demo]");
+  const root = document.querySelector(".agents-section--v2:not(.agents-section--v2-alt) [data-chat-demo]")
+    || document.querySelector("[data-chat-demo]");
   if (!root) return null;
 
   const demoCursor = createAgentsDemoCursor(root);
@@ -3497,7 +3500,7 @@ function initAgentFeatureAccordions() {
 }
 
 function initAgentsV2Tabs() {
-  const section = document.querySelector(".agents-section--v2");
+  const section = document.querySelector(".agents-section--v2:not(.agents-section--v2-alt)");
   if (!section) return;
 
   const tabs = [...section.querySelectorAll("[data-agent-v2-tab]")];
@@ -3617,7 +3620,13 @@ function initAgentsV2Tabs() {
       const offset = navOffset();
       const shouldStick = sentinelRect.top <= offset && sectionRect.bottom > rail.offsetHeight;
       rail.classList.toggle("is-stuck", shouldStick);
-      if (navbar) navbar.classList.toggle("is-displaced-by-agent-tabs", shouldStick);
+      const isAtTop = shouldStick && rail.getBoundingClientRect().top <= 0.5;
+      rail.classList.toggle("is-at-top", isAtTop);
+      if (shouldStick && !isAtTop) queueStickySync();
+      if (navbar) {
+        const anyStuck = document.querySelector(".agents-v2-tabs-rail.is-stuck");
+        navbar.classList.toggle("is-displaced-by-agent-tabs", Boolean(anyStuck));
+      }
     }
 
     function queueStickySync() {
@@ -3629,6 +3638,815 @@ function initAgentsV2Tabs() {
     window.addEventListener("resize", queueStickySync);
     syncStickyState();
   }
+}
+
+function initAgentsV2StickyAlternative() {
+  const source = document.querySelector(".agents-section--v2-alt:not(.agents-section--v2-sticky)");
+  const mount = document.querySelector("[data-solution-sticky-mount]");
+  if (!source || !mount) return;
+
+  const section = source.cloneNode(true);
+  section.classList.add("agents-section--v2-sticky");
+  section.dataset.sectionVersion = "solution sticky visual";
+
+  const idMap = new Map();
+  section.querySelectorAll("[id]").forEach((element) => {
+    const previousId = element.id;
+    const nextId = `sticky-${previousId}`;
+    idMap.set(previousId, nextId);
+    element.id = nextId;
+  });
+
+  ["aria-labelledby", "aria-controls", "for"].forEach((attribute) => {
+    section.querySelectorAll(`[${attribute}]`).forEach((element) => {
+      const value = element.getAttribute(attribute);
+      if (!value) return;
+      element.setAttribute(attribute, value.split(/\s+/).map((id) => idMap.get(id) || id).join(" "));
+    });
+  });
+  section.querySelectorAll('a[href^="#"]').forEach((link) => {
+    const id = link.getAttribute("href").slice(1);
+    if (idMap.has(id)) link.setAttribute("href", `#${idMap.get(id)}`);
+  });
+
+  const heading = section.querySelector(".agents-v2-intro h2");
+  if (heading) section.setAttribute("aria-labelledby", heading.id);
+
+  section.querySelector(".agents-v2-tabs-rail")?.remove();
+
+  const panes = [...section.querySelectorAll("[data-agent-v2-alt-pane]")];
+  const visualFrames = [...section.querySelectorAll("[data-agent-v2-alt-visual]")];
+  if (!panes.length || !visualFrames.length) return;
+
+  const revealSequences = panes.map((pane) => {
+    pane.classList.add("is-active");
+    pane.classList.remove("is-entering");
+    pane.removeAttribute("hidden");
+    pane.removeAttribute("inert");
+    pane.removeAttribute("role");
+    pane.removeAttribute("aria-hidden");
+    pane.removeAttribute("aria-labelledby");
+    pane.dataset.stickyAgent = pane.dataset.agentV2AltPane;
+
+    const revealGroups = [
+      ...pane.querySelectorAll(".agents-v2-badge, .agents-v2-pane-text, .agents-v2-alt-feature-group h4, .agents-v2-alt-feature-item")
+    ];
+    revealGroups.forEach((group) => {
+      group.classList.add("agents-v2-sticky-reveal", "is-below");
+    });
+
+    return revealGroups;
+  });
+
+  visualFrames.forEach((frame, index) => {
+    frame.hidden = index !== 0;
+    frame.classList.toggle("is-active", index === 0);
+    frame.classList.remove("is-entering");
+    frame.dataset.stickyVisual = frame.dataset.agentV2AltVisual;
+  });
+
+  mount.replaceWith(section);
+
+  const revealGroups = revealSequences.flat();
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    let revealRaf = 0;
+
+    function syncRevealGroups() {
+      revealRaf = 0;
+      const entranceLine = window.innerHeight;
+      const exitLine = 64;
+
+      revealGroups.forEach((element) => {
+        const elementTop = element.getBoundingClientRect().top;
+        const isAbove = elementTop <= exitLine;
+        const isBelow = elementTop >= entranceLine;
+        const reveal = !isAbove && !isBelow;
+        element.classList.toggle("is-revealed", reveal);
+        element.classList.toggle("is-above", isAbove);
+        element.classList.toggle("is-below", isBelow);
+      });
+    }
+
+    function queueRevealSync() {
+      if (revealRaf) return;
+      revealRaf = window.requestAnimationFrame(syncRevealGroups);
+    }
+
+    window.addEventListener("scroll", queueRevealSync, { passive: true });
+    window.addEventListener("resize", queueRevealSync);
+    syncRevealGroups();
+  } else {
+    revealGroups.forEach((group) => group.classList.add("is-revealed"));
+  }
+
+  let activeKey = "";
+  let scrollRaf = 0;
+
+  function visualKeyFor(paneKey) {
+    if (paneKey === "support") return "voice";
+    if (paneKey === "workspace") return "skills";
+    return "chat";
+  }
+
+  function setActiveVisual(key) {
+    if (!key || key === activeKey) return;
+    activeKey = key;
+    visualFrames.forEach((frame) => {
+      const active = frame.dataset.stickyVisual === key;
+      frame.hidden = !active;
+      frame.classList.toggle("is-active", active);
+      frame.classList.toggle("is-entering", active);
+    });
+  }
+
+  function syncStickyVisual() {
+    scrollRaf = 0;
+    const focusLine = Math.min(window.innerHeight * 0.46, 460);
+    let currentPane = panes[0];
+    let closestDistance = Infinity;
+
+    panes.forEach((pane) => {
+      const rect = pane.getBoundingClientRect();
+      const anchor = Math.max(rect.top, Math.min(focusLine, rect.bottom));
+      const distance = Math.abs(anchor - focusLine);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        currentPane = pane;
+      }
+    });
+
+    setActiveVisual(visualKeyFor(currentPane.dataset.stickyAgent));
+  }
+
+  function queueStickyVisualSync() {
+    if (scrollRaf) return;
+    scrollRaf = window.requestAnimationFrame(syncStickyVisual);
+  }
+
+  window.addEventListener("scroll", queueStickyVisualSync, { passive: true });
+  window.addEventListener("resize", queueStickyVisualSync);
+  syncStickyVisual();
+}
+
+function initAgentsV2AltTabs() {
+  const section = document.querySelector(".agents-section--v2-alt");
+  if (!section) return;
+
+  const tablist = section.querySelector(".agents-v2-tabs");
+  const tabs = [...section.querySelectorAll("[data-agent-v2-alt-tab]")];
+  const panes = [...section.querySelectorAll("[data-agent-v2-alt-pane]")];
+  const visualFrames = [...section.querySelectorAll("[data-agent-v2-alt-visual]")];
+  if (!tablist || !tabs.length || !panes.length) return;
+
+  let activeTab = tabs.find((tab) => tab.getAttribute("aria-selected") === "true") || tabs[0];
+  let entranceTimer;
+
+  function prefersReducedMotion() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function visualKeyFor(tabKey) {
+    if (tabKey === "support") return "voice";
+    if (tabKey === "workspace") return "skills";
+    return "chat";
+  }
+
+  function setActiveVisual(key, animate) {
+    const nextFrame = visualFrames.find((frame) => frame.dataset.agentV2AltVisual === key);
+    if (!nextFrame) return;
+
+    visualFrames.forEach((frame) => {
+      const active = frame === nextFrame;
+      frame.hidden = !active;
+      frame.classList.toggle("is-active", active);
+      frame.classList.remove("is-entering");
+    });
+
+    if (animate && !prefersReducedMotion()) {
+      void nextFrame.offsetWidth;
+      nextFrame.classList.add("is-entering");
+    }
+  }
+
+  function activatePane(pane, animate) {
+    panes.forEach((item) => {
+      const on = item === pane;
+      item.classList.toggle("is-active", on);
+      item.toggleAttribute("inert", !on);
+      item.setAttribute("aria-hidden", on ? "false" : "true");
+      item.classList.remove("is-entering");
+    });
+
+    if (!animate || prefersReducedMotion()) return;
+    void pane.offsetWidth;
+    pane.classList.add("is-entering");
+    window.clearTimeout(entranceTimer);
+    entranceTimer = window.setTimeout(() => pane.classList.remove("is-entering"), 500);
+  }
+
+  function showTab(tab) {
+    if (!tab || tab === activeTab) return;
+    const nextPane = panes.find((pane) => pane.dataset.agentV2AltPane === tab.dataset.agentV2AltTab);
+    if (!nextPane) return;
+
+    tabs.forEach((item) => {
+      const selected = item === tab;
+      item.setAttribute("aria-selected", selected ? "true" : "false");
+      item.tabIndex = selected ? 0 : -1;
+    });
+    activeTab = tab;
+    activatePane(nextPane, true);
+    setActiveVisual(visualKeyFor(tab.dataset.agentV2AltTab), true);
+  }
+
+  tablist.addEventListener("click", (event) => {
+    const tab = event.target.closest("[data-agent-v2-alt-tab]");
+    if (!tab || !tablist.contains(tab)) return;
+    showTab(tab);
+  });
+
+  tablist.addEventListener("keydown", (event) => {
+    if (event.key !== "ArrowLeft" && event.key !== "ArrowRight" && event.key !== "Home" && event.key !== "End") return;
+    const tab = event.target.closest("[data-agent-v2-alt-tab]");
+    if (!tab || !tablist.contains(tab)) return;
+    event.preventDefault();
+    const index = tabs.indexOf(activeTab);
+    let next = index;
+    if (event.key === "ArrowRight") next = (index + 1) % tabs.length;
+    if (event.key === "ArrowLeft") next = (index - 1 + tabs.length) % tabs.length;
+    if (event.key === "Home") next = 0;
+    if (event.key === "End") next = tabs.length - 1;
+    showTab(tabs[next]);
+    tabs[next].focus();
+  });
+
+  section.dataset.agentsV2AltReady = "true";
+
+  const rail = section.querySelector(".agents-v2-tabs-rail");
+  const stage = section.querySelector(".agents-v2-stage");
+  const navbar = document.querySelector(".navbar");
+  if (rail && stage) {
+    let sentinel = stage.querySelector(".agents-v2-tabs-sentinel");
+    if (!sentinel) {
+      sentinel = document.createElement("div");
+      sentinel.className = "agents-v2-tabs-sentinel";
+      sentinel.setAttribute("aria-hidden", "true");
+      stage.insertBefore(sentinel, rail);
+    }
+
+    function navOffset() {
+      const raw = getComputedStyle(document.documentElement).getPropertyValue("--nav-h");
+      const parsed = parseFloat(raw);
+      return Number.isFinite(parsed) ? parsed : 56;
+    }
+
+    let stickyRaf = 0;
+    function syncStickyState() {
+      stickyRaf = 0;
+      const sectionRect = section.getBoundingClientRect();
+      const sentinelRect = sentinel.getBoundingClientRect();
+      const offset = navOffset();
+      const shouldStick = sentinelRect.top <= offset && sectionRect.bottom > rail.offsetHeight;
+      rail.classList.toggle("is-stuck", shouldStick);
+      const isAtTop = shouldStick && rail.getBoundingClientRect().top <= 0.5;
+      rail.classList.toggle("is-at-top", isAtTop);
+      if (shouldStick && !isAtTop) queueStickySync();
+      if (navbar) {
+        const anyStuck = document.querySelector(".agents-v2-tabs-rail.is-stuck");
+        navbar.classList.toggle("is-displaced-by-agent-tabs", Boolean(anyStuck));
+      }
+    }
+
+    function queueStickySync() {
+      if (stickyRaf) return;
+      stickyRaf = window.requestAnimationFrame(syncStickyState);
+    }
+
+    window.addEventListener("scroll", queueStickySync, { passive: true });
+    window.addEventListener("resize", queueStickySync);
+    syncStickyState();
+  }
+}
+
+function initSalesSolutionDemos() {
+  const roots = [...document.querySelectorAll("[data-sales-solution-demo]")];
+  if (!roots.length) return;
+
+  roots.forEach((root) => {
+    const flip = root.querySelector("[data-sales-solution-flip]");
+    const tabs = [...root.querySelectorAll("[data-sales-solution-tab]")];
+    const faces = [...root.querySelectorAll("[data-sales-solution-face]")];
+    const chat = root.querySelector("[data-sales-demo-chat]");
+    const messages = [...root.querySelectorAll("[data-sales-demo-message]")];
+    const booking = root.querySelector("[data-sales-demo-booking]");
+    const tasks = [...root.querySelectorAll("[data-sales-demo-task]")];
+    const notification = root.querySelector("[data-sales-demo-notification]");
+    const email = root.querySelector("[data-sales-demo-email]");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let timers = [];
+    let visible = false;
+    let activeTab = "prospects";
+    let flipTurn = 0;
+
+    function later(callback, delay) {
+      const timer = window.setTimeout(callback, reduceMotion.matches ? Math.min(delay, 80) : delay);
+      timers.push(timer);
+    }
+
+    function clearTimers() {
+      timers.forEach((timer) => window.clearTimeout(timer));
+      timers = [];
+    }
+
+    function setTab(key) {
+      const behind = key === "behind";
+      if (key !== activeTab) {
+        flipTurn += 180;
+        activeTab = key;
+      }
+      flip?.style.setProperty("--sales-solution-flip-turn", `${flipTurn}deg`);
+      flip?.classList.toggle("is-behind", behind);
+      tabs.forEach((tab) => {
+        const active = tab.dataset.salesSolutionTab === key;
+        tab.classList.toggle("is-active", active);
+        tab.setAttribute("aria-selected", active ? "true" : "false");
+      });
+      faces.forEach((face) => face.setAttribute("aria-hidden", face.dataset.salesSolutionFace === key ? "false" : "true"));
+    }
+
+    function resetProspects() {
+      chat?.classList.remove("is-in");
+      messages.forEach((message) => message.classList.remove("is-in"));
+      booking?.classList.remove("is-in");
+    }
+
+    function resetBehind() {
+      tasks.forEach((task) => task.classList.remove("is-in", "is-working", "is-done"));
+      notification?.classList.remove("is-in");
+      email?.classList.remove("is-in");
+    }
+
+    function playBehind({ restart = true } = {}) {
+      clearTimers();
+      if (restart) resetBehind();
+      setTab("behind");
+      const lead = reduceMotion.matches ? 0 : 420;
+      tasks.forEach((task, index) => {
+        const start = lead + index * 330;
+        later(() => task.classList.add("is-in", "is-working"), start);
+        later(() => task.classList.remove("is-working"), start + 430);
+        later(() => task.classList.add("is-done"), start + 430);
+      });
+      const taskEnd = lead + (tasks.length - 1) * 330 + 540;
+      later(() => notification?.classList.add("is-in"), taskEnd + 220);
+      later(() => email?.classList.add("is-in"), taskEnd + 560);
+      later(() => { if (visible) playProspects(); }, taskEnd + 5560);
+    }
+
+    function playProspects() {
+      clearTimers();
+      resetProspects();
+      resetBehind();
+      setTab("prospects");
+      later(() => chat?.classList.add("is-in"), 120);
+      messages.forEach((message, index) => later(() => message.classList.add("is-in"), 420 + index * 300));
+      const conversationEnd = 420 + messages.length * 300;
+      later(() => booking?.classList.add("is-in"), conversationEnd + 180);
+      later(() => { if (visible) playBehind(); }, conversationEnd + 5180);
+    }
+
+    tabs.forEach((tab) => tab.addEventListener("click", () => {
+      const key = tab.dataset.salesSolutionTab;
+      if (key === "behind") playBehind();
+      else playProspects();
+    }));
+
+    resetProspects();
+    resetBehind();
+    setTab("prospects");
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting && entry.intersectionRatio >= 0.2;
+        if (visible) playProspects();
+        else clearTimers();
+      }, { threshold: [0, 0.2, 0.5] });
+      observer.observe(root);
+    } else {
+      visible = true;
+      playProspects();
+    }
+  });
+}
+
+function initSupportSolutionDemos() {
+  const roots = [...document.querySelectorAll("[data-support-solution-demo]")];
+  if (!roots.length) return;
+
+  roots.forEach((root) => {
+    const flip = root.querySelector("[data-support-solution-flip]");
+    const tabs = [...root.querySelectorAll("[data-support-solution-tab]")];
+    const faces = [...root.querySelectorAll("[data-support-face]")];
+    const callCard = root.querySelector("[data-support-call-card]");
+    const languages = [...root.querySelectorAll("[data-support-language]")];
+    const transcripts = [...root.querySelectorAll("[data-support-transcript]")];
+    const behindSteps = [...root.querySelectorAll("[data-support-behind-step]")];
+    const milestones = [...root.querySelectorAll("[data-support-milestone]")];
+    const updateList = root.querySelector("[data-support-update-list]");
+    const updates = [...root.querySelectorAll("[data-support-update]")];
+    const integrations = root.querySelector("[data-support-integrations]");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let timers = [];
+    let visible = false;
+    let activeTab = "customers";
+    let flipTurn = 0;
+
+    transcripts.forEach((line) => {
+      const words = (line.dataset.text || "").trim().split(/\s+/);
+      line.replaceChildren(...words.map((word) => {
+        const span = document.createElement("span");
+        span.className = "support-word";
+        span.textContent = word;
+        return span;
+      }));
+    });
+
+    function later(callback, delay) {
+      const timer = window.setTimeout(callback, reduceMotion.matches ? Math.min(delay, 80) : delay);
+      timers.push(timer);
+    }
+
+    function clearTimers() {
+      timers.forEach((timer) => window.clearTimeout(timer));
+      timers = [];
+    }
+
+    function setTab(key) {
+      const behind = key === "behind";
+      if (key !== activeTab) {
+        flipTurn += 180;
+        activeTab = key;
+      }
+      flip?.style.setProperty("--support-solution-flip-turn", `${flipTurn}deg`);
+      flip?.classList.toggle("is-behind", behind);
+      tabs.forEach((tab) => {
+        const active = tab.dataset.supportSolutionTab === key;
+        tab.classList.toggle("is-active", active);
+        tab.setAttribute("aria-selected", active ? "true" : "false");
+      });
+      faces.forEach((face) => face.setAttribute("aria-hidden", face.dataset.supportFace === key ? "false" : "true"));
+    }
+
+    function resetCustomers() {
+      callCard?.classList.remove("is-in");
+      languages.forEach((language) => language.classList.remove("is-in"));
+      transcripts.forEach((line) => line.querySelectorAll(".support-word").forEach((word) => word.classList.remove("is-in")));
+    }
+
+    function resetBehind() {
+      behindSteps.forEach((step) => step.classList.remove("is-in"));
+      milestones.forEach((milestone) => milestone.classList.remove("is-in"));
+      updateList?.classList.remove("is-in");
+      updates.forEach((update) => update.classList.remove("is-in", "is-working", "is-done"));
+      integrations?.classList.remove("is-in");
+    }
+
+    function revealWords(line, start, gap) {
+      const words = [...line.querySelectorAll(".support-word")];
+      words.forEach((word, index) => later(() => word.classList.add("is-in"), start + index * gap));
+      return start + words.length * gap;
+    }
+
+    function playCustomers() {
+      clearTimers();
+      resetCustomers();
+      resetBehind();
+      setTab("customers");
+      later(() => callCard?.classList.add("is-in"), 100);
+      languages.forEach((language, index) => later(() => language.classList.add("is-in"), 340 + index * 90));
+      const customerEnd = transcripts[0] ? revealWords(transcripts[0], 1120, 88) : 1120;
+      const agentEnd = transcripts[1] ? revealWords(transcripts[1], customerEnd + 420, 82) : customerEnd + 420;
+      later(() => { if (visible) playBehind(); }, agentEnd + 5000);
+    }
+
+    function playBehind() {
+      clearTimers();
+      resetBehind();
+      setTab("behind");
+      behindSteps.forEach((step, index) => later(() => step.classList.add("is-in"), 420 + index * 300));
+      const milestoneStart = 1040;
+      milestones.forEach((milestone, index) => later(() => milestone.classList.add("is-in"), milestoneStart + index * 230));
+      const updateStart = milestoneStart + milestones.length * 230 + 240;
+      later(() => updateList?.classList.add("is-in"), updateStart);
+      updates.forEach((update, index) => {
+        const start = updateStart + 180 + index * 300;
+        later(() => update.classList.add("is-in", "is-working"), start);
+        later(() => update.classList.remove("is-working"), start + 390);
+        later(() => update.classList.add("is-done"), start + 390);
+      });
+      const updatesEnd = updateStart + updates.length * 300 + 520;
+      later(() => integrations?.classList.add("is-in"), updatesEnd);
+      later(() => { if (visible) playCustomers(); }, updatesEnd + 5000);
+    }
+
+    tabs.forEach((tab) => tab.addEventListener("click", () => {
+      if (tab.dataset.supportSolutionTab === "behind") playBehind();
+      else playCustomers();
+    }));
+
+    resetCustomers();
+    resetBehind();
+    setTab("customers");
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting && entry.intersectionRatio >= 0.2;
+        if (visible) playCustomers();
+        else clearTimers();
+      }, { threshold: [0, 0.2, 0.5] });
+      observer.observe(root);
+    } else {
+      visible = true;
+      playCustomers();
+    }
+  });
+}
+
+function initStickyCustomAgentDemos() {
+  const roots = [...document.querySelectorAll("[data-sticky-custom-demo]")];
+  if (!roots.length) return;
+
+  roots.forEach((root) => {
+    const caption = root.querySelector("[data-skills-caption]");
+    const views = [...root.querySelectorAll("[data-custom-view]")];
+    const processView = root.querySelector('[data-custom-view="process"]');
+    const systemsView = root.querySelector('[data-custom-view="systems"]');
+    const composer = processView?.querySelector("[data-work-composer]");
+    const typedPrompt = processView?.querySelector("[data-work-typed]");
+    const sendButton = processView?.querySelector("[data-work-send]");
+    const reply = systemsView?.querySelector("[data-work-reply]");
+    const tools = [...(systemsView?.querySelectorAll("[data-work-tool]") || [])];
+    const status = systemsView?.querySelector("[data-work-status]");
+    const timer = systemsView?.querySelector("[data-work-timer]");
+    const report = systemsView?.querySelector("[data-work-report]");
+    const scroll = systemsView?.querySelector("[data-work-scroll]");
+    const actions = systemsView?.querySelector("[data-alt-custom-actions]");
+    const saveButton = systemsView?.querySelector("[data-alt-custom-save]");
+    const overlay = root.querySelector("[data-work-overlay]");
+    const modal = root.querySelector("[data-work-modal]");
+    const panels = [...root.querySelectorAll("[data-work-panel]")];
+    const nameField = root.querySelector("[data-work-name-field]");
+    const agentName = root.querySelector("[data-work-agent-name]");
+    const confirmSave = root.querySelector("[data-work-confirm-save]");
+    const openShare = root.querySelector("[data-work-open-share]");
+    const shareField = root.querySelector("[data-work-share-field]");
+    const shareTyped = root.querySelector("[data-work-share-typed]");
+    const shareChip = root.querySelector("[data-work-share-chip]");
+    const shareSubmit = root.querySelector("[data-work-share-submit]");
+    const toast = root.querySelector("[data-work-toast]");
+    const progress = [...root.querySelectorAll(".custom-demo-progress button")];
+    const prompt = "Check my open Salesforce deals for stale stages or no activity in two weeks. Clean up the CRM and draft follow-ups for anyone who’s gone quiet.";
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let timers = [];
+    let visible = false;
+    let phase = "prompt";
+
+    function later(callback, delay) {
+      const timerId = window.setTimeout(callback, reduceMotion.matches ? Math.min(delay, 100) : delay);
+      timers.push(timerId);
+    }
+
+    function clearTimers() {
+      timers.forEach((timerId) => window.clearTimeout(timerId));
+      timers = [];
+    }
+
+    function reveal(element) {
+      if (!element) return;
+      element.hidden = false;
+      requestAnimationFrame(() => element.classList.add("is-in"));
+    }
+
+    function showView(key) {
+      views.forEach((view) => {
+        const active = view.dataset.customView === key;
+        view.hidden = !active;
+        view.classList.toggle("is-active", active);
+      });
+    }
+
+    function setProgress(index, duration = 1) {
+      progress.forEach((button, buttonIndex) => {
+        button.classList.toggle("is-active", buttonIndex === index);
+        button.setAttribute("aria-current", buttonIndex === index ? "step" : "false");
+        const fill = button.querySelector("i");
+        fill.style.transition = "none";
+        fill.style.transform = buttonIndex < index ? "scaleX(1)" : "scaleX(0)";
+        if (buttonIndex === index) {
+          void fill.offsetWidth;
+          fill.style.transition = reduceMotion.matches ? "none" : `transform ${duration}ms linear`;
+          fill.style.transform = "scaleX(1)";
+        }
+      });
+    }
+
+    function setPanel(key) {
+      panels.forEach((panel) => {
+        const active = panel.dataset.workPanel === key;
+        panel.hidden = !active;
+        panel.classList.toggle("is-active", active);
+      });
+    }
+
+    function typeText(element, text, interval, done) {
+      if (!element) return done?.();
+      element.textContent = "";
+      if (reduceMotion.matches) {
+        element.textContent = text;
+        done?.();
+        return;
+      }
+      [...text].forEach((_, index) => later(() => {
+        element.textContent = text.slice(0, index + 1);
+        if (index === text.length - 1) done?.();
+      }, index * interval));
+    }
+
+    function resetDemo() {
+      clearTimers();
+      phase = "prompt";
+      root.dataset.phase = "prompt";
+      showView("process");
+      caption.textContent = "Describe the task you want the agent to complete";
+      typedPrompt.textContent = "";
+      composer?.classList.add("is-glowing");
+      sendButton?.classList.remove("is-ready", "is-tapped");
+      reply && (reply.hidden = true);
+      report && (report.hidden = true);
+      actions && (actions.hidden = true);
+      [reply, report, actions].forEach((element) => element?.classList.remove("is-in"));
+      tools.forEach((tool) => {
+        tool.hidden = true;
+        tool.classList.remove("is-in", "is-done");
+        const state = tool.querySelector("[data-work-tool-state]");
+        if (state) state.textContent = "Connecting";
+      });
+      status?.classList.remove("is-done");
+      if (timer) timer.textContent = "Connecting your tools";
+      if (scroll) scroll.scrollTop = 0;
+      overlay.hidden = true;
+      overlay.classList.remove("is-in");
+      modal.style.height = "";
+      setPanel("save");
+      agentName.textContent = "";
+      nameField?.classList.remove("is-filled", "is-typing");
+      shareTyped.textContent = "";
+      shareChip.hidden = true;
+      shareField?.classList.remove("is-filled", "is-typing");
+      toast.hidden = true;
+      toast.classList.remove("is-in");
+      setProgress(0, 2600);
+    }
+
+    function finishShare() {
+      if (phase !== "share") return;
+      phase = "complete";
+      shareSubmit?.classList.add("is-tapped");
+      later(() => {
+        overlay.classList.remove("is-in");
+        later(() => {
+          overlay.hidden = true;
+          reveal(toast);
+          caption.textContent = "Saved and shared. The agent is ready to reuse.";
+          setProgress(2, 1);
+          later(() => { if (visible) playPrompt(); }, 5000);
+        }, 360);
+      }, 260);
+    }
+
+    function openSharePanel() {
+      if (phase !== "saved") return;
+      phase = "share";
+      caption.textContent = "Share the agent so others can run the same workflow";
+      setProgress(2, 2600);
+      setPanel("share");
+      shareField?.classList.add("is-typing");
+      typeText(shareTyped, "Sales team", 70, () => {
+        shareTyped.textContent = "";
+        shareChip.hidden = false;
+        shareField?.classList.remove("is-typing");
+        shareField?.classList.add("is-filled");
+      });
+      later(finishShare, 2300);
+    }
+
+    function confirmSaved() {
+      if (phase !== "save") return;
+      phase = "saved";
+      confirmSave?.classList.add("is-tapped");
+      later(() => {
+        confirmSave?.classList.remove("is-tapped");
+        setPanel("saved");
+        later(openSharePanel, 1900);
+      }, 350);
+    }
+
+    function openSaveModal() {
+      if (phase !== "process") return;
+      phase = "save";
+      caption.textContent = "Turn the completed work into a reusable agent";
+      setProgress(1, 6800);
+      saveButton?.classList.add("is-tapped");
+      later(() => saveButton?.classList.remove("is-tapped"), 300);
+      setPanel("save");
+      reveal(overlay);
+      nameField?.classList.add("is-typing");
+      typeText(agentName, "Pipeline Hygiene Sweep", 45, () => nameField?.classList.remove("is-typing"));
+      later(confirmSaved, 1900);
+    }
+
+    function playProcess() {
+      if (phase !== "prompt") return;
+      phase = "process";
+      root.dataset.phase = "systems";
+      caption.textContent = "Connect the tools, process the task, and prepare the output";
+      composer?.classList.remove("is-glowing");
+      sendButton?.classList.add("is-tapped");
+      setProgress(1, 7000);
+      later(() => {
+        sendButton?.classList.remove("is-tapped");
+        showView("systems");
+        reveal(reply);
+      }, 360);
+      tools.forEach((tool, index) => {
+        const start = 850 + index * 650;
+        later(() => reveal(tool), start);
+        later(() => {
+          tool.classList.add("is-done");
+          const state = tool.querySelector("[data-work-tool-state]");
+          if (state) state.textContent = "Connected";
+          scroll?.scrollTo({ top: scroll.scrollHeight, behavior: reduceMotion.matches ? "auto" : "smooth" });
+        }, start + 430);
+      });
+      later(() => { if (timer) timer.textContent = "Processing the requested task"; }, 3650);
+      later(() => {
+        status?.classList.add("is-done");
+        if (timer) timer.textContent = "Worked for 58s";
+        reveal(report);
+        scroll?.scrollTo({ top: scroll.scrollHeight, behavior: reduceMotion.matches ? "auto" : "smooth" });
+      }, 4550);
+      later(() => reveal(actions), 5200);
+      later(openSaveModal, 6800);
+    }
+
+    function playPrompt() {
+      resetDemo();
+      typeText(typedPrompt, prompt, 14, () => {
+        sendButton?.classList.add("is-ready");
+        later(playProcess, 650);
+      });
+    }
+
+    sendButton?.addEventListener("click", () => {
+      if (phase !== "prompt") return;
+      clearTimers();
+      typedPrompt.textContent = prompt;
+      playProcess();
+    });
+    saveButton?.addEventListener("click", () => {
+      if (phase !== "process") return;
+      clearTimers();
+      openSaveModal();
+    });
+    confirmSave?.addEventListener("click", () => {
+      if (phase !== "save") return;
+      clearTimers();
+      confirmSaved();
+    });
+    openShare?.addEventListener("click", () => {
+      if (phase !== "saved") return;
+      clearTimers();
+      openSharePanel();
+    });
+    shareSubmit?.addEventListener("click", () => {
+      if (phase !== "share") return;
+      clearTimers();
+      finishShare();
+    });
+
+    resetDemo();
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting && entry.intersectionRatio >= 0.2;
+        if (visible) playPrompt();
+        else clearTimers();
+      }, { threshold: [0, 0.2, 0.5] });
+      observer.observe(root);
+    } else {
+      visible = true;
+      playPrompt();
+    }
+  });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -3647,12 +4465,17 @@ document.addEventListener("DOMContentLoaded", () => {
   initTestimonialControls();
   initClientBentoMarquee();
   initIndustryCardReveals();
+  initAgentsV2StickyAlternative();
+  initSalesSolutionDemos();
+  initSupportSolutionDemos();
+  initStickyCustomAgentDemos();
   agentsVoiceDemo = initAgentsVoiceDemo();
   agentsSkillsDemo = initAgentsSkillsDemo();
   agentsChatDemo = initAgentsChatDemo();
   initAgentsTabs();
   initAgentFeatureAccordions();
   initAgentsV2Tabs();
+  initAgentsV2AltTabs();
   initAgentsCaseSwitchers();
   initHeroGrid();
   initPlatformAccordion();
