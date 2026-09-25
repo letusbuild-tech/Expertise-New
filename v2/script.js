@@ -3788,6 +3788,212 @@ function initAgentsV2StickyAlternative() {
   syncStickyVisual();
 }
 
+function initAgentsV2SidebarAlternative() {
+  const source = document.querySelector(".agents-section--v2-alt:not(.agents-section--v2-sticky):not(.agents-section--v2-sidebar)");
+  const mount = document.querySelector("[data-solution-sidebar-mount]");
+  if (!source || !mount) return;
+
+  const section = source.cloneNode(true);
+  section.classList.add("agents-section--v2-sidebar");
+  section.dataset.sectionVersion = "solution sidebar stories";
+
+  const idMap = new Map();
+  section.querySelectorAll("[id]").forEach((element) => {
+    const previousId = element.id;
+    const nextId = `sidebar-${previousId}`;
+    idMap.set(previousId, nextId);
+    element.id = nextId;
+  });
+  ["aria-labelledby", "aria-controls", "for"].forEach((attribute) => {
+    section.querySelectorAll(`[${attribute}]`).forEach((element) => {
+      const value = element.getAttribute(attribute);
+      if (!value) return;
+      element.setAttribute(attribute, value.split(/\s+/).map((id) => idMap.get(id) || id).join(" "));
+    });
+  });
+
+  const heading = section.querySelector(".agents-v2-intro h2");
+  if (heading) section.setAttribute("aria-labelledby", heading.id);
+
+  const stage = section.querySelector(".agents-v2-stage");
+  const tabs = [...section.querySelectorAll("[data-agent-v2-alt-tab]")];
+  const panes = [...section.querySelectorAll("[data-agent-v2-alt-pane]")];
+  const visualRoot = section.querySelector(".agents-v2-visual");
+  const frames = [...section.querySelectorAll("[data-agent-v2-alt-visual]")];
+  if (!stage || !tabs.length || !panes.length || !visualRoot || !frames.length) return;
+
+  section.querySelectorAll(".agents-v2-alt-feature-list").forEach((list) => {
+    const items = [...list.children];
+    const runItem = items.find((item) => item.textContent.includes("Run work when you need it"));
+    const fourth = items[3];
+    if (runItem && fourth && runItem !== fourth) list.insertBefore(runItem, fourth);
+  });
+
+  const visualKeyFor = (key) => key === "support" ? "voice" : key === "workspace" ? "skills" : "chat";
+  const background = visualRoot.querySelector(".agents-visual-photo");
+  const shell = document.createElement("div");
+  shell.className = "agents-v3-shell";
+
+  const sidebar = document.createElement("aside");
+  sidebar.className = "agents-v3-sidebar";
+  sidebar.setAttribute("aria-label", "Agent solutions");
+  const nav = document.createElement("div");
+  nav.className = "agents-v3-sidebar-nav";
+  nav.setAttribute("role", "tablist");
+  nav.setAttribute("aria-orientation", "vertical");
+
+  const stories = document.createElement("div");
+  stories.className = "agents-v3-stories";
+  const storyByKey = new Map();
+
+  tabs.forEach((tab, index) => {
+    const key = tab.dataset.agentV2AltTab;
+    const pane = panes.find((item) => item.dataset.agentV2AltPane === key);
+    const frame = frames.find((item) => item.dataset.agentV2AltVisual === visualKeyFor(key));
+    if (!key || !pane || !frame) return;
+
+    tab.dataset.agentV3Nav = key;
+    tab.removeAttribute("data-agent-v2-alt-tab");
+    tab.id = `agent-v3-tab-${key}`;
+    tab.setAttribute("aria-controls", `agent-v3-story-${key}`);
+    tab.setAttribute("aria-selected", index === 0 ? "true" : "false");
+    tab.tabIndex = index === 0 ? 0 : -1;
+    const description = pane.querySelector(".agents-v2-pane-body");
+    if (description) {
+      const copy = document.createElement("span");
+      copy.className = "agents-v3-tab-copy";
+      const label = document.createElement("span");
+      label.className = "agents-v3-tab-label";
+      [...tab.childNodes].forEach((node) => {
+        if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) label.append(node);
+      });
+      const summary = document.createElement("span");
+      summary.className = "agents-v3-tab-desc";
+      summary.textContent = description.textContent.trim();
+      description.remove();
+      copy.append(label, summary);
+      tab.append(copy);
+    }
+    nav.append(tab);
+
+    const story = document.createElement("article");
+    story.className = "agents-v3-story";
+    story.id = `agent-v3-story-${key}`;
+    story.dataset.agentV3Story = key;
+    story.setAttribute("role", "tabpanel");
+    story.setAttribute("aria-labelledby", tab.id);
+
+    const visual = document.createElement("div");
+    visual.className = "agents-v3-visual agents-v2-visual";
+    if (background) visual.append(background.cloneNode(true));
+    frame.hidden = false;
+    frame.classList.add("is-active");
+    frame.classList.remove("is-entering");
+    visual.append(frame);
+
+    const detail = document.createElement("div");
+    detail.className = "agents-v3-detail";
+    while (pane.firstChild) detail.append(pane.firstChild);
+
+    story.append(visual, detail);
+    stories.append(story);
+    storyByKey.set(key, story);
+  });
+
+  sidebar.append(nav);
+  shell.append(sidebar, stories);
+  stage.replaceChildren(shell);
+  mount.replaceWith(section);
+
+  let activeKey = tabs[0]?.dataset.agentV3Nav || "sales";
+  let scrollRaf = 0;
+  let programmaticScroll = false;
+  let scrollWatch = 0;
+
+  function setActive(key) {
+    if (!key || key === activeKey && tabs.some((tab) => tab.classList.contains("is-current"))) return;
+    activeKey = key;
+    tabs.forEach((tab) => {
+      const selected = tab.dataset.agentV3Nav === key;
+      tab.classList.toggle("is-current", selected);
+      tab.setAttribute("aria-selected", selected ? "true" : "false");
+      tab.tabIndex = selected ? 0 : -1;
+    });
+  }
+
+  function holdScrollSync() {
+    programmaticScroll = true;
+    window.clearTimeout(scrollWatch);
+    let lastY = window.scrollY;
+    let still = 0;
+    const watch = () => {
+      if (Math.abs(window.scrollY - lastY) < 1) still += 1;
+      else still = 0;
+      lastY = window.scrollY;
+      if (still >= 3) {
+        programmaticScroll = false;
+        return;
+      }
+      scrollWatch = window.setTimeout(watch, 80);
+    };
+    scrollWatch = window.setTimeout(watch, 80);
+  }
+
+  function syncActiveStory() {
+    scrollRaf = 0;
+    const focusLine = Math.min(window.innerHeight * .44, 440);
+    let closestKey = activeKey;
+    let closestDistance = Infinity;
+    storyByKey.forEach((story, key) => {
+      const rect = story.getBoundingClientRect();
+      const anchor = Math.max(rect.top, Math.min(focusLine, rect.bottom));
+      const distance = Math.abs(anchor - focusLine);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestKey = key;
+      }
+    });
+    setActive(closestKey);
+  }
+
+  function queueSync() {
+    if (programmaticScroll || scrollRaf) return;
+    scrollRaf = window.requestAnimationFrame(syncActiveStory);
+  }
+
+  nav.addEventListener("click", (event) => {
+    const tab = event.target.closest("[data-agent-v3-nav]");
+    if (!tab) return;
+    const story = storyByKey.get(tab.dataset.agentV3Nav);
+    if (!story) return;
+    const navHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-h")) || 56;
+    const top = window.scrollY + story.getBoundingClientRect().top - navHeight - 24;
+    holdScrollSync();
+    setActive(tab.dataset.agentV3Nav);
+    window.scrollTo({ top, behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  });
+
+  nav.addEventListener("keydown", (event) => {
+    if (!["ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) return;
+    const current = event.target.closest("[data-agent-v3-nav]");
+    if (!current) return;
+    event.preventDefault();
+    const index = tabs.indexOf(current);
+    let next = index;
+    if (event.key === "ArrowDown") next = (index + 1) % tabs.length;
+    if (event.key === "ArrowUp") next = (index - 1 + tabs.length) % tabs.length;
+    if (event.key === "Home") next = 0;
+    if (event.key === "End") next = tabs.length - 1;
+    tabs[next].focus();
+    tabs[next].click();
+  });
+
+  window.addEventListener("scroll", queueSync, { passive: true });
+  window.addEventListener("resize", queueSync);
+  setActive(activeKey);
+  syncActiveStory();
+}
+
 function initAgentsV2AltTabs() {
   const section = document.querySelector(".agents-section--v2-alt");
   if (!section) return;
@@ -4466,6 +4672,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initClientBentoMarquee();
   initIndustryCardReveals();
   initAgentsV2StickyAlternative();
+  initAgentsV2SidebarAlternative();
   initSalesSolutionDemos();
   initSupportSolutionDemos();
   initStickyCustomAgentDemos();
