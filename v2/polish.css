@@ -2926,6 +2926,21 @@
   gap: 28px;
 }
 
+.page-v2 .agents-v2-learn {
+  align-self: stretch;
+  justify-self: stretch;
+  width: 100%;
+  text-decoration: none;
+}
+
+.page-v2 .agents-v2-learn-arrow {
+  width: 10px;
+  height: 10px;
+  flex: 0 0 auto;
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
 .page-v2 .agents-section--v2-alt :is(#agent-v2-alt-pane-sales, #agent-v2-alt-pane-support, #agent-v2-alt-pane-workspace) .agents-v2-pane-text {
   display: grid;
   gap: 14px;
@@ -3590,14 +3605,14 @@
 .page-v2 .support-language > div { display: flex; align-items: center; gap: 9px; min-height: 34px; padding: 6px 9px; color: #202124; background: rgba(255,255,255,.96); border: 1px solid rgba(255,255,255,.86); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,.08); font-size: 11.5px; }
 .page-v2 .support-language strong { font-weight: 500; }
 .page-v2 .support-language span { display: grid; place-items: center; width: 25px; height: 21px; overflow: hidden; background: #fff; border-radius: 4px; font-size: 16px; }
-.page-v2 .support-language--en { top: 62px; left: 14%; }
-.page-v2 .support-language--es { top: 174px; left: 10%; }
-.page-v2 .support-language--pt { top: 298px; left: 12%; }
-.page-v2 .support-language--zh { top: 422px; left: 16%; }
-.page-v2 .support-language--fr { top: 78px; right: 13%; }
-.page-v2 .support-language--de { top: 202px; right: 9%; }
-.page-v2 .support-language--tr { top: 326px; right: 11%; }
-.page-v2 .support-language--ja { top: 422px; right: 16%; }
+.page-v2 .support-language--en { top: 62px; left: 6%; }
+.page-v2 .support-language--es { top: 174px; left: 3%; }
+.page-v2 .support-language--pt { top: 298px; left: 4%; }
+.page-v2 .support-language--zh { top: 422px; left: 6%; }
+.page-v2 .support-language--fr { top: 78px; right: 5%; }
+.page-v2 .support-language--de { top: 202px; right: 3%; }
+.page-v2 .support-language--tr { top: 326px; right: 4%; }
+.page-v2 .support-language--ja { top: 422px; right: 6%; }
 
 .page-v2 .support-solution-face--behind { display: grid; grid-template-columns: minmax(270px,44%) 1fr; align-items: center; gap: 24px; padding: 34px 4% 28px; }
 .page-v2 .support-behind-left,

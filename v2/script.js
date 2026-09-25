@@ -4050,6 +4050,20 @@ function initAgentsV2AltTabs() {
     entranceTimer = window.setTimeout(() => pane.classList.remove("is-entering"), 500);
   }
 
+  function scrollContentToStart() {
+    const rail = section.querySelector(".agents-v2-tabs-rail");
+    const panel = section.querySelector(".agents-v2-panel");
+    if (!rail || !panel || !rail.classList.contains("is-stuck")) return;
+
+    const delta = panel.getBoundingClientRect().top - rail.getBoundingClientRect().bottom;
+    if (delta >= -4) return;
+
+    window.scrollTo({
+      top: Math.max(0, window.scrollY + delta),
+      behavior: prefersReducedMotion() ? "auto" : "smooth"
+    });
+  }
+
   function showTab(tab) {
     if (!tab || tab === activeTab) return;
     const nextPane = panes.find((pane) => pane.dataset.agentV2AltPane === tab.dataset.agentV2AltTab);
@@ -4069,6 +4083,8 @@ function initAgentsV2AltTabs() {
     const tab = event.target.closest("[data-agent-v2-alt-tab]");
     if (!tab || !tablist.contains(tab)) return;
     showTab(tab);
+    // Focus from the click scrolls the tab into view and cancels an immediate smooth scroll.
+    window.requestAnimationFrame(() => window.requestAnimationFrame(scrollContentToStart));
   });
 
   tablist.addEventListener("keydown", (event) => {
@@ -4083,7 +4099,8 @@ function initAgentsV2AltTabs() {
     if (event.key === "Home") next = 0;
     if (event.key === "End") next = tabs.length - 1;
     showTab(tabs[next]);
-    tabs[next].focus();
+    tabs[next].focus({ preventScroll: true });
+    scrollContentToStart();
   });
 
   section.dataset.agentsV2AltReady = "true";
